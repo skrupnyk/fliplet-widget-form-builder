@@ -37,6 +37,10 @@ Fliplet.FormBuilder.field('image', {
     mediaFolderNavStack: {
       type: Array,
       default: []
+    },
+    hasCorruptedImage: {
+      type: Boolean,
+      default: false
     }
   },
   data: {
@@ -51,8 +55,8 @@ Fliplet.FormBuilder.field('image', {
   mounted: function () {
      this.drawImagesAfterInit();
   },
-    updated:function () {
-      this.drawImagesAfterInit();
+  updated:function () {
+    this.drawImagesAfterInit();
   },
   destroyed: function() {
     Fliplet.FormBuilder.off('reset', this.onReset);
@@ -66,7 +70,7 @@ Fliplet.FormBuilder.field('image', {
       $vm.value.forEach(function (image, index) {
         addThumbnailToCanvas(image, index, $vm);
       });
-  
+
       $vm.$emit('_input', $vm.name, $vm.value);
     },
     onReset: function() {
@@ -157,7 +161,8 @@ Fliplet.FormBuilder.field('image', {
     processImage: function(file, addThumbnail) {
       var $vm = this;
       var mimeType = file.type || 'image/png';
-      loadImage.parseMetaData(file, function(data) {
+
+      loadImage.parseMetaData(file, function (data) {
         var options = {
           canvas: true,
           maxWidth: $vm.customWidth,
@@ -165,15 +170,24 @@ Fliplet.FormBuilder.field('image', {
           orientation: data.exif ? data.exif.get('Orientation') : true
         };
 
-        loadImage(file,function(img) {
-            var scaledImage = loadImage.scale( img, options);
+        loadImage(file, function (img) {
+          if (img.type === 'error') {
+            $vm.hasCorruptedImage = true;
+             return;
+          }
+          $vm.hasCorruptedImage = false;
+          
+          var scaledImage = loadImage.scale(img, options);
           var imgBase64Url = scaledImage.toDataURL(mimeType, $vm.jpegQuality);
-            $vm.value.push(imgBase64Url);
-            if (addThumbnail) {
-              addThumbnailToCanvas(imgBase64Url, $vm.value.length - 1, $vm);
-            }
-            $vm.$emit('_input', $vm.name, $vm.value);
-          });
+
+          $vm.value.push(imgBase64Url);
+
+          if (addThumbnail) {
+            addThumbnailToCanvas(imgBase64Url, $vm.value.length - 1, $vm);
+          }
+
+          $vm.$emit('_input', $vm.name, $vm.value);
+        });
       });
     },
     onFileClick: function(event) {
@@ -223,9 +237,7 @@ Fliplet.FormBuilder.field('image', {
     },
     drawImagesAfterInit: function() {
       var $vm = this;
-
       
-  
       $vm.value.forEach(function (image, index) {
         addThumbnailToCanvas(image, index,
           $vm);

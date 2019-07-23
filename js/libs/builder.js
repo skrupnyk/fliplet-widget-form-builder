@@ -477,7 +477,12 @@ var app = new Vue({
     },
     updateDataSource: function() {
       var dataSourceId = this.settings.dataSourceId;
-      var newColumns = _.map(this.fields, 'name');
+      var newColumns = _.chain(this.fields)
+        .filter(function(field){
+          return field._submit !== false;
+        })
+        .map('name')
+        .value();
 
       var fieldsToHash = _.map(_.filter(this.fields, function (field) {
         return !!field.hash;
