@@ -22,5 +22,15 @@ Fliplet.FormBuilder.field('starRating', {
         }
       ]
     }
+  },
+  validations: function () {
+    var rules = {
+      value: {}
+    };
+
+    if (this.required) {
+      rules.value.required = window.validators.required;
+    }
+    return rules;
   }
 });

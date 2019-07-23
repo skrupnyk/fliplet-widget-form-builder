@@ -1,10 +1,16 @@
 <label :for="name" class="select-proxy-display">
-  <select class="form-control hidden-select" :name="name" :id="name" v-model="value" :required="required" v-on:change="updateValue()">
+  <select
+          class="form-control hidden-select"
+          :name="name"
+          :id="name"
+          v-model="value"
+          v-on:change="updateValue()">
     <option v-if="placeholder" value="">\{{ placeholder }}</option>
-    <option v-for="option in options" :value="option.id" :disabled="option.disabled">
+    <option v-for="option in options" :value="option.id || option.label" :disabled="option.disabled">
       \{{ option.label || option.id }}
     </option>
   </select>
   <span class="icon fa fa-chevron-down"></span>
   <span class="select-value-proxy"><template v-if="value && value !== ''">\{{ value }}</template><template v-else>\{{ placeholder }}</template></span>
 </label>
+<p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>

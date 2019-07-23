@@ -18,6 +18,16 @@ Fliplet.FormBuilder.field('checkbox', {
       ]
     }
   },
+  validations: function() {
+    var rules = {
+      value: {}
+    };
+
+    if (this.required) {
+      rules.value.required = window.validators.required;
+    }
+    return rules;
+  },
   methods: {
     updateValue: function () {
       var $vm = this;
@@ -29,12 +39,9 @@ Fliplet.FormBuilder.field('checkbox', {
         });
       });
 
+      this.highlightError();
+
       this.$emit('_input', this.name, ordered);
-    }
-  },
-  computed: {
-    isRequired: function () {
-      return this.required && !this.value.length;
     }
   },
   created: function () {

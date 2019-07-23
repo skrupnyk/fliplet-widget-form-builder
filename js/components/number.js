@@ -14,32 +14,56 @@ Fliplet.FormBuilder.field('number', {
       default: 0
     }
   },
-  methods: {
-    updateValue: function () {
-      var ensureNumberRx = new RegExp(
-        this.positiveOnly ? '[^0-9\.]' : '[^0-9\.-]'
-      , 'g');
-
-      this.value = this.value.replace(ensureNumberRx, '');
-      this.$emit('_input', this.name, this.value);
-    }
-  },
-  computed: {
-    inputType: function () {
-      return this.positiveOnly ? 'number' : 'text';
-    },
-    pattern: function () {
-      if (this.positiveOnly) {
-        return '\\d*';
+  validations: function () {
+    var rules = {
+      value: {
+        integer: window.validators.integer
       }
-    },
-    min: function () {
-      return this.positiveOnly ? '0' : '';
-    },
-    step: function () {
-      return !this.decimals
-        ? '0'
-        : ('0.' + _.times(this.decimals - 1, _.constant(0)).join('') + '1');
+    };
+
+    if (this.required) {
+      rules.value.required = window.validators.required;
+    }
+
+    if (this.positiveOnly) {
+      rules.value.minValue = window.validators.minValue(0);
+
+      if (this.decimals > 0) {
+        rules.value.decimal = this.decimalValidator(this.decimals);
+        delete rules.value.integer;
+      }
+    }
+
+    return rules;
+  },
+  methods: {
+    decimalValidator: function (maxNumbersAfterPoint) {
+      return window.validators.helpers.withParams(
+        {
+          type: 'decimalValidator',
+          value: maxNumbersAfterPoint
+        },
+        function (value) {
+          if (!value) {
+            return false;
+          }
+
+          value = parseFloat(value);
+
+          if(_.isNaN(value)) {
+            return false;
+          }
+
+          var currentNumbersAfterPoint = 0;
+
+          if (Math.floor(value) !== value) {
+            var valueParts = value.toString().split(".");
+            currentNumbersAfterPoint = valueParts[1] ? valueParts[1].length : 0;
+          }
+
+          return maxNumbersAfterPoint >= currentNumbersAfterPoint;
+        }
+      );
     }
   }
 });

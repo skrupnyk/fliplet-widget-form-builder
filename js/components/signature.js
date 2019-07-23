@@ -14,12 +14,24 @@ Fliplet.FormBuilder.field('signature', {
       default: 0
     }
   },
+  validations: function () {
+    var rules = {
+      value: {}
+    };
+
+    if (this.required) {
+      rules.value.required = window.validators.required;
+    }
+    return rules;
+  },
   computed: {
     borderColor: function () {
       return Fliplet.Themes && Fliplet.Themes.Current.get('bodyTextColor') || '#e5e5e5';
     }
   },
   mounted: function () {
+    var $vm = this;
+
     var canvas = this.$refs.canvas;
     canvas.style.width = '100%';
     canvas.style.height = parseInt(this.height, 10) + 'px';
@@ -27,6 +39,14 @@ Fliplet.FormBuilder.field('signature', {
     canvas.style.borderBottom = '1px solid ' + this.borderColor;
 
     this.pad = new SignaturePad(canvas);
+
+    // check is field valid when required
+    this.pad.onEnd = function () {
+      if ($vm.required) {
+        $vm.value = true;
+        $vm.updateValue();
+      }
+    };
 
     Fliplet.FormBuilder.on('reset', this.onReset);
     Fliplet.Hooks.on('beforeFormSubmit', this.onBeforeSubmit);
@@ -53,18 +73,22 @@ Fliplet.FormBuilder.field('signature', {
     onReset: function() {
       if (this.pad) {
         this.pad.clear();
+        this.value = null;
       }
     },
+    clean: function () {
+      this.onReset();
+      this.updateValue()
+    },
     onBeforeSubmit: function(data) {
-      if (!this.pad || this.isDestroyed) {
+      $vm = this;
+      if (!$vm.pad || $vm.isDestroyed) {
         return;
       }
 
-      $(this.$refs.canvas).parents('.form-group').removeClass('has-error');
-      if (this.required && this.pad.isEmpty()) {
-        $(this.$refs.canvas).parents('.form-group').addClass('has-error');
-
-        return Promise.reject('Please fill in required fields.');
+      // highlight Error if not valid field when required
+      if ($vm.required && $vm.pad.isEmpty()) {
+        this.highlightError();
       }
 
       // Get signature as base 64 string

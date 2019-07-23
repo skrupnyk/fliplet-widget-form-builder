@@ -1,10 +1,11 @@
 <input
   type="tel"
   class="form-control"
-  v-model.trim="value"
-  v-on:input="updateValue()"
+  v-model.trim.lazy="value"
+  v-on:blur="updateValue()"
   :name="name"
   :id="name"
   :placeholder="placeholder"
-  :required="required"
 />
+<p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>
+<p class="text-danger" v-if="$v.value.phone === false && $v.value.$dirty">Phone could contain <b>; , . ( ) - + SPACE * #</b> and numbers.</p>

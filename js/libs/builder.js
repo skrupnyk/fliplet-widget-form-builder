@@ -147,20 +147,6 @@ var app = new Vue({
     };
   },
   methods: {
-    setupCodeEditor: function() {
-      const $vm = this;
-      $vm.resultEditor = CodeMirror.fromTextArea($vm.$refs.resulthtml, {
-        mode: 'htmlmixed',
-        lineNumbers: true,
-        autoRefresh: true,
-        lineWrapping: true,
-        viewportMargin: Infinity
-      });
-
-      $vm.resultEditor.on('change', function() {
-        $vm.settings.resultHtml = $vm.resultEditor.getValue();
-      });
-    },
     onSort: function(event) {
       this.fields.splice(event.newIndex, 0, this.fields.splice(event.oldIndex, 1)[0]);
     },
@@ -244,10 +230,6 @@ var app = new Vue({
       if (this.isAddingFields) {
         Fliplet.Studio.emit('widget-mode', 'wide');
       }
-
-      setTimeout(function() {
-        $vm.setupCodeEditor();
-      }, 1);
     },
     createDataSource: function() {
       var $vm = this;
@@ -565,9 +547,6 @@ var app = new Vue({
           $vm.permissionToChange = false;
           $vm.settings.templateId = $vm.newTemplate;
           Fliplet.Studio.emit('widget-save-label-reset');
-          setTimeout(function() {
-            $vm.setupCodeEditor();
-          }, 1);
         }
 
         return;
@@ -682,6 +661,76 @@ var app = new Vue({
         window.linkProvider = null;
         $vm.triggerSave();
       });
+    },
+    setupCodeEditor: function() {
+      var $vm = this;
+
+      tinymce.init({
+        target: $vm.$refs.resulthtml,
+        theme: 'modern',
+        mobile: {
+          theme: 'mobile',
+          plugins: ['autosave', 'lists', 'autolink'],
+          toolbar: ['bold', 'italic', 'underline', 'bullist', 'numlist', 'removeformat']
+        },
+        plugins: [
+          'advlist autolink lists link directionality',
+          'autoresize fullscreen code paste'
+        ].join(' '),
+        toolbar: [
+          'bold italic underline',
+          'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
+          'ltr rtl | link | removeformat code fullscreen'
+        ].join(' | '),
+        image_advtab: true,
+        menubar: false,
+        statusbar: false,
+        inline: false,
+        resize: false,
+        autoresize_bottom_margin: 5,
+        autofocus: false,
+        branding: false,
+        valid_elements: '*[*]',
+        allow_script_urls: true,
+        min_height: 200,
+        setup: function (editor) {
+          editor.on('init', function () {
+            $vm.resultEditor = editor;
+
+            // initialize value if it was set prior to initialization
+            if ($vm.settings.resultHtml) {
+              var updatedHtml = $vm.convertVueEventAttributes($vm.settings.resultHtml);
+              editor.setContent(updatedHtml, {format: 'raw'});
+            }
+          });
+
+          editor.on('change', function (e) {
+            $vm.settings.resultHtml = editor.getContent();
+          });
+        }
+      });
+    },
+
+    // Converts @event attributes to v-on:event
+    convertVueEventAttributes: function(html) {
+      var $html = $('<div/>').append(html);
+      var $allElements = $html.find('*');
+
+      _.each($allElements, function (el) {
+        var $el = $(el);
+
+        _.each(el.attributes, function (attr) {
+          if (_.startsWith(attr.name, '@')) {
+            var event = attr.name.split('.');
+            var newAttrName = event[0].replace('@', 'v-on:');
+            var newAttrValue = attr.value === 'start()' ? 'start($event)' : attr.value;
+
+            $el.attr(newAttrName, newAttrValue);
+            $el.removeAttr(attr.name);
+          }
+        })
+      });
+      return $html.html();
     }
   },
   watch: {
@@ -718,31 +767,6 @@ var app = new Vue({
       var $vm = this;
       if (value === 'settings') {
         changeSelectText();
-
-        if (!this.resultEditor) {
-          setTimeout(function() {
-            $vm.setupCodeEditor();
-          }, 1);
-        } else {
-          setTimeout(function() {
-            $vm.resultEditor.refresh();
-          }, 1);
-        }
-
-      }
-    },
-    'settings.redirect': function(value) {
-      var $vm = this;
-      if (!value) {
-        if (!$vm.resultEditor) {
-          setTimeout(function() {
-            $vm.setupCodeEditor();
-          }, 1);
-        } else {
-          setTimeout(function() {
-            $vm.resultEditor.refresh();
-          }, 1);
-        }
       }
     },
     'settings.dataStore': function(value) {
@@ -964,6 +988,8 @@ var app = new Vue({
     Fliplet.User.fetch().then(function(user) {
       $vm.userData = user;
     });
+
+    $vm.setupCodeEditor();
   },
   updated: function() {
     var $vm = this;

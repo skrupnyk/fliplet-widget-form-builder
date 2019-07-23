@@ -10,6 +10,16 @@ Fliplet.FormBuilder.field('wysiwyg', {
       default: 5
     }
   },
+  validations: function () {
+    var rules = {
+      value: {}
+    };
+
+    if (this.required) {
+      rules.value.required = window.validators.required;
+    }
+    return rules;
+  },
   computed: {
     isInterface: function () {
       return Fliplet.Env.get('interface');
@@ -36,14 +46,6 @@ Fliplet.FormBuilder.field('wysiwyg', {
       }
 
       this.value = '';
-    },
-    onBeforeSubmit: function(data) {
-      var value = data[this.name];
-      $(this.$refs.textarea).parents('.form-group').removeClass('has-error');
-      if (this.required && (!value || !value.length)) {
-        $(this.$refs.textarea).parents('.form-group').addClass('has-error');
-        return Promise.reject('Please fill in required fields.');
-      }
     }
   },
   mounted: function () {
@@ -96,12 +98,13 @@ Fliplet.FormBuilder.field('wysiwyg', {
         });
 
         editor.on('change', function(e) {
-          $vm.$emit('_input', $vm.name, editor.getContent());
+          $vm.value = editor.getContent();
+
+          $vm.updateValue();
         });
       }
     });
 
-    Fliplet.Hooks.on('beforeFormSubmit', this.onBeforeSubmit);
     Fliplet.FormBuilder.on('reset', this.onReset);
   },
   destroyed: function() {

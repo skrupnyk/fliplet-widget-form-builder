@@ -5,12 +5,12 @@
 
   <input 
     type="time"
-    v-model="value"
+    v-model.lazy="value"
     v-on:change="updateValue()"
     :name="name"
     :id="name"
     :placeholder="placeholder"
-    :required="required"
     class="form-control"
   />
 </div>
+<p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>

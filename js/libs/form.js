@@ -104,7 +104,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
     };
   }
 
-  function getFields() {
+  function getFields(isEditMode) {
     var fields = _.compact(JSON.parse(JSON.stringify(data.fields || [])));
     var progress = getProgress();
 
@@ -144,7 +144,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
           return field.value;
         }
 
-        if (progress) {
+        if (progress && !isEditMode) {
           var savedValue = progress[field.name];
 
           if (typeof savedValue !== 'undefined') {
@@ -167,6 +167,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
     el: $(selector)[0],
     data: function() {
       return {
+        isFormValid: false,
         isSent: false,
         isSending: false,
         isSendingMessage: 'Saving data...',
@@ -190,7 +191,10 @@ Fliplet.Widget.instance('form-builder', function(data) {
       }
     },
     methods: {
-      start: function() {
+      start: function(event) {
+        if (event) {
+          event.preventDefault();
+        }
         this.isSent = false;
       },
       reset: function(trackEvents) {
@@ -297,13 +301,33 @@ Fliplet.Widget.instance('form-builder', function(data) {
         return found;
       },
       onSubmit: function() {
+        var $vm = this;
+        var formData = {};
+
         Fliplet.Analytics.trackEvent({
           category: 'form',
           action: 'submit'
         });
 
-        var $vm = this;
-        var formData = {};
+        // form validation
+        $vm.isFormValid = true;
+
+        $vm.$children.forEach(function (inputField) {
+
+          // checks if component have vuelidate validation object
+          if (inputField.$v) {
+            inputField.$v.$touch();
+
+            if (inputField.$v.$invalid) {
+              $(inputField.$el).addClass('has-error');
+              $vm.isFormValid = false;
+            }
+          }
+        });
+
+       if(!$vm.isFormValid){
+         return;
+       }
 
         this.isSending = true;
 
@@ -474,7 +498,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
 
             entry = record;
 
-            $vm.fields = getFields();
+            $vm.fields = getFields(true);
             $vm.isLoading = false;
             $vm.$forceUpdate();
           }).catch(function (err) {
@@ -495,16 +519,19 @@ Fliplet.Widget.instance('form-builder', function(data) {
 
         if (data.autobindProfileEditing) {
           return Fliplet.Session.get().then(function (session) {
+            var isEditMode = false;
+
             if (session.entries && session.entries.dataSource) {
               entryId = 'session'; // this works because you can use it as an ID on the backend
               entry = session.entries.dataSource;
+              isEditMode = true;
             }
 
             // Re-render fields
             $vm.fields = [];
             return new Promise(function (resolve) {
               setTimeout(function () {
-                $vm.fields = getFields();
+                $vm.fields = getFields(isEditMode);
                 $vm.isLoading = false;
                 resolve();
               }, 50);
@@ -567,6 +594,19 @@ Fliplet.Widget.instance('form-builder', function(data) {
           },
           on: function (event, fn) {
             return $form.$on(event, fn);
+          },
+          fields: {
+            get: function () {
+              return $form.fields;
+            },
+            set: function (fields) {
+              if (!Array.isArray(fields)) {
+                throw new Error('fields must be an array');
+              }
+
+              data.fields = fields;
+              $form.fields = getFields();
+            }
           },
           field: function (key) {
             var field = $form.getField(key);

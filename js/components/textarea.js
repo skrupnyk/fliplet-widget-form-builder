@@ -9,5 +9,15 @@ Fliplet.FormBuilder.field('textarea', {
       type: Number,
       default: 2
     }
+  },
+  validations: function() {
+    var rules = {
+      value: {}
+    };
+
+    if (this.required) {
+      rules.value.required = window.validators.required;
+    }
+    return rules;
   }
 });

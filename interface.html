@@ -10,7 +10,7 @@
     <header>
       <p v-if="chooseTemplate">Template gallery</p>
       <p v-else>Configure your form</p>
-      <a id="help_tip" href="#">Need help?</a>
+      <a id="help_tip" href="https://help.fliplet.com/article/46-how-to-build-a-form">Need help?</a>
     </header>
     <section v-if="chooseTemplate" class="col-sm-12 choose-template" ref="templateGallery">
       <p class="templates-sub-title">Choose a form template to get started.</p>
@@ -137,6 +137,25 @@
               </label>
               <small v-if="showDataSourceSettings"><a href="#" v-on:click.prevent="manageDataSource(settings.dataSourceId)">Edit data source</a></small>
             </div>
+            <div class="form-group">
+              <div class="control-label">
+                <label>Save users' progress on the form</label>
+              </div>
+              <div>
+                <div class="radio radio-icon">
+                  <input type="radio" id="progress_save" name="progress" v-model="settings.saveProgress" :value="true">
+                  <label for="progress_save">
+                    <span class="check"><i class="fa fa-circle"></i></span> Always <small>- Form entries will be saved in the device if the user abandons the form without submitting</small>
+                  </label>
+                </div>
+                <div class="radio radio-icon">
+                  <input type="radio" id="progress_dont_save" name="progress" v-model="settings.saveProgress" :value="false">
+                  <label for="progress_dont_save">
+                    <span class="check"><i class="fa fa-circle"></i></span> Never <small>- Form entries will be discarded if the user abandons the form without submitting</small>
+                  </label>
+                </div>
+              </div>
+            </div>
 
             <h3>Submission</h3>
             <div class="form-group" v-if="showDataSourceSettings">
@@ -173,25 +192,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <div class="control-label">
-                      <label>Save users' progress on the form</label>
-                    </div>
-                    <div>
-                      <div class="radio radio-icon">
-                        <input type="radio" id="progress_save" name="progress" v-model="settings.saveProgress" :value="true">
-                        <label for="progress_save">
-                          <span class="check"><i class="fa fa-circle"></i></span> Always <small>- Form entries will be saved in the device if the user abandons the form without submitting</small>
-                        </label>
-                      </div>
-                      <div class="radio radio-icon">
-                        <input type="radio" id="progress_dont_save" name="progress" v-model="settings.saveProgress" :value="false">
-                        <label for="progress_dont_save">
-                          <span class="check"><i class="fa fa-circle"></i></span> Never <small>- Form entries will be discarded if the user abandons the form without submitting</small>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
+
                   <div class="form-group">
                     <div class="control-label">
                       <label>Send an email notification whenever a form is submitted</label>

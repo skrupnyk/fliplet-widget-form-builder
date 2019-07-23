@@ -5,12 +5,11 @@
 
   <input 
   	type="text"
-  	v-model="value"
+  	v-model.lazy="value"
   	v-on:change="updateValue()"
   	:name="name"
   	:id="name"
   	:placeholder="placeholder"
-  	:required="required"
   	class="date-picker form-control"
   />
 </div>
@@ -19,14 +18,14 @@
     <i class="fa fa-calendar"></i>
   </div>
 
-  <input 
+  <input
     type="date"
-    v-model="value"
-    v-on:input="updateValue()"
+    v-model.lazy="value"
+    v-on:change="updateValue()"
     :name="name"
     :id="name"
     :placeholder="placeholder"
-    :required="required"
     class="form-control"
   />
 </div>
+<p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>

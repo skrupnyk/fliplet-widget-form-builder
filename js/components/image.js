@@ -49,10 +49,10 @@ Fliplet.FormBuilder.field('image', {
     Fliplet.Hooks.on('beforeFormSubmit', this.onBeforeSubmit);
   },
   mounted: function () {
-    this.drawImagesAfterInit();
+     this.drawImagesAfterInit();
   },
-  updated: function() {
-    this.drawImagesAfterInit();
+    updated:function () {
+      this.drawImagesAfterInit();
   },
   destroyed: function() {
     Fliplet.FormBuilder.off('reset', this.onReset);
@@ -158,21 +158,21 @@ Fliplet.FormBuilder.field('image', {
       var $vm = this;
       var mimeType = file.type || 'image/png';
       loadImage.parseMetaData(file, function(data) {
-        loadImage(
-          file,
-          function(img) {
-            var imgBase64Url = img.toDataURL(mimeType, $vm.jpegQuality);
+        var options = {
+          canvas: true,
+          maxWidth: $vm.customWidth,
+          maxHeight: $vm.customHeight,
+          orientation: data.exif ? data.exif.get('Orientation') : true
+        };
+
+        loadImage(file,function(img) {
+            var scaledImage = loadImage.scale( img, options);
+          var imgBase64Url = scaledImage.toDataURL(mimeType, $vm.jpegQuality);
             $vm.value.push(imgBase64Url);
             if (addThumbnail) {
               addThumbnailToCanvas(imgBase64Url, $vm.value.length - 1, $vm);
             }
             $vm.$emit('_input', $vm.name, $vm.value);
-          }, {
-            canvas: true,
-            maxWidth: $vm.customWidth,
-            maxHeight: $vm.customHeight,
-            orientation: data.exif ?
-              data.exif.get('Orientation') : true
           });
       });
     },
@@ -216,16 +216,19 @@ Fliplet.FormBuilder.field('image', {
     },
     onFileChange: function() {
       var files = this.$refs.imageInput.files;
-      
+
       for (var i = 0; i < files.length; i++) {
         this.processImage(files.item(i), true);
       }
     },
     drawImagesAfterInit: function() {
       var $vm = this;
+
       
+  
       $vm.value.forEach(function (image, index) {
-        addThumbnailToCanvas(image, index, $vm);
+        addThumbnailToCanvas(image, index,
+          $vm);
       });
     }
   }

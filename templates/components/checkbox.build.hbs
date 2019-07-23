@@ -1,8 +1,17 @@
-<template v-for="(option, index) in options">
-  <div class="checkbox checkbox-icon">
-    <input type="checkbox" :id="name + '-' + index" :name="name" v-model="value" :value="option.id" :required="isRequired" v-on:change="updateValue()">
-    <label :for="name + '-' + index">
-      <span class="check"><i class="fa fa-check"></i></span> \{{ option.label || option.id }}
-    </label>
-  </div>
+<template>
+    <template v-for="(option, index) in options">
+        <div class="checkbox checkbox-icon">
+            <input
+                    type="checkbox"
+                    :id="name + '-' + index"
+                    :name="name"
+                    v-model="value"
+                    :value="option.label || option.id"
+                    v-on:change="updateValue()">
+            <label :for="name + '-' + index">
+                <span class="check"><i class="fa fa-check"></i></span> \{{ option.label || option.id }}
+            </label>
+        </div>
+    </template>
+    <p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>
 </template>

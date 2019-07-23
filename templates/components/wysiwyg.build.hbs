@@ -1,7 +1,6 @@
 <textarea
   class="form-control"
-  v-model.trim="value"
-  v-on:input="updateValue()"
+  v-model.trim.lazy="value"
   ref="textarea"
   :name="name"
   :id="name"
@@ -12,3 +11,4 @@
   v-html="value"
   v-if="isInterface">
 </div>
+<p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>

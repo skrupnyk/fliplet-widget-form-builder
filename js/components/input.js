@@ -5,5 +5,15 @@ Fliplet.FormBuilder.field('input', {
     placeholder: {
       type: String
     }
+  },
+  validations: function () {
+    var rules = {
+      value: {}
+    };
+
+    if (this.required) {
+      rules.value.required = window.validators.required;
+    }
+    return rules;
   }
 });

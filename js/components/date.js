@@ -1,4 +1,4 @@
-var DATE_FORMAT = 'DD MMMM YYYY';
+var DATE_FORMAT = 'YYYY-MM-DD';
 
 Fliplet.FormBuilder.field('date', {
   name: 'Date picker',
@@ -7,6 +7,16 @@ Fliplet.FormBuilder.field('date', {
     placeholder: {
       type: String
     }
+  },
+  validations: function() {
+    var rules = {
+      value: {}
+    };
+
+    if (this.required) {
+      rules.value.required = window.validators.required;
+    }
+    return rules;
   },
   computed: {
     isWeb: function() {
@@ -18,6 +28,8 @@ Fliplet.FormBuilder.field('date', {
       if (value) {
         this.value = value;
       }
+
+      this.highlightError();
       this.$emit('_input', this.name, this.value);
     }
   },
@@ -26,7 +38,7 @@ Fliplet.FormBuilder.field('date', {
 
     if (Fliplet.Env.get('platform') === 'web') {
       var $el = $(this.$el).find('input.date-picker').datepicker({
-        format: "dd MM yyyy",
+        format: "yyyy-mm-dd",
         todayHighlight: true,
         autoclose: true
       }).on('changeDate', function(e) {
@@ -41,5 +53,6 @@ Fliplet.FormBuilder.field('date', {
       // HTML5 date field wants YYYY-MM-DD format
       $vm.updateValue(moment().format('YYYY-MM-DD'));
     }
+    $vm.$v.$reset();
   }
 });

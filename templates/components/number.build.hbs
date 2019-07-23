@@ -1,13 +1,13 @@
 <input
-  :type="inputType"
+  type="text"
   class="form-control"
-  v-model.trim="value"
-  v-on:input="updateValue()"
+  v-model.trim.lazy="value"
+  v-on:blur="updateValue()"
   :name="name"
   :id="name"
   :placeholder="placeholder"
-  :required="required"
-  :pattern="pattern"
-  :step="step"
-  :min="min"
 />
+<p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>
+<p class="text-danger" v-if="$v.value.minValue === false && $v.value.$dirty">Only positive numbers are allowed.</p>
+<p class="text-danger" v-if="$v.value.integer === false && $v.value.$dirty">Only integer numbers are allowed.</p>
+<p class="text-danger" v-if="$v.value.decimal === false && $v.value.$dirty">Only \{{decimals}} number(s) after point are allowed.</p>

@@ -46,6 +46,9 @@ Fliplet.FormBuilder.field('file', {
   destroyed: function() {
     Fliplet.FormBuilder.off('reset', this.onReset);
   },
+  destroyed: function() {
+    this.selectedFiles.length = 0;
+  },
   methods: {
     isFileImage: function(file) {
       if (file && file.type) {

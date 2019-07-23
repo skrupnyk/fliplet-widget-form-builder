@@ -6,11 +6,23 @@ Fliplet.FormBuilder.field('time', {
       type: String
     }
   },
+  validations: function() {
+    var rules = {
+      value: {}
+    };
+
+    if (this.required) {
+      rules.value.required = window.validators.required;
+    }
+    return rules;
+  },
   methods: {
     updateValue: function(value) {
       if (value) {
         this.value = value;
       }
+
+      this.highlightError();
       this.$emit('_input', this.name, this.value);
     }
   },
@@ -21,7 +33,7 @@ Fliplet.FormBuilder.field('time', {
      * so we need to re-format it to the correct format which is accepted by the native html5 time input,
      * which is HH:mm
      */
-    if(moment(this.value, 'HH:mm A', true).isValid()){
+    if (moment(this.value, 'HH:mm A', true).isValid()){
       this.value = moment(this.value, 'HH:mm A').format('HH:mm');
     }
   },
@@ -42,5 +54,6 @@ Fliplet.FormBuilder.field('time', {
 
       this.updateValue(hours + ':' + minutes);
     }
+    $vm.$v.$reset();
   }
 });

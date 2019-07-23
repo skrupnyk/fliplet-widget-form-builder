@@ -1,5 +1,3 @@
-var confirmationErrorMessage = 'The confirmation password does not match';
-
 Fliplet.FormBuilder.field('password', {
   name: 'Password input',
   category: 'Text inputs',
@@ -43,13 +41,26 @@ Fliplet.FormBuilder.field('password', {
       default: false
     }
   },
+  validations: function () {
+    var rules = {
+      value: {},
+      valueConfirmation: {}
+    };
+
+    if (this.required) {
+      rules.value.required = window.validators.required;
+    }
+
+    if (this.confirm) {
+      rules.valueConfirmation.sameAs = window.validators.sameAs('value');
+    }
+
+    return rules;
+  },
   computed: {
     fieldPlaceholder: function () {
       return this.autogenerate ? 'A password will be automatically generated' : this.placeholder
     }
-  },
-  created: function() {
-    this.checkPasswordConfirmation();
   },
   mounted: function () {
     if (this.autogenerate && !this.value) {
@@ -58,10 +69,6 @@ Fliplet.FormBuilder.field('password', {
     }
   },
   methods: {
-    updateValue: function() {
-      this.$emit('_input', this.name, this.value);
-      this.checkPasswordConfirmation();
-    },
     generateRandomPassword: function (length) {
       var alphabet = 'abcdefghijklmnopqrstuvwxyz!#$%&*-ABCDEFGHIJKLMNOP1234567890';
       var password = '';
@@ -72,14 +79,9 @@ Fliplet.FormBuilder.field('password', {
 
       return password;
     },
-    checkPasswordConfirmation: function() {
-      this.hasConfirmationError = this.confirm && (this.value || this.valueConfirmation) && this.valueConfirmation !== this.value;
-
-      this.$emit('_error', this.name, this.hasConfirmationError ? confirmationErrorMessage : null);
-
-      if (this.$refs.confirmPassword) {
-        this.$refs.confirmPassword.setCustomValidity(this.hasConfirmationError ? confirmationErrorMessage : '');
-      }
+    updateConfirmation: function () {
+      this.$v.valueConfirmation.$touch();
+      this.highlightError();
     }
   }
 });

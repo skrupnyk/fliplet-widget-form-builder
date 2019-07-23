@@ -3,6 +3,8 @@ Fliplet.FormBuilder = (function() {
   var components = {};
   var eventHub = new Vue();
 
+  Vue.use(window.vuelidate.default);
+
   var templates = Fliplet.Widget.Templates;
 
   function name(component) {
@@ -66,7 +68,23 @@ Fliplet.FormBuilder = (function() {
       // Define method to emit the new input value on change
       if (!component.methods.updateValue) {
         component.methods.updateValue = function() {
+          this.highlightError();
           this.$emit('_input', this.name, this.value);
+        }
+      }
+
+      // Define method to highlight Error on blur form field
+      component.methods.highlightError = function () {
+        var $vm = this;
+
+        if ($vm.$v && $vm.$v.value) {
+          $vm.$v.$touch();
+
+          if ($vm.$v.value.$error) {
+            $($vm.$el).addClass('has-error');
+          } else {
+            $($vm.$el).removeClass('has-error');
+          }
         }
       }
 
@@ -319,10 +337,10 @@ Fliplet.FormBuilder = (function() {
       if (hasOptions) {
         component.computed._options = function generateOptions() {
           return this.options.map(function (option) {
-            if (option.id && option.id != option.label) {
+            if (option.id && option.label && option.id != option.label) {
               return option.label + ' <' + option.id + '>';
             }
-            return option.label;
+            return option.label || option.id;
           }).join('\r\n');
         };
 
