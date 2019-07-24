@@ -1,6 +1,6 @@
 {
-  "name": "Form",
-  "package": "com.fliplet.form-builder",
+  "name": "Form Upplabs",
+  "package": "com.fliplet.form-builder.upplabs",
   "version": "1.0.0",
   "icon": "img/icon.png",
   "tags": ["type:component", "category:general"],

@@ -1,6 +1,6 @@
 <div class="fileUpload file-input">
   <div class="row">
-    <div ref="canvasWrap" class="col-xs-4 col-sm-3 text-center" v-for="(file, index) in value">
+    <div ref="canvasWrap" class="text-center" v-for="(file, index) in value">
       <div class="canvas-holder">
         <canvas v-if="isFileImage(file)"></canvas>
         <div class="file-icon" v-else><i class="fa fa-file"></i></div>

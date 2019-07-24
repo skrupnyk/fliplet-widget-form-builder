@@ -381,14 +381,6 @@ nav>.btn {
   padding-right: 10px;
 }
 
-.fileUpload.file-input .row {
-  display: flex;
-  flex-wrap: wrap;
-}
-.fileUpload.file-input .row > div {
-  float: none;
-}
-
 .fileUpload .canvas-holder {
   position: relative;
   display: flex;
@@ -407,11 +399,16 @@ nav>.btn {
 }
 
 .fileUpload .row {
+  display: flex;
+  flex-wrap: wrap;
   margin: 0;
 }
 
 .fileUpload .row > div {
+  padding: 0 15px;
+  margin: 0 -1px;
   margin-bottom: 15px;
+  width: 33.333%;
 }
 
 .fileUpload .canvas-holder .badge {
@@ -714,6 +711,10 @@ nav>.btn {
   .fileUpload .canvas-holder canvas {
     width: 100%;
     height: 130px;
+  }
+
+  .fileUpload .row > div {
+    width: 25%;
   }
 }
 
