@@ -241,9 +241,23 @@ Fliplet.Widget.instance('form-builder', function(data) {
 
         return found;
       },
+
+      /**
+       * Since our validation should check the input when it loses focus (the onBlur event),
+       * the .lazy modifier was added, this leads to the data being updated when the input
+       * loses the focus. Because of this, there is a problem when the form is submitted by
+       * pressing enter instead of the submit button (in this case, the input does not lose
+       * focus and its data is not updated) In order to work as expected, we need to manually
+       * trigger the blur event on the input paths.
+       */
+      triggerBlurEventOnInputs: function() {
+        $(this.$el).find('input').blur();
+      },
       onSubmit: function() {
         var $vm = this;
         var formData = {};
+
+        $vm.triggerBlurEventOnInputs();
 
         Fliplet.Analytics.trackEvent({
           category: 'form',
