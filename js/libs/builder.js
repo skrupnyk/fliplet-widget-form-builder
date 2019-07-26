@@ -333,8 +333,11 @@ var app = new Vue({
         data: emailProviderData
       });
 
+      Fliplet.Widget.toggleCancelButton(false);
+
       window.emailTemplateAddProvider.then(function onForwardEmailProvider(result) {
         window.emailTemplateAddProvider = null;
+        Fliplet.Widget.toggleCancelButton(true);
         $vm.emailTemplateAdd = result.data;
         $vm.settings.emailTemplateAdd = JSON.parse(JSON.stringify($vm.emailTemplateAdd));
 
@@ -391,8 +394,11 @@ var app = new Vue({
         data: emailProviderData
       });
 
+      Fliplet.Widget.toggleCancelButton(false);
+
       window.emailTemplateEditProvider.then(function onForwardEmailProvider(result) {
         window.emailTemplateEditProvider = null;
+        Fliplet.Widget.toggleCancelButton(true);
         $vm.emailTemplateEdit = result.data;
         $vm.settings.emailTemplateEdit = JSON.parse(JSON.stringify($vm.emailTemplateEdit));
 
@@ -449,8 +455,11 @@ var app = new Vue({
         data: emailProviderData
       });
 
+      Fliplet.Widget.toggleCancelButton(false);
+
       window.generateEmailProvider.then(function onForwardEmailProvider(result) {
         window.generateEmailProvider = null;
+        Fliplet.Widget.toggleCancelButton(true);
         $vm.generateEmailTemplate = result.data;
         $vm.save().then(function() {
           Fliplet.Studio.emit('reload-widget-instance', Fliplet.Widget.getDefaultId());
@@ -477,7 +486,12 @@ var app = new Vue({
     },
     updateDataSource: function() {
       var dataSourceId = this.settings.dataSourceId;
-      var newColumns = _.map(this.fields, 'name');
+      var newColumns = _.chain(this.fields)
+        .filter(function(field){
+          return field._submit !== false;
+        })
+        .map('name')
+        .value();
 
       var fieldsToHash = _.map(_.filter(this.fields, function (field) {
         return !!field.hash;
@@ -983,6 +997,24 @@ var app = new Vue({
       }
 
       $vm.triggerSave();
+    });
+
+    Fliplet.Widget.onCancelRequest(function () {
+
+      var emailProviderNames = [
+        'emailTemplateAddProvider',
+        'emailTemplateEditProvider',
+        'generateEmailProvider'
+      ];
+
+      _.each(emailProviderNames, function (providerName) {
+        if (window[providerName]) {
+          window[providerName].close();
+          window[providerName] = null;
+        }
+      });
+
+      Fliplet.Widget.toggleCancelButton(true);
     });
 
     Fliplet.User.fetch().then(function(user) {

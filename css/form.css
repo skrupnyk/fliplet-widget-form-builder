@@ -852,7 +852,7 @@ form hr {
 
 .datepicker table tr td,
 .datepicker table tr th {
-  min-width: 44px;
+  min-width: 38px;
 }
 
 /* TinyMCE source code area */
