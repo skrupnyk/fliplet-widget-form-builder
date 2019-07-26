@@ -26,17 +26,31 @@ Fliplet.FormBuilder.field('number', {
     }
 
     if (this.positiveOnly) {
-      rules.value.minValue = window.validators.minValue(0);
+      rules.value.positive = this.positiveValidator();
+    }
 
-      if (this.decimals > 0) {
-        rules.value.decimal = this.decimalValidator(this.decimals);
-        delete rules.value.integer;
-      }
+    if (this.decimals > 0) {
+      rules.value.decimal = this.decimalValidator(this.decimals);
+      delete rules.value.integer;
     }
 
     return rules;
   },
   methods: {
+    positiveValidator: function () {
+      return window.validators.helpers.withParams(
+        {
+          type: 'positiveValidator'
+        },
+        function (value) {
+          if (!value) {
+            return true;
+          }
+
+          return parseFloat(value) >= 0;
+        }
+      )
+    },
     decimalValidator: function (maxNumbersAfterPoint) {
       return window.validators.helpers.withParams(
         {
@@ -44,10 +58,17 @@ Fliplet.FormBuilder.field('number', {
           value: maxNumbersAfterPoint
         },
         function (value) {
+          var decimal = /^(-?\d+((.|,)?\d{1,10}))$/;
+
           if (!value) {
+            return true;
+          }
+
+          if (!decimal.test(value)) {
             return false;
           }
 
+          value = value.replace(",", ".");
           value = parseFloat(value);
 
           if(_.isNaN(value)) {
