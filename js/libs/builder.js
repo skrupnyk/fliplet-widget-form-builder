@@ -1,4 +1,5 @@
 var widgetId = parseInt(Fliplet.Widget.getDefaultId(), 10);
+var widgetUuid = Fliplet.Widget.getUUID(widgetId);
 var data = Fliplet.Widget.getData(widgetId) || {};
 
 // Cleanup
@@ -346,6 +347,7 @@ var app = new Vue({
         if ($vm.settings.dataStore.indexOf('dataSource') > -1 && $vm.settings.dataSourceId) {
           var newHook = {
             widgetInstanceId: widgetId,
+            widgetInstanceUuid: widgetUuid,
             runOn: ['insert'],
             type: 'email',
             payload: JSON.parse(JSON.stringify($vm.emailTemplateAdd))
@@ -407,6 +409,7 @@ var app = new Vue({
         if ($vm.settings.dataStore.indexOf('editDataSource') > -1 && $vm.settings.dataSourceId) {
           var newHook = {
             widgetInstanceId: widgetId,
+            widgetInstanceUuid: widgetUuid,
             runOn: ['update'],
             type: 'email',
             payload: JSON.parse(JSON.stringify($vm.emailTemplateEdit))
@@ -525,6 +528,7 @@ var app = new Vue({
 
           ds.hooks.push({
             widgetInstanceId: widgetId,
+            widgetInstanceUuid: widgetUuid,
             type: 'operations',
             runOn: ['beforeSave', 'beforeQuery'],
             payload: payload
