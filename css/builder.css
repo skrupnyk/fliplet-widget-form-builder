@@ -4,6 +4,10 @@ html {
   overflow: hidden;
 }
 
+html, body {
+  height: 100% !important; /* ensures the fields accordion works on the CLI */
+}
+
 .loading-message {
   display: none;
   padding-top: 25%;

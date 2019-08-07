@@ -64,9 +64,9 @@ Fliplet.FormBuilder.field('image', {
   methods: {
     removeImage: function(index) {
       var $vm = this;
-  
+
       $vm.value.splice(index, 1);
-  
+
       $vm.value.forEach(function (image, index) {
         addThumbnailToCanvas(image, index, $vm);
       });
@@ -88,6 +88,15 @@ Fliplet.FormBuilder.field('image', {
         $(this.$refs.imageInput).parents('.form-group').addClass('has-error');
 
         return Promise.reject('Please fill in required fields.');
+      }
+    },
+    validateValue: function () {
+      if (typeof this.value === 'string' && this.value) {
+        this.value = [this.value];
+      }
+
+      if (!Array.isArray(this.value)) {
+        this.value = [];
       }
     },
     requestPicture: function(fileInput) {
@@ -162,6 +171,8 @@ Fliplet.FormBuilder.field('image', {
       var $vm = this;
       var mimeType = file.type || 'image/png';
 
+      this.validateValue();
+
       loadImage.parseMetaData(file, function (data) {
         var options = {
           canvas: true,
@@ -176,7 +187,7 @@ Fliplet.FormBuilder.field('image', {
              return;
           }
           $vm.hasCorruptedImage = false;
-          
+
           var scaledImage = loadImage.scale(img, options);
           var imgBase64Url = scaledImage.toDataURL(mimeType, $vm.jpegQuality);
 
@@ -217,6 +228,8 @@ Fliplet.FormBuilder.field('image', {
         });
       }
 
+      this.validateValue();
+
       getPicture.then(function onSelectedPicture(imgBase64Url) {
         imgBase64Url = (imgBase64Url.indexOf('base64') > -1) ?
           imgBase64Url :
@@ -237,7 +250,7 @@ Fliplet.FormBuilder.field('image', {
     },
     drawImagesAfterInit: function() {
       var $vm = this;
-      
+
       $vm.value.forEach(function (image, index) {
         addThumbnailToCanvas(image, index,
           $vm);
