@@ -90,7 +90,7 @@ Fliplet.FormBuilder.field('image', {
         return Promise.reject('Please fill in required fields.');
       }
     },
-    ensureValue: function () {
+    validateValue: function () {
       if (typeof this.value === 'string' && this.value) {
         this.value = [this.value];
       }
@@ -171,7 +171,7 @@ Fliplet.FormBuilder.field('image', {
       var $vm = this;
       var mimeType = file.type || 'image/png';
 
-      this.ensureValue();
+      this.validateValue();
 
       loadImage.parseMetaData(file, function (data) {
         var options = {
@@ -228,7 +228,7 @@ Fliplet.FormBuilder.field('image', {
         });
       }
 
-      this.ensureValue();
+      this.validateValue();
 
       getPicture.then(function onSelectedPicture(imgBase64Url) {
         imgBase64Url = (imgBase64Url.indexOf('base64') > -1) ?

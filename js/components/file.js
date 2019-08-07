@@ -63,7 +63,7 @@ Fliplet.FormBuilder.field('file', {
 
       $vm.$emit('_input', $vm.name, $vm.value);
     },
-    ensureValue: function () {
+    validateValue: function () {
       if (typeof this.value === 'string' && this.value) {
         this.value = [this.value];
       }
@@ -101,7 +101,7 @@ Fliplet.FormBuilder.field('file', {
     removeFile: function(index) {
       var $vm = this;
 
-      this.ensureValue();
+      this.validateValue();
 
       $vm.value.splice(index, 1);
 
@@ -117,7 +117,7 @@ Fliplet.FormBuilder.field('file', {
       var $vm = this;
       var files = $vm.$refs.fileInput.files;
 
-      this.ensureValue();
+      this.validateValue();
 
       for (var i = 0; i < files.length; i++) {
         var file = files.item(i);
