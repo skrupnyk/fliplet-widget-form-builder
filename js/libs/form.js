@@ -471,6 +471,13 @@ Fliplet.Widget.instance('form-builder', function(data) {
           $vm.isSent = true;
           $vm.isSending = false;
           $vm.reset(false);
+          /**
+           * When we try to submit a form in Edge or IE11 and use components date picker and rich text
+           * (only in this sequence) we could saw that rich text textarea become empty but there was no 
+           * message that we successfully submited the form. That was because Vue wasn't updating view.
+           * $forceUpdate solve this issue. 
+           */
+          $vm.$forceUpdate();
 
           $vm.loadEntryForUpdate();
         }, function(err) {
