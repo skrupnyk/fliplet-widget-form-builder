@@ -9,7 +9,7 @@ function drawImageOnCanvas(img, canvas) {
   var canvasHeight = canvas.height;
   var canvasRatio = canvasWidth / canvasHeight;
   var context = canvas.getContext('2d');
-  
+
   // Re-interpolate image draw dimensions based to CONTAIN within canvas
   if (imgRatio < canvasRatio) {
     // IMAGE RATIO is slimmer than CANVAS RATIO, i.e. margin on the left & right
@@ -26,36 +26,36 @@ function drawImageOnCanvas(img, canvas) {
       imgHeight = imgWidth / imgRatio;
     }
   }
-  
+
   var drawX = (canvasWidth > imgWidth) ? (canvasWidth - imgWidth) / 2 : 0;
   var drawY = (canvasHeight > imgHeight) ? (canvasHeight - imgHeight) / 2 : 0;
-  
+
   context.drawImage(img, drawX, drawY, imgWidth, imgHeight);
 }
 
 function addThumbnailToCanvas(imageURI, indexCanvas, self, isFileCanvas) {
   var $vm = self;
-  
+
   if (!imageURI.match(/^http/)) {
     imageURI = (imageURI.indexOf('base64') > -1)
       ? imageURI
       :'data:image/jpeg;base64,' + imageURI;
   }
-  
+
   $vm.$nextTick(function () {
     var canvas = isFileCanvas ? $vm.$refs.canvasWrap[indexCanvas].children[0].children[0] : this.$refs.canvas[indexCanvas];
     var context = canvas.getContext('2d');
-    
+
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
     context.clearRect(0, 0, canvas.width, canvas.height);
-    
+
     var img = new Image();
-    
+
     img.onload = function imageLoadedFromURI() {
       drawImageOnCanvas(this, canvas);
     };
-    
+
     img.src = imageURI;
   });
 }
@@ -419,14 +419,16 @@ Fliplet.Widget.instance('form-builder', function(data) {
           if (entryId && entry && data.dataSourceId) {
             return connection.update(entryId, formData, {
               offline: false,
-              ack: data.linkAction && data.redirect
+              ack: data.linkAction && data.redirect,
+              widgetInstanceUuid: data.uuid
             });
           }
 
           if (data.dataStore && data.dataStore.indexOf('dataSource') > -1 && data.dataSourceId) {
             return connection.insert(formData, {
               offline: data.offline,
-              ack: data.linkAction && data.redirect
+              ack: data.linkAction && data.redirect,
+              widgetInstanceUuid: data.uuid
             });
           }
 
