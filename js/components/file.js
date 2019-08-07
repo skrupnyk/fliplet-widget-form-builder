@@ -57,22 +57,31 @@ Fliplet.FormBuilder.field('file', {
     },
     onReset: function() {
       var $vm = this;
-      
+
       $vm.value = [];
       $vm.selectedFileName = '';
-      
+
       $vm.$emit('_input', $vm.name, $vm.value);
+    },
+    ensureValue: function () {
+      if (typeof this.value === 'string' && this.value) {
+        this.value = [this.value];
+      }
+
+      if (!Array.isArray(this.value)) {
+        this.value = [];
+      }
     },
     processImage: function(file, isAddElem, index) {
       var $vm = this;
       var mimeType = file.type || 'image/png';
-      
+
       loadImage.parseMetaData(file, function(data) {
         loadImage(
           file,
           function(img) {
             var imgBase64Url = img.toDataURL(mimeType, $vm.jpegQuality);
-            
+
             if (isAddElem) {
               $vm.value.push(file);
               addThumbnailToCanvas(imgBase64Url, $vm.value.length - 1, $vm, true);
@@ -91,31 +100,35 @@ Fliplet.FormBuilder.field('file', {
     },
     removeFile: function(index) {
       var $vm = this;
-      
+
+      this.ensureValue();
+
       $vm.value.splice(index, 1);
-      
+
       $vm.value.forEach(function (file, index) {
         if ($vm.isFileImage(file)) {
           $vm.processImage(file, false, index);
         }
       });
-      
+
       $vm.$emit('_input', $vm.name, $vm.value);
     },
     updateValue: function() {
       var $vm = this;
       var files = $vm.$refs.fileInput.files;
-      
+
+      this.ensureValue();
+
       for (var i = 0; i < files.length; i++) {
         var file = files.item(i);
-        
+
         if ($vm.isFileImage(file)) {
           this.processImage(file, true);
         } else {
           $vm.value.push(file);
         }
       }
-      
+
       $vm.$emit('_input', $vm.name, $vm.value);
     }
   }
