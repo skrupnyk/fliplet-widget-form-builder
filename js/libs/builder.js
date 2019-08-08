@@ -429,7 +429,7 @@ var app = new Vue({
               // Update hooks 
               hooks.forEach(function (hook) {
                 hook.payload = payload;
-              })
+              });
             } else {
               // Add new hook
               dataSource.hooks.push({
