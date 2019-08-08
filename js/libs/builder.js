@@ -435,7 +435,8 @@ var app = new Vue({
                 type: 'email',
                 runOn: ['update'],
                 widgetInstanceId: widgetId,
-                payload: payload
+                payload: payload,
+                triggers: [widgetUuid]
               });
             }
 
@@ -543,7 +544,8 @@ var app = new Vue({
             widgetInstanceId: widgetId,
             type: 'operations',
             runOn: ['beforeSave', 'beforeQuery'],
-            payload: payload
+            payload: payload,
+            triggers: [widgetUuid]
           });
         } else if (!hooksDeleted) {
           if (_.isEqual(columns.sort(), ds.columns.sort())) {
