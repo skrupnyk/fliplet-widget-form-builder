@@ -420,7 +420,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
             return connection.update(entryId, formData, {
               offline: false,
               ack: data.linkAction && data.redirect,
-              widgetInstanceUuid: data.uuid
+              source: data.uuid
             });
           }
 
@@ -428,7 +428,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
             return connection.insert(formData, {
               offline: data.offline,
               ack: data.linkAction && data.redirect,
-              widgetInstanceUuid: data.uuid
+              source: data.uuid
             });
           }
 
