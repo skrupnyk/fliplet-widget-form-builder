@@ -345,24 +345,32 @@ var app = new Vue({
         var operation;
 
         if ($vm.settings.dataStore.indexOf('dataSource') > -1 && $vm.settings.dataSourceId) {
-          var newHook = {
-            widgetInstanceId: widgetId,
-            widgetInstanceUuid: widgetUuid,
-            runOn: ['insert'],
-            type: 'email',
-            payload: JSON.parse(JSON.stringify($vm.emailTemplateAdd))
-          };
+          var payload = JSON.parse(JSON.stringify($vm.emailTemplateAdd));
 
           operation = Fliplet.DataSources.getById($vm.settings.dataSourceId).then(function(dataSource) {
-            // Remove old hook
-            dataSource.hooks = _.reject(dataSource.hooks, {
+            
+            // Find hooks to update
+            var hooks = _.filter(dataSource.hooks, {
               type: 'email',
               runOn: ['insert'],
               widgetInstanceId: widgetId
             });
 
-            // Add new hook
-            dataSource.hooks.push(newHook);
+            if (hooks.length) {
+              // Update hooks 
+              hooks.forEach(function (hook) {
+                hook.payload = payload;
+              })
+            } else {
+              // Add new hook
+              dataSource.hooks.push({
+                type: 'email',
+                runOn: ['insert'],
+                widgetInstanceId: widgetId,
+                payload: payload,
+                triggers: [widgetUuid]
+              });
+            }
 
             return Fliplet.DataSources.update($vm.settings.dataSourceId, {
               hooks: dataSource.hooks
@@ -407,24 +415,31 @@ var app = new Vue({
         var operation;
 
         if ($vm.settings.dataStore.indexOf('editDataSource') > -1 && $vm.settings.dataSourceId) {
-          var newHook = {
-            widgetInstanceId: widgetId,
-            widgetInstanceUuid: widgetUuid,
-            runOn: ['update'],
-            type: 'email',
-            payload: JSON.parse(JSON.stringify($vm.emailTemplateEdit))
-          };
+          var payload = JSON.parse(JSON.stringify($vm.emailTemplateEdit));
 
           operation = Fliplet.DataSources.getById($vm.settings.dataSourceId).then(function(dataSource) {
-            // Remove old hook
-            dataSource.hooks = _.reject(dataSource.hooks, {
+            // Find hooks to update
+            var hooks = _.filter(dataSource.hooks, {
               type: 'email',
               runOn: ['update'],
               widgetInstanceId: widgetId
             });
 
-            // Add new hook
-            dataSource.hooks.push(newHook);
+            if (hooks.length) {
+              // Update hooks 
+              hooks.forEach(function (hook) {
+                hook.payload = payload;
+              });
+            } else {
+              // Add new hook
+              dataSource.hooks.push({
+                type: 'email',
+                runOn: ['update'],
+                widgetInstanceId: widgetId,
+                payload: payload,
+                triggers: [widgetUuid]
+              });
+            }
 
             return Fliplet.DataSources.update($vm.settings.dataSourceId, {
               hooks: dataSource.hooks
@@ -528,7 +543,6 @@ var app = new Vue({
 
           ds.hooks.push({
             widgetInstanceId: widgetId,
-            widgetInstanceUuid: widgetUuid,
             type: 'operations',
             runOn: ['beforeSave', 'beforeQuery'],
             payload: payload
