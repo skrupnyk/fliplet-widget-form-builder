@@ -8,11 +8,10 @@ Fliplet.FormBuilder.field('signature', {
     height: {
       type: Number,
       default: 150
-    },
-    previousClientWidth: {
-      type: Number,
-      default: 0
     }
+  },
+  data: {
+    previousClientWidth: 0
   },
   validations: function () {
     var rules = {
@@ -50,7 +49,7 @@ Fliplet.FormBuilder.field('signature', {
 
     Fliplet.FormBuilder.on('reset', this.onReset);
     Fliplet.Hooks.on('beforeFormSubmit', this.onBeforeSubmit);
-    
+
     $(window).on('resize', this.onResize);
     this.onResize();
   },
@@ -62,7 +61,7 @@ Fliplet.FormBuilder.field('signature', {
   methods: {
     onResize: function() {
       var canvas = this.$refs.canvas;
-      
+
       if (this.previousClientWidth !== canvas.clientWidth) {
         canvas.width = canvas.clientWidth;
         canvas.height = canvas.clientHeight;
