@@ -37,26 +37,99 @@ Fliplet.FormBuilder.field('file', {
   },
   computed: {
     selectedFileName: function() {
-      return _.map(this.selectedFiles, 'name').join(', ');
+      return _.map(this.value, 'name').join(', ');
     }
+  },
+  created: function() {
+    Fliplet.FormBuilder.on('reset', this.onReset);
+  },
+  destroyed: function() {
+    Fliplet.FormBuilder.off('reset', this.onReset);
   },
   destroyed: function() {
     this.selectedFiles.length = 0;
   },
   methods: {
-    updateValue: function() {
+    isFileImage: function(file) {
+      if (file && file.type) {
+        return (file.type.indexOf('image') >= 0);
+      }
+    },
+    onReset: function() {
       var $vm = this;
 
-      this.selectedFiles.splice(0, this.selectedFiles.length);
+      $vm.value = [];
+      $vm.selectedFileName = '';
 
-      var operations = [];
-
-      for (var i = 0; i < this.$refs.fileInput.files.length; i++) {
-        var file = this.$refs.fileInput.files.item(i);
-        this.selectedFiles.push(file);
+      $vm.$emit('_input', $vm.name, $vm.value);
+    },
+    validateValue: function () {
+      if (typeof this.value === 'string' && this.value) {
+        this.value = [this.value];
       }
 
-      $vm.$emit('_input', $vm.name, this.selectedFiles);
+      if (!Array.isArray(this.value)) {
+        this.value = [];
+      }
+    },
+    processImage: function(file, isAddElem, index) {
+      var $vm = this;
+      var mimeType = file.type || 'image/png';
+
+      loadImage.parseMetaData(file, function(data) {
+        loadImage(
+          file,
+          function(img) {
+            var imgBase64Url = img.toDataURL(mimeType, $vm.jpegQuality);
+
+            if (isAddElem) {
+              $vm.value.push(file);
+              addThumbnailToCanvas(imgBase64Url, $vm.value.length - 1, $vm, true);
+              $vm.$emit('_input', $vm.name, $vm.value);
+            } else {
+              addThumbnailToCanvas(imgBase64Url, index, $vm, true);
+            }
+          }, {
+            canvas: true,
+            maxWidth: $vm.customWidth,
+            maxHeight: $vm.customHeight,
+            orientation: data.exif ?
+              data.exif.get('Orientation') : true
+          });
+      });
+    },
+    removeFile: function(index) {
+      var $vm = this;
+
+      this.validateValue();
+
+      $vm.value.splice(index, 1);
+
+      $vm.value.forEach(function (file, index) {
+        if ($vm.isFileImage(file)) {
+          $vm.processImage(file, false, index);
+        }
+      });
+
+      $vm.$emit('_input', $vm.name, $vm.value);
+    },
+    updateValue: function() {
+      var $vm = this;
+      var files = $vm.$refs.fileInput.files;
+
+      this.validateValue();
+
+      for (var i = 0; i < files.length; i++) {
+        var file = files.item(i);
+
+        if ($vm.isFileImage(file)) {
+          this.processImage(file, true);
+        } else {
+          $vm.value.push(file);
+        }
+      }
+
+      $vm.$emit('_input', $vm.name, $vm.value);
     }
   }
 });

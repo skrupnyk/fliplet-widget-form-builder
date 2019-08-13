@@ -1,6 +1,6 @@
 <div class="fileUpload">
   <div class="row">
-    <div class="col-xs-4 col-sm-3" v-for="(image, index) in value">
+    <div v-for="(image, index) in value">
       <div class="canvas-holder">
         <canvas ref="canvas"></canvas>
         <button class="canvas-remove" type="button" v-on:click="removeImage(index)"></button>

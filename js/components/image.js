@@ -53,11 +53,10 @@ Fliplet.FormBuilder.field('image', {
     Fliplet.Hooks.on('beforeFormSubmit', this.onBeforeSubmit);
   },
   mounted: function () {
-    var $vm = this;
-
-    $vm.value.forEach(function (image, index) {
-      $vm.addThumbnailToCanvas(image, index);
-    });
+     this.drawImagesAfterInit();
+  },
+  updated:function () {
+    this.drawImagesAfterInit();
   },
   destroyed: function() {
     Fliplet.FormBuilder.off('reset', this.onReset);
@@ -69,7 +68,7 @@ Fliplet.FormBuilder.field('image', {
       $vm.value.splice(index, 1);
 
       $vm.value.forEach(function (image, index) {
-        $vm.addThumbnailToCanvas(image, index);
+        addThumbnailToCanvas(image, index, $vm);
       });
 
       $vm.$emit('_input', $vm.name, $vm.value);
@@ -89,6 +88,15 @@ Fliplet.FormBuilder.field('image', {
         $(this.$refs.imageInput).parents('.form-group').addClass('has-error');
 
         return Promise.reject('Please fill in required fields.');
+      }
+    },
+    validateValue: function () {
+      if (typeof this.value === 'string' && this.value) {
+        this.value = [this.value];
+      }
+
+      if (!Array.isArray(this.value)) {
+        this.value = [];
       }
     },
     requestPicture: function(fileInput) {
@@ -163,6 +171,8 @@ Fliplet.FormBuilder.field('image', {
       var $vm = this;
       var mimeType = file.type || 'image/png';
 
+      this.validateValue();
+
       loadImage.parseMetaData(file, function (data) {
         var options = {
           canvas: true,
@@ -177,14 +187,14 @@ Fliplet.FormBuilder.field('image', {
              return;
           }
           $vm.hasCorruptedImage = false;
-          
+
           var scaledImage = loadImage.scale(img, options);
           var imgBase64Url = scaledImage.toDataURL(mimeType, $vm.jpegQuality);
 
           $vm.value.push(imgBase64Url);
 
           if (addThumbnail) {
-            $vm.addThumbnailToCanvas(imgBase64Url, $vm.value.length - 1);
+            addThumbnailToCanvas(imgBase64Url, $vm.value.length - 1, $vm);
           }
 
           $vm.$emit('_input', $vm.name, $vm.value);
@@ -218,12 +228,14 @@ Fliplet.FormBuilder.field('image', {
         });
       }
 
+      this.validateValue();
+
       getPicture.then(function onSelectedPicture(imgBase64Url) {
         imgBase64Url = (imgBase64Url.indexOf('base64') > -1) ?
           imgBase64Url :
           'data:image/jpeg;base64,' + imgBase64Url;
         $vm.value.push(imgBase64Url);
-        $vm.addThumbnailToCanvas(imgBase64Url, $vm.value.length - 1);
+        addThumbnailToCanvas(imgBase64Url, $vm.value.length - 1, $vm);
         $vm.$emit('_input', $vm.name, $vm.value);
       }).catch(function(error) {
         console.error(error);
@@ -236,61 +248,12 @@ Fliplet.FormBuilder.field('image', {
         this.processImage(files.item(i), true);
       }
     },
-    drawImageOnCanvas: function(img, canvas) {
-      var imgWidth = img.width;
-      var imgHeight = img.height;
-      var imgRatio = imgWidth / imgHeight;
-      var canvasWidth = canvas.width;
-      var canvasHeight = canvas.height;
-      var canvasRatio = canvasWidth / canvasHeight;
-      var context = canvas.getContext('2d');
-
-      // Re-interpolate image draw dimensions based to CONTAIN within canvas
-      if (imgRatio < canvasRatio) {
-        // IMAGE RATIO is slimmer than CANVAS RATIO, i.e. margin on the left & right
-        if (imgHeight > canvasHeight) {
-          // Image is taller. Resize image to fit height in canvas first.
-          imgHeight = canvasHeight;
-          imgWidth = imgHeight * imgRatio;
-        }
-      } else {
-        // IMAGE RATIO is wider than CANVAS RATIO, i.e. margin on the top & bottom
-        if (imgWidth > canvasWidth) {
-          // Image is wider. Resize image to fit width in canvas first.
-          imgWidth = canvasWidth;
-          imgHeight = imgWidth / imgRatio;
-        }
-      }
-
-      var drawX = (canvasWidth > imgWidth) ? (canvasWidth - imgWidth) / 2 : 0;
-      var drawY = (canvasHeight > imgHeight) ? (canvasHeight - imgHeight) / 2 : 0;
-
-      context.drawImage(img, drawX, drawY, imgWidth, imgHeight);
-    },
-    addThumbnailToCanvas: function(imageURI, indexCanvas) {
+    drawImagesAfterInit: function() {
       var $vm = this;
 
-      if (!imageURI.match(/^http/)) {
-        imageURI = (imageURI.indexOf('base64') > -1)
-          ? imageURI
-          :'data:image/jpeg;base64,' + imageURI;
-      }
-
-      $vm.$nextTick(function () {
-        var canvas = this.$refs.canvas[indexCanvas];
-        var context = canvas.getContext('2d');
-
-        canvas.width = canvas.clientWidth;
-        canvas.height = canvas.clientHeight;
-        context.clearRect(0, 0, canvas.width, canvas.height);
-
-        var img = new Image();
-
-        img.onload = function imageLoadedFromURI() {
-          $vm.drawImageOnCanvas(this, canvas);
-        };
-
-        img.src = imageURI;
+      $vm.value.forEach(function (image, index) {
+        addThumbnailToCanvas(image, index,
+          $vm);
       });
     }
   }

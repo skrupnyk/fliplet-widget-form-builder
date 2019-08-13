@@ -525,7 +525,7 @@ html[dir="rtl"] .radio.radio-icon input[type="radio"] + label > span.check {
 }
 
 .fileUpload span {
-  padding-right: 10px;
+    padding-right: 10px;
 }
 
 .fileUpload .canvas-holder {
@@ -533,18 +533,29 @@ html[dir="rtl"] .radio.radio-icon input[type="radio"] + label > span.check {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 82px;
   padding: 5px 10px;
   background: rgba(255,255,255,0.5);
   border: 1px solid rgba(0,0,0,0.3);
   border-radius: 3px;
 }
 
+.fileUpload.file-input .canvas-holder {
+  min-height: calc(100% - 30px);
+  margin-bottom: 10px;
+}
+
 .fileUpload .row {
+  display: flex;
+  flex-wrap: wrap;
   margin: 0;
 }
 
 .fileUpload .row > div {
+  padding: 0 15px;
+  margin: 0 -1px;
   margin-bottom: 15px;
+  width: 33.333%;
 }
 
 .fileUpload .canvas-holder .badge {
@@ -596,7 +607,7 @@ html[dir="rtl"] .radio.radio-icon input[type="radio"] + label > span.check {
   position: relative;
 }
 
-.fileUpload .fa {
+.fileUpload .fa:not(.fa-file)  {
   display: block;
   position: absolute;
   width: 20px;
@@ -615,6 +626,18 @@ html[dir="rtl"] .radio.radio-icon input[type="radio"] + label > span.check {
   width: 1px;
   height: 1px;
   pointer-events: none;
+}
+
+.fileUpload .file-icon {
+  font-size: 40px;
+}
+
+.fileUpload .file-name {
+  display: block;
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .file-thumbnail-helper {
@@ -643,6 +666,14 @@ html[dir="rtl"] .radio.radio-icon input[type="radio"] + label > span.check {
   .file-name-helper {
     margin-top: 0;
     display: inline-block;
+  }
+
+  .fileUpload .canvas-holder {
+    min-height: 130px;
+  }
+
+  .fileUpload .row > div {
+    width: 25%;
   }
 }
 
