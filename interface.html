@@ -201,7 +201,7 @@
                       <div v-if="settings.dataSourceId" class="checkbox checkbox-icon">
                         <input type="checkbox" id="templated_email_add" name="whenSubmitted" v-model="settings.onSubmit" value="templatedEmailAdd">
                         <label for="templated_email_add">
-                          <span class="check"><i class="fa fa-check"></i></span> Yes, please <span v-show="toggleTemplatedEmailAdd">[<a href="#" v-on:click.prevent="configureEmailTemplateAdd">Configure email template]</a></span>
+                          <span class="check"><i class="fa fa-check"></i></span> Yes, please <span v-show="toggleTemplatedEmailAdd">[<a href="#" v-on:click.prevent="configureEmailTemplateAdd">Configure email template</a>]</span>
                         </label>
                       </div>
                       <div v-else>
@@ -228,7 +228,7 @@
                       <div v-if="settings.dataSourceId" class="checkbox checkbox-icon">
                         <input type="checkbox" id="templated_email_edit" name="whenSubmitted" v-model="settings.onSubmit" value="templatedEmailEdit">
                         <label for="templated_email_edit">
-                          <span class="check"><i class="fa fa-check"></i></span> Yes, please <span v-show="toggleTemplatedEmailEdit">[<a href="#" v-on:click.prevent="configureEmailTemplateEdit">Configure email template]</a></span>
+                          <span class="check"><i class="fa fa-check"></i></span> Yes, please <span v-show="toggleTemplatedEmailEdit">[<a href="#" v-on:click.prevent="configureEmailTemplateEdit">Configure email template</a>]</span>
                         </label>
                       </div>
                       <div v-else>
@@ -259,7 +259,7 @@
                 <div class="checkbox checkbox-icon">
                   <input type="checkbox" id="generate_email" name="whenSubmitted" v-model="settings.onSubmit" value="generateEmail">
                   <label for="generate_email">
-                    <span class="check"><i class="fa fa-check"></i></span> Yes, please! <span v-show="toggleGenerateEmail">[<a href="#" v-on:click.prevent="configureEmailTemplateForCompose">Configure email template]</a></span>
+                    <span class="check"><i class="fa fa-check"></i></span> Yes, please! <span v-show="toggleGenerateEmail">[<a href="#" v-on:click.prevent="configureEmailTemplateForCompose">Configure email template</a>]</span>
                   </label>
                 </div>
               </div>
