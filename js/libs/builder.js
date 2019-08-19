@@ -798,6 +798,7 @@ var app = new Vue({
     'section': function(value) {
       var $vm = this;
       if (value === 'settings') {
+        $vm.setupCodeEditor();
         changeSelectText();
       }
     },
@@ -1038,8 +1039,6 @@ var app = new Vue({
     Fliplet.User.fetch().then(function(user) {
       $vm.userData = user;
     });
-
-    $vm.setupCodeEditor();
   },
   updated: function() {
     var $vm = this;
