@@ -62,7 +62,8 @@ Fliplet.FormBuilder.field('wysiwyg', {
       },
       plugins: [
         'advlist autolink lists link directionality',
-        'autoresize fullscreen code paste'
+        'autoresize fullscreen code paste',
+        'placeholder'
       ].join(' '),
       toolbar: [
         'bold italic underline',
