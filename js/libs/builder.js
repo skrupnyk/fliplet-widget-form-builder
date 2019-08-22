@@ -800,6 +800,8 @@ var app = new Vue({
       if (value === 'settings') {
         $vm.setupCodeEditor();
         changeSelectText();
+      } else {
+        tinymce.remove();
       }
     },
     'settings.dataStore': function(value) {
