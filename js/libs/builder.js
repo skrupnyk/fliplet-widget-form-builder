@@ -179,9 +179,19 @@ var app = new Vue({
         });
       }
     },
-    deleteField: function(index) {
-      $vm = this;
-      Fliplet.Modal.confirm({ message: 'Are you sure you want to delete field?'}).then(function (result) {
+    deleteField: function(fieldLabel, index) {
+      var $vm = this;
+
+      Fliplet.Modal.confirm({
+        message: '<p>Are you sure you want to delete the following field?</p><p><strong>' + fieldLabel + '</strong></p>',
+        buttons: {
+          confirm: {
+            label: 'Delete field',
+            className: 'btn-danger'
+          }
+        },
+        size: 'small'
+      }).then(function (result) {
         if (result) {
           $vm.fields.splice(index, 1);
           $vm.activeFieldConfigType = null;

@@ -11,6 +11,7 @@ var systemTemplates = [{
         {
           _type: 'flButtons',
           name: 'buttons',
+          label: 'Form buttons',
           _submit: false
         }
       ]
@@ -51,6 +52,7 @@ var systemTemplates = [{
         {
           _type: 'flButtons',
           name: 'buttons',
+          label: 'Form buttons',
           _submit: false
         }
       ]
