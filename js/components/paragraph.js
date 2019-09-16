@@ -15,7 +15,7 @@ Fliplet.FormBuilder.field('paragraph', {
   },
   computed: {
     htmlValue: function() {
-      return this.value.replace(/\r?\n/g, '<br />');
+      return this.value;
     }
   }
 });
