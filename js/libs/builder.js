@@ -179,12 +179,24 @@ var app = new Vue({
         });
       }
     },
-    deleteField: function(index) {
-      var confirmDelete = confirm("Are you sure you want to delete field?");
-      if (confirmDelete) {
-        this.fields.splice(index, 1);
-        this.activeFieldConfigType = null;
-      }
+    deleteField: function(fieldLabel, index) {
+      var $vm = this;
+
+      Fliplet.Modal.confirm({
+        message: '<p>Are you sure you want to delete the following field?</p><p><strong>' + fieldLabel + '</strong></p>',
+        buttons: {
+          confirm: {
+            label: 'Delete field',
+            className: 'btn-danger'
+          }
+        },
+        size: 'small'
+      }).then(function (result) {
+        if (result) {
+          $vm.fields.splice(index, 1);
+          $vm.activeFieldConfigType = null;
+        }
+      });
     },
     onFieldClick: function(field) {
       this.activeFieldConfigType = field._type.toString() + 'Config';
@@ -348,7 +360,7 @@ var app = new Vue({
           var payload = JSON.parse(JSON.stringify($vm.emailTemplateAdd));
 
           operation = Fliplet.DataSources.getById($vm.settings.dataSourceId).then(function(dataSource) {
-            
+
             // Find hooks to update
             var hooks = _.filter(dataSource.hooks, {
               type: 'email',
@@ -357,7 +369,7 @@ var app = new Vue({
             });
 
             if (hooks.length) {
-              // Update hooks 
+              // Update hooks
               hooks.forEach(function (hook) {
                 hook.payload = payload;
               })
@@ -426,7 +438,7 @@ var app = new Vue({
             });
 
             if (hooks.length) {
-              // Update hooks 
+              // Update hooks
               hooks.forEach(function (hook) {
                 hook.payload = payload;
               });
