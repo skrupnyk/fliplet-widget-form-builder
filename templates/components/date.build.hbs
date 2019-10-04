@@ -3,14 +3,15 @@
     <i class="fa fa-calendar"></i>
   </div>
 
-  <input 
-  	type="text"
-  	v-model.lazy="value"
-  	v-on:change="updateValue()"
-  	:name="name"
-  	:id="name"
-  	:placeholder="placeholder"
-  	class="date-picker form-control"
+  <input
+    type="text"
+    v-model.lazy="value"
+    v-on:change="updateValue()"
+    v-on:input="saveProgress"
+    :name="name"
+    :id="name"
+    :placeholder="placeholder"
+    class="date-picker form-control"
   />
 </div>
 <div v-else class="input-group native-date">
