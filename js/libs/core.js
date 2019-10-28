@@ -86,7 +86,11 @@ Fliplet.FormBuilder = (function() {
             $($vm.$el).removeClass('has-error');
           }
         }
-      }
+      };
+
+      component.methods.onInput = _.debounce(function($event) {
+        this.$emit('_input', this.name, $event.target.value);
+      }, 200);
 
       // Define method to trigger the form reset from a children
       if (!component.methods.resetForm) {
@@ -162,7 +166,7 @@ Fliplet.FormBuilder = (function() {
         if (this.name === '') {
           this.name = this.label;
         }
-        
+
         if (this._fieldNameError) {
           return;
         }
@@ -203,7 +207,7 @@ Fliplet.FormBuilder = (function() {
         type: Boolean,
         default: false
       };
-  
+
       component.props._showNameField = {
         type: Boolean,
         default: false
@@ -224,49 +228,49 @@ Fliplet.FormBuilder = (function() {
 
         return '';
       };
-  
+
       component.computed._fieldLabelError = function() {
         if (!this.label) {
           return 'Please provide a Field name & label';
         }
-    
+
         var existing = _.findIndex(this._fields, {
           name: this.name
         });
-    
+
         if (existing > -1 && existing !== this._idx) {
           return this.name + ' is taken. Please use another Field Name.';
         }
-    
+
         return '';
       };
-  
+
       component.methods._addCustomName = function() {
         this._showNameField = !this._showNameField;
         this.name = this.label;
         this.initTooltip();
       };
-  
+
       if (!component.methods.addCustomName) {
         component.methods.addCustomName = component.methods._addCustomName;
       }
-  
+
       component.methods._initTooltip = function() {
         var $vm = this;
-        
+
         $vm.$nextTick(function () {
           var tooltip = $vm.$refs.tooltip;
-  
+
           if (tooltip) {
             $(tooltip).tooltip();
           }
         });
       };
-  
+
       if (!component.methods.initTooltip) {
         component.methods.initTooltip = component.methods._initTooltip;
       }
-      
+
       component.methods._openFilePicker = function() {
         var $vm = this;
 
