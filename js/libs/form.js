@@ -703,7 +703,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
                     value = '';
                   }
 
-                  const hasChanged = field.value !== value;
+                  var hasChanged = field.value !== value;
 
                   field.value = value;
                   debouncedUpdate();
