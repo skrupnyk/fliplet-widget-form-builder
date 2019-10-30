@@ -644,8 +644,14 @@ Fliplet.Widget.instance('form-builder', function(data) {
                   return field.value;
                 }
 
+                const hasChanged = field.value !== value;
+                
                 field.value = value;
                 debouncedUpdate();
+
+                if (hasChanged) {
+                  $form.triggerChange(field.name, field.value);
+                }
               },
               set: function (data) {
                 var result;
