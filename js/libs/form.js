@@ -703,8 +703,14 @@ Fliplet.Widget.instance('form-builder', function(data) {
                     value = '';
                   }
 
+                  var hasChanged = field.value !== value;
+
                   field.value = value;
                   debouncedUpdate();
+
+                  if (hasChanged) {
+                    $form.triggerChange(field.name, field.value);
+                  }
                 });
               },
               get: function() {
