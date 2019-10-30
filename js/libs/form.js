@@ -726,6 +726,10 @@ Fliplet.Widget.instance('form-builder', function(data) {
                 }
               },
               options: function (values) {
+                if (typeof values === 'undefined') {
+                  return field.options;
+                }
+
                 if (!Array.isArray(values)) {
                   throw new Error('Options must be an array');
                 }
@@ -747,7 +751,8 @@ Fliplet.Widget.instance('form-builder', function(data) {
 
                 // Update live field
                 field.options = options;
-              }
+              },
+              instance: field
             };
           }
         });
