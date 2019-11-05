@@ -168,12 +168,13 @@ var app = new Vue({
         });
 
         var index = fieldsWithSameName.length;
+        var defaultName = component.name + (index ? '-' + index : '');
 
         return this.fields.splice(event.newIndex, 0, {
           _type: componentName,
           _submit: typeof component.submit !== 'undefined' ? component.submit : true,
-          name: component.name + (index ? '-' + index : ''),
-          label: component.name + (index ? '-' + index : ''),
+          name: defaultName,
+          label: defaultName,
           value: value.default || value.type()
         });
       }
