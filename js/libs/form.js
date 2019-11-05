@@ -522,7 +522,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
             record.data = _.omitBy(record.data, function (value) {
               return _.isNil(value)
                 || (_.isObject(value) && _.isEmpty(value))
-                || _.isString(value) && !value.length;
+                || (_.isString(value) && !value.length);
             });
             entry = record;
 
