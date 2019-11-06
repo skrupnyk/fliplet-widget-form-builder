@@ -163,11 +163,7 @@ Fliplet.FormBuilder = (function() {
 
       // On submit event
       component.methods._onSubmit = function() {
-        if (this.name === '') {
-          this.name = this.label;
-        }
-
-        if (this._fieldNameError) {
+        if (this._fieldNameError || this._fieldLabelError) {
           return;
         }
 
@@ -185,13 +181,6 @@ Fliplet.FormBuilder = (function() {
 
       if (!component.methods.onSubmit) {
         component.methods.onSubmit = component.methods._onSubmit;
-      }
-
-      if (!component.mounted) {
-        component.mounted = function() {
-          this._showNameField = this.name !== this.label;
-          this.initTooltip();
-        };
       }
 
       component.props._fields = {
@@ -231,7 +220,7 @@ Fliplet.FormBuilder = (function() {
 
       component.computed._fieldLabelError = function() {
         if (!this.label) {
-          return 'Please provide a Field name & label';
+          return 'Please provide a Field Label';
         }
 
         var existing = _.findIndex(this._fields, {
@@ -239,7 +228,7 @@ Fliplet.FormBuilder = (function() {
         });
 
         if (existing > -1 && existing !== this._idx) {
-          return this.name + ' is taken. Please use another Field Name.';
+          return this.name + ' is taken. Please use another Field Label.';
         }
 
         return '';
@@ -247,12 +236,20 @@ Fliplet.FormBuilder = (function() {
 
       component.methods._addCustomName = function() {
         this._showNameField = !this._showNameField;
-        this.name = this.label;
         this.initTooltip();
       };
 
       if (!component.methods.addCustomName) {
         component.methods.addCustomName = component.methods._addCustomName;
+      }
+
+      component.methods._compareFieldName = function() {
+        this.name = this.label;
+        this.initTooltip();
+      };
+
+      if (!component.methods.compareFieldName) {
+        component.methods.compareFieldName = component.methods._compareFieldName;
       }
 
       component.methods._initTooltip = function() {
