@@ -757,17 +757,22 @@ Fliplet.Widget.instance('form-builder', function(data) {
                   return { id: option };
                 });
 
-                if (field.value.length && field._type === 'flCheckbox') {
-                  var selectedValues = _.difference(field.value, values);
+                if (!_.isEmpty(field.value)) {
+                  switch (field._type) {
+                    case 'flCheckbox':
+                      var selectedValues = _.difference(field.value, values);
 
-                  field.value = selectedValues.length ? [] : field.value;
+                      field.value = selectedValues.length ? [] : field.value;
+                      break;
+                    case 'flRadio':
+                    case 'flSelect':
+                      var selectedValueInOptions = _.some(values, function(option) {
+                        return option === field.value;
+                      });
 
-                } else if (field.value && (field._type === 'flRadio' || field._type === 'flSelect')) {
-                  var selectedValueInOptions = _.some(values, function(option) {
-                    return option === field.value;
-                  });
-
-                  field.value = selectedValueInOptions ? field.value : '';
+                      field.value = selectedValueInOptions ? field.value : '';
+                      break;
+                  }
                 }
 
                 // Update options in field definition so they are kept between renderings
