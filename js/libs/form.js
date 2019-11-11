@@ -654,6 +654,16 @@ Fliplet.Widget.instance('form-builder', function(data) {
               },
               set: function (data) {
                 var result;
+                
+                if (field._type === 'flCheckbox') {
+                  if (typeof data === 'string') {
+                    data = data.split(',');
+                  }
+
+                  if (_.isArray(data)) {
+                    data = _.uniq(data);
+                  }
+                }
 
                 if (typeof data === 'function') {
                   data = { source: 'function', key: data };
