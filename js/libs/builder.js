@@ -679,10 +679,14 @@ var app = new Vue({
     },
     initLinkProvider: function() {
       var $vm = this;
+      var page = Fliplet.Widget.getPage();
+      var omitPages = page ? [page.id] : [];
+
       var action = $.extend(true, {
         action: 'screen',
         page: '',
         transition: 'slide.left',
+        omitPages: omitPages,
         options: {
           hideAction: true
         }
