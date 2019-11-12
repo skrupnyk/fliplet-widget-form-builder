@@ -769,6 +769,24 @@ Fliplet.Widget.instance('form-builder', function(data) {
                   return { id: option };
                 });
 
+                if (!_.isEmpty(field.value)) {
+                  switch (field._type) {
+                    case 'flCheckbox':
+                      var selectedValues = _.difference(field.value, values);
+
+                      field.value = selectedValues.length ? [] : field.value;
+                      break;
+                    case 'flRadio':
+                    case 'flSelect':
+                      var selectedValueInOptions = _.some(values, function(option) {
+                        return option === field.value;
+                      });
+
+                      field.value = selectedValueInOptions ? field.value : '';
+                      break;
+                  }
+                }
+
                 // Update options in field definition so they are kept between renderings
                 _.find(data.fields, { name: field.name }).options = options;
 
