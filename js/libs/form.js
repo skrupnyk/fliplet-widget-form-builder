@@ -208,7 +208,14 @@ Fliplet.Widget.instance('form-builder', function(data) {
         var $vm = this;
 
         this.fields.forEach(function(field, index) {
-          field.value = data.fields[index].value;
+          var value = data.fields[index].value;
+
+          // Clone value if it's an array to ensure the original object does not mutate
+          if (Array.isArray(value)) {
+            value = value.slice(0);
+          }
+
+          field.value = value;
           $vm.triggerChange(field.name, field.value);
         });
 
