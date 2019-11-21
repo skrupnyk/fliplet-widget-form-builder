@@ -114,31 +114,67 @@ Fliplet.Widget.instance('form-builder', function(data) {
 
     if (fields.length && (data.saveProgress && typeof progress === 'object') || entry) {
       fields.forEach(function(field) {
-        if (entry && entry.data && typeof entry.data[field.name] !== 'undefined' && field.populateOnUpdate !== false) {
-          if (field._type === "flDate") {
-            if (Fliplet.Env.get('platform') === 'web') {
-              field.value = moment(entry.data[field.name]).format('DD MMMM YYYY');
-            } else {
-              field.value = moment(entry.data[field.name]).format('YYYY-MM-DD');
-            }
-          } else if (field._type === "flCheckbox" && !Array.isArray(entry.data[field.name])) {
-            field.value = [];
-          } else if (field._type === 'flImage') {
-            var img = entry.data[field.name];
-            field.value = [];
-            if (Array.isArray(img)) {
-              field.value = img;
-            } else if (typeof img === 'string') {
-              field.value.push(img);
-            }
+        if (entry && entry.data && field.populateOnUpdate !== false) {
+          switch (field._type) {
+            case 'flDate':
+              var regex = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
+              field.value = regex.exec(entry.data[field.name]) ? entry.data[field.name] : moment().get().format('YYYY-MM-DD');
+              break;
 
-            field.value = field.value.map(function (url) {
-              return Fliplet.Media.authenticate(url);
-            });
-          } else if (!field._submit && typeof field._submit !== 'undefined') {
-            field.value = field.value;
-          } else {
-            field.value = entry.data[field.name];
+            case 'flImage':
+            case 'flFile':
+              var img = entry.data[field.name];
+              field.value = [];
+
+              if (Array.isArray(img)) {
+                field.value = img;
+              } else if (typeof img === 'string') {
+                field.value.push(img);
+              }
+    
+              field.value = field.value.map(function(url) {
+                return Fliplet.Media.authenticate(url);
+              });
+              break;
+
+            case (!field._submit && typeof field._submit !== 'undefined' || typeof entry.data[field.name] === 'undefined'):
+              field.value = field.value;
+              break;
+
+            case 'flTime':
+              var regexp = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/;
+
+              if (regexp.exec(entry.data[field.name])) {
+                field.value = entry.data[field.name];
+              } else {
+                field.value = moment().get().format('HH:mm');
+              }
+              break;
+
+            case 'flCheckbox':
+            case 'flRadio':
+            case 'flStarRating':
+              if (Array.isArray(entry.data[field.name]) && entry.data[field.name].length > 0) {
+                var inOptions = [];
+
+                entry.data[field.name].forEach(function(element) {
+                  var inOption = _.find(field.options, function(option) {
+                    return option.label === element
+                  });
+                  if (inOption) {
+                    inOptions.push(inOption);
+                  }
+                });
+                
+                field.value = inOptions.length ? _.uniqWith(entry.data[field.name], _.isEqual) : [];
+              } else {
+                field.value = [];
+              }
+              break;
+
+            default:
+              field.value = entry.data[field.name];
+              break;
           }
 
           return field.value;
