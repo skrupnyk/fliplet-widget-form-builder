@@ -32,5 +32,8 @@ Fliplet.FormBuilder.field('buttons', {
       type: String,
       default: 'reset'
     }
+  },
+  mounted: function() {
+    this.label = this.label || this.name;
   }
 });
