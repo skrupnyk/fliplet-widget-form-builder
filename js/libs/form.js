@@ -612,7 +612,9 @@ Fliplet.Widget.instance('form-builder', function(data) {
 
         function validateCheckboxValue(value) {
           if (typeof value === 'string') {
-            value = value.split(',');
+            value = value.split(',').map(function(value) {
+              return value.trim();
+            });
           }
 
           if (_.isArray(value)) {
