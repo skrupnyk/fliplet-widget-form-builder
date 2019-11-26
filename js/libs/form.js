@@ -163,9 +163,8 @@ Fliplet.Widget.instance('form-builder', function(data) {
                 var inOptions = [];
 
                 entry.data[field.name].forEach(function(element) {
-                  var inOption = _.find(field.options, function(option) {
-                    return option.label === element
-                  });
+                  var inOption = _.find(field.options, { label: element });
+
                   if (inOption) {
                     inOptions.push(inOption);
                   }
