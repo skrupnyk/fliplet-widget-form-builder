@@ -219,10 +219,9 @@ Fliplet.Widget.instance('form-builder', function(data) {
           $vm.triggerChange(field.name, field.value);
         });
 
+        localStorage.removeItem(progressKey);
         Fliplet.FormBuilder.emit('reset');
         this.$emit('reset');
-        
-        $vm.triggerBlurEventOnInputs();
       },
       onError: function (fieldName, error) {
         if (!error) {
@@ -663,7 +662,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
               },
               set: function (data) {
                 var result;
-                
+
                 if (field._type === 'flCheckbox') {
                   if (typeof data === 'string') {
                     data = data.split(',');
