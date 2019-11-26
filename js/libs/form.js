@@ -117,8 +117,13 @@ Fliplet.Widget.instance('form-builder', function(data) {
         if (entry && entry.data && field.populateOnUpdate !== false) {
           switch (field._type) {
             case 'flDate':
-              var regex = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
-              field.value = regex.exec(entry.data[field.name]) ? entry.data[field.name] : moment().get().format('YYYY-MM-DD');
+              var regexDateFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
+              var regexISOFormat = /(\d{4})-(\d{2})-(\d{2})T(\d{2})\:(\d{2})\:(\d{2})[+-](\d{2})\:(\d{2})/;
+              if (regexDateFormat.exec(entry.data[field.name]) || regexISOFormat.exec(entry.data[field.name])) {
+                field.value = moment(entry.data[field.name]).format('YYYY-MM-DD');
+              } else {
+                field.value = moment().get().format('YYYY-MM-DD');
+              }
               break;
 
             case 'flImage':
