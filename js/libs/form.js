@@ -221,7 +221,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
 
         Fliplet.FormBuilder.emit('reset');
         this.$emit('reset');
-        
+
         $vm.triggerBlurEventOnInputs();
       },
       onError: function (fieldName, error) {
@@ -617,6 +617,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
       this.loadEntryForUpdate().then(function () {
         var debouncedUpdate = _.debounce(function () {
           $form.$forceUpdate();
+          $vm.saveProgress();
         }, 10);
 
         // This data is available through "Fliplet.FormBuilder.get()"
@@ -663,7 +664,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
               },
               set: function (data) {
                 var result;
-                
+
                 if (field._type === 'flCheckbox') {
                   if (typeof data === 'string') {
                     data = data.split(',');
