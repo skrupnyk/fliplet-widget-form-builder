@@ -142,10 +142,6 @@ Fliplet.Widget.instance('form-builder', function(data) {
               });
               break;
 
-            case (!field._submit && typeof field._submit !== 'undefined' || typeof entry.data[field.name] === 'undefined'):
-              field.value = field.value;
-              break;
-
             case 'flTime':
               var regexp = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/;
 
@@ -176,6 +172,18 @@ Fliplet.Widget.instance('form-builder', function(data) {
               }
               break;
 
+            case (!field._submit && typeof field._submit !== 'undefined' || typeof entry.data[field.name] === 'undefined'):
+              /**
+               * In case if field._submit is not undefined or we received undefined entry.data[field.name]
+               * for example a user forgot to add any value in his code.
+               * In these cases, we do not change a field value
+               * We moved this `typeof entry.data[field.name] === 'undefined' ` condition to this position 
+               * because when we receive an undefined value in the 
+               * date or time input we should set them to the current date or time.
+              */
+              field.value = field.value;
+              break;
+  
             default:
               field.value = entry.data[field.name];
               break;
