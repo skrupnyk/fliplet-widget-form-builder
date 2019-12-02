@@ -616,6 +616,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
       this.loadEntryForUpdate().then(function () {
         var debouncedUpdate = _.debounce(function () {
           $form.$forceUpdate();
+          $vm.saveProgress();
         }, 10);
 
         // This data is available through "Fliplet.FormBuilder.get()"
