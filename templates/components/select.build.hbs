@@ -4,7 +4,7 @@
           :name="name"
           :id="name"
           v-model="value"
-          v-on:change="changeHandler(value)"
+          v-on:change="updateValue()"
           v-on:input="onInput($event)">
     <option v-if="placeholder" value="">\{{ placeholder }}</option>
     <option v-for="option in options" :value="option.id || option.label" :disabled="option.disabled">
@@ -12,6 +12,6 @@
     </option>
   </select>
   <span class="icon fa fa-chevron-down"></span>
-  <span class="select-value-proxy"><template v-if="valueLabel && valueLabel !== ''">\{{ valueLabel }}</template><template v-else>\{{ placeholder }}</template></span>
+  <span class="select-value-proxy"><template v-if="value && value !== ''">\{{ value }}</template><template v-else>\{{ placeholder }}</template></span>
 </label>
 <p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>

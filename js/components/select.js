@@ -19,23 +19,6 @@ Fliplet.FormBuilder.field('select', {
     placeholder: {
       type: String,
       default: '-- Select one'
-    },
-    valueLabel: {
-      type: String,
-      default: ''
-    }
-  },
-  methods: {
-    changeHandler: function(value) {
-      var selectedOption = _.filter(this.options, ['id', value]);
-      
-      if (selectedOption.length) {
-        this.valueLabel = selectedOption[0].label || value;
-      } else {
-        this.valueLabel = value;
-      }
-
-      this.updateValue();
     }
   },
   mounted: function() {
