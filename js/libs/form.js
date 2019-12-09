@@ -611,9 +611,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
         }, 10);
 
         function validateCheckboxValue(value, options) {
-          if (!_.isArray(value)) {
-            value = value.split(',');
-          }
+          value = _.isArray(value) ? value : [value];
 
           value = value.map(function(elem) {
             return elem.trim();
