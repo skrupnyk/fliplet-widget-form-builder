@@ -614,18 +614,15 @@ Fliplet.Widget.instance('form-builder', function(data) {
           value = _.isArray(value) ? value : [value];
 
           if (options.length) {
-            var valueInOptions = [];
             var valueProp = options[0].id ? 'id' : 'label';
 
-            options.forEach(function(option) {
-              value.forEach(function(elem) {
-                if (option[valueProp] === elem) {
-                  valueInOptions.push(elem);
-                }
+            value = _.filter(value, function(elem) {
+              return _.some(options, function(opt) {
+                return opt[valueProp] === elem;
               });
             });
 
-            value = _.uniq(valueInOptions);
+            value = _.uniq(value);
 
             value = _.sortBy(value, function(val) {
               return _.findIndex(options, function(option) {
