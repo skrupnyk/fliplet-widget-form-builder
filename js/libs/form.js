@@ -114,31 +114,67 @@ Fliplet.Widget.instance('form-builder', function(data) {
 
     if (fields.length && (data.saveProgress && typeof progress === 'object') || entry) {
       fields.forEach(function(field) {
-        if (entry && entry.data && typeof entry.data[field.name] !== 'undefined' && field.populateOnUpdate !== false) {
-          if (field._type === "flDate") {
-            if (Fliplet.Env.get('platform') === 'web') {
-              field.value = moment(entry.data[field.name]).format('DD MMMM YYYY');
-            } else {
-              field.value = moment(entry.data[field.name]).format('YYYY-MM-DD');
-            }
-          } else if (field._type === "flCheckbox" && !Array.isArray(entry.data[field.name])) {
-            field.value = [];
-          } else if (field._type === 'flImage') {
-            var img = entry.data[field.name];
-            field.value = [];
-            if (Array.isArray(img)) {
-              field.value = img;
-            } else if (typeof img === 'string') {
-              field.value.push(img);
-            }
+        if (entry && entry.data && field.populateOnUpdate !== false) {
+          switch (field._type) {
+            case 'flDate':
+              var regexDateFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
+              var regexISOFormat = /(\d{4})-(\d{2})-(\d{2})T(\d{2})\:(\d{2})\:(\d{2})[+-](\d{2})\:(\d{2})/;
+              if (regexDateFormat.exec(entry.data[field.name]) || regexISOFormat.exec(entry.data[field.name])) {
+                field.value = moment(entry.data[field.name]).format('YYYY-MM-DD');
+              } else {
+                field.value = moment().get().format('YYYY-MM-DD');
+              }
+              break;
 
-            field.value = field.value.map(function (url) {
-              return Fliplet.Media.authenticate(url);
-            });
-          } else if (!field._submit && typeof field._submit !== 'undefined') {
-            field.value = field.value;
-          } else {
-            field.value = entry.data[field.name];
+            case 'flImage':
+            case 'flFile':
+              var img = entry.data[field.name];
+              field.value = [];
+
+              if (Array.isArray(img)) {
+                field.value = img;
+              } else if (typeof img === 'string') {
+                field.value.push(img);
+              }
+    
+              field.value = field.value.map(function(url) {
+                return Fliplet.Media.authenticate(url);
+              });
+              break;
+
+            case 'flTime':
+              var regexp = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/;
+
+              if (regexp.exec(entry.data[field.name])) {
+                field.value = entry.data[field.name];
+              } else {
+                field.value = moment().get().format('HH:mm');
+              }
+              break;
+
+            case 'flCheckbox':
+            case 'flRadio':
+            case 'flStarRating':
+              if (Array.isArray(entry.data[field.name]) && entry.data[field.name].length > 0) {
+                var inOptions = [];
+
+                entry.data[field.name].forEach(function(element) {
+                  var inOption = _.find(field.options, { label: element });
+
+                  if (inOption) {
+                    inOptions.push(inOption);
+                  }
+                });
+                
+                field.value = inOptions.length ? _.uniqWith(entry.data[field.name], _.isEqual) : [];
+              } else {
+                field.value = [];
+              }
+              break;
+
+            default:
+              field.value = entry.data[field.name];
+              break;
           }
 
           return field.value;
@@ -208,10 +244,18 @@ Fliplet.Widget.instance('form-builder', function(data) {
         var $vm = this;
 
         this.fields.forEach(function(field, index) {
-          field.value = data.fields[index].value;
+          var value = data.fields[index].value;
+
+          // Clone value if it's an array to ensure the original object does not mutate
+          if (Array.isArray(value)) {
+            value = value.slice(0);
+          }
+
+          field.value = value;
           $vm.triggerChange(field.name, field.value);
         });
 
+        localStorage.removeItem(progressKey);
         Fliplet.FormBuilder.emit('reset');
         this.$emit('reset');
       },
@@ -608,6 +652,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
       this.loadEntryForUpdate().then(function () {
         var debouncedUpdate = _.debounce(function () {
           $form.$forceUpdate();
+          $vm.saveProgress();
         }, 10);
 
         function validateCheckboxValue(value, options) {
@@ -788,6 +833,24 @@ Fliplet.Widget.instance('form-builder', function(data) {
 
                   return { id: option };
                 });
+
+                if (!_.isEmpty(field.value)) {
+                  switch (field._type) {
+                    case 'flCheckbox':
+                      var selectedValues = _.difference(field.value, values);
+
+                      field.value = selectedValues.length ? [] : field.value;
+                      break;
+                    case 'flRadio':
+                    case 'flSelect':
+                      var selectedValueInOptions = _.some(values, function(option) {
+                        return option === field.value;
+                      });
+
+                      field.value = selectedValueInOptions ? field.value : '';
+                      break;
+                  }
+                }
 
                 // Update options in field definition so they are kept between renderings
                 _.find(data.fields, { name: field.name }).options = options;
