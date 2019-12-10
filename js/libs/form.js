@@ -613,24 +613,23 @@ Fliplet.Widget.instance('form-builder', function(data) {
         function validateCheckboxValue(value, options) {
           value = _.isArray(value) ? value : [value];
 
-          value = value.map(function(elem) {
-            return elem.trim();
-          });
-
           if (options.length) {
             var valueInOptions = [];
+            var valueProp = options[0].id ? 'id' : 'label';
 
-            value.forEach(function(elem) {
-              if (_.find(options, { label: elem })) {
-                valueInOptions.push(elem);
-              }
+            options.forEach(function(option) {
+              value.forEach(function(elem) {
+                if (option[valueProp] === elem) {
+                  valueInOptions.push(elem);
+                }
+              });
             });
 
             value = _.uniq(valueInOptions);
 
             value = _.sortBy(value, function(val) {
               return _.findIndex(options, function(option) {
-                return option.label === val;
+                return option[valueProp] === val;
               });
             });
           }
