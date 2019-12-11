@@ -655,6 +655,30 @@ Fliplet.Widget.instance('form-builder', function(data) {
           $vm.saveProgress();
         }, 10);
 
+        function validateCheckboxValue(value, options) {
+          value = _.isArray(value) ? value : [value];
+
+          if (options.length) {
+            var valueProp = options[0].id ? 'id' : 'label';
+
+            value = _.filter(value, function(elem) {
+              return _.some(options, function(opt) {
+                return opt[valueProp] === elem;
+              });
+            });
+
+            value = _.uniq(value);
+
+            value = _.sortBy(value, function(val) {
+              return _.findIndex(options, function(option) {
+                return option[valueProp] === val;
+              });
+            });
+          }
+
+          return value;
+        }
+
         // This data is available through "Fliplet.FormBuilder.get()"
         formReady({
           name: data.name,
@@ -694,6 +718,10 @@ Fliplet.Widget.instance('form-builder', function(data) {
                   return field.value;
                 }
 
+                if (field._type === 'flCheckbox') {
+                  value = validateCheckboxValue(value, this.instance.options);
+                }
+
                 field.value = value;
                 debouncedUpdate();
               },
@@ -701,13 +729,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
                 var result;
 
                 if (field._type === 'flCheckbox') {
-                  if (typeof data === 'string') {
-                    data = data.split(',');
-                  }
-
-                  if (_.isArray(data)) {
-                    data = _.uniq(data);
-                  }
+                  data = validateCheckboxValue(data, this.instance.options);
                 }
 
                 if (typeof data === 'function') {
