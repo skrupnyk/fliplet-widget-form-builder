@@ -107,6 +107,20 @@ Fliplet.FormBuilder = (function() {
         return this.showLabel || this.showLabel === undefined;
       };
 
+      component.computed._selectedLabel = function() {
+        if (!this.options) {
+          return this.value;
+        }
+
+        var vm = this;
+
+        const option = _.find(this.options, function (opt) {
+          return opt.id == vm.value;
+        });
+
+        return option ? (option.label || option.id) : this.value;
+      }
+
       component.template = templates['templates.components.field']({
         template: template()
       });
