@@ -12,6 +12,6 @@
     </option>
   </select>
   <span class="icon fa fa-chevron-down"></span>
-  <span class="select-value-proxy"><template v-if="value && value !== ''">\{{ value }}</template><template v-else>\{{ placeholder }}</template></span>
+  <span class="select-value-proxy"><template v-if="value && value !== ''">\{{ _selectedLabel }}</template><template v-else>\{{ placeholder }}</template></span>
 </label>
 <p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>

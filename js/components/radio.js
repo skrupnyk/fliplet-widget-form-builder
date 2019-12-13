@@ -26,7 +26,7 @@ Fliplet.FormBuilder.field('radio', {
   },
   methods: {
     clickHandler: function (option) {
-      this.value = option.label || option.id;
+      this.value = option.id || option.label;
       this.updateValue();
     }
   }

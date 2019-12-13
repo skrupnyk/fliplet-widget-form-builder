@@ -44,7 +44,7 @@ Fliplet.FormBuilder.field('checkbox', {
       this.$emit('_input', this.name, ordered);
     },
     clickHandler: function (option) {
-      var val = option.label || option.id;
+      var val = option.id || option.label;
       var index = this.value.indexOf(val);
 
       if (index === -1) {
