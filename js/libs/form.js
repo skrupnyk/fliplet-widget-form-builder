@@ -136,7 +136,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
               } else if (typeof img === 'string') {
                 field.value.push(img);
               }
-    
+
               field.value = field.value.map(function(url) {
                 return Fliplet.Media.authenticate(url);
               });
@@ -165,7 +165,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
                     inOptions.push(inOption);
                   }
                 });
-                
+
                 field.value = inOptions.length ? _.uniqWith(entry.data[field.name], _.isEqual) : [];
               } else {
                 field.value = [];
@@ -820,6 +820,12 @@ Fliplet.Widget.instance('form-builder', function(data) {
 
                 if (!Array.isArray(values)) {
                   throw new Error('Options must be an array');
+                }
+
+                if (field._type === 'flSelect') {
+                  _.remove(values, function(val) {
+                    return val === null  || val === undefined || val.trim() === '';
+                  });
                 }
 
                 var options = values.map(function (option) {
