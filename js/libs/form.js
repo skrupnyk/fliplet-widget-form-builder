@@ -117,6 +117,10 @@ Fliplet.Widget.instance('form-builder', function(data) {
         if (entry && entry.data && field.populateOnUpdate !== false) {
           var fieldData = entry.data[field.name];
 
+          if (typeof fieldData === 'undefined') {
+            return; // do not update the field value
+          }
+
           switch (field._type) {
             case 'flDate':
               var regexDateFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
