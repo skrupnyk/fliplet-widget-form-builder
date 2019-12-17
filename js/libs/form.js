@@ -824,7 +824,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
 
                 if (field._type === 'flSelect') {
                   _.remove(values, function(val) {
-                    return val === null  || val === undefined || val.trim() === '';
+                    return val === null || val === undefined || val.trim() === '';
                   });
                 }
 
