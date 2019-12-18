@@ -115,12 +115,18 @@ Fliplet.Widget.instance('form-builder', function(data) {
     if (fields.length && (data.saveProgress && typeof progress === 'object') || entry) {
       fields.forEach(function(field) {
         if (entry && entry.data && field.populateOnUpdate !== false) {
+          var fieldData = entry.data[field.name];
+
+          if (typeof fieldData === 'undefined') {
+            return; // do not update the field value
+          }
+
           switch (field._type) {
             case 'flDate':
               var regexDateFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
               var regexISOFormat = /(\d{4})-(\d{2})-(\d{2})T(\d{2})\:(\d{2})\:(\d{2})[+-](\d{2})\:(\d{2})/;
-              if (regexDateFormat.exec(entry.data[field.name]) || regexISOFormat.exec(entry.data[field.name])) {
-                field.value = moment(entry.data[field.name]).format('YYYY-MM-DD');
+              if (regexDateFormat.exec(fieldData) || regexISOFormat.exec(fieldData)) {
+                field.value = moment(fieldData).format('YYYY-MM-DD');
               } else {
                 field.value = moment().get().format('YYYY-MM-DD');
               }
@@ -128,7 +134,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
 
             case 'flImage':
             case 'flFile':
-              var img = entry.data[field.name];
+              var img = fieldData;
               field.value = [];
 
               if (Array.isArray(img)) {
@@ -137,7 +143,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
                 field.value.push(img);
               }
 
-              field.value = field.value.map(function(url) {
+              field.value = field.value.map(function (url) {
                 return Fliplet.Media.authenticate(url);
               });
               break;
@@ -145,35 +151,46 @@ Fliplet.Widget.instance('form-builder', function(data) {
             case 'flTime':
               var regexp = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/;
 
-              if (regexp.exec(entry.data[field.name])) {
-                field.value = entry.data[field.name];
+              if (regexp.exec(fieldData)) {
+                field.value = fieldData;
               } else {
                 field.value = moment().get().format('HH:mm');
               }
               break;
 
             case 'flCheckbox':
-            case 'flRadio':
-            case 'flStarRating':
-              if (Array.isArray(entry.data[field.name]) && entry.data[field.name].length > 0) {
+              if (Array.isArray(fieldData) && fieldData.length > 0) {
                 var inOptions = [];
 
-                entry.data[field.name].forEach(function(element) {
-                  var inOption = _.find(field.options, { label: element });
+                fieldData.forEach(function (element) {
+                  var match = _.find(field.options, function (option) {
+                    return option.label === fieldData || option.id === fieldData
+                  });
 
-                  if (inOption) {
-                    inOptions.push(inOption);
+                  if (match) {
+                    inOptions.push(match);
                   }
                 });
 
-                field.value = inOptions.length ? _.uniqWith(entry.data[field.name], _.isEqual) : [];
+                field.value = inOptions.length ? _.uniqWith(fieldData, _.isEqual) : [];
               } else {
                 field.value = [];
               }
               break;
 
+            case 'flRadio':
+            case 'flStarRating':
+              // Work only if passed value is a string
+              // Altered check to support old version of the form builder and if a user provides data as ID not a Label it will work correctly
+              var match = _.find(field.options, function (option) {
+                return option.label === fieldData || option.id === fieldData;
+              });
+
+              field.value = match ? fieldData : '';
+              break
+
             default:
-              field.value = entry.data[field.name];
+              field.value = fieldData;
               break;
           }
 
