@@ -839,6 +839,12 @@ Fliplet.Widget.instance('form-builder', function(data) {
                   throw new Error('Options must be an array');
                 }
 
+                if (field._type === 'flSelect') {
+                  _.remove(values, function(val) {
+                    return val === null || val === undefined || val.trim() === '';
+                  });
+                }
+
                 var options = values.map(function (option) {
                   if (typeof option === 'object') {
                     if (typeof option.value !== 'undefined') {
