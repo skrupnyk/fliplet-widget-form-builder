@@ -840,8 +840,9 @@ Fliplet.Widget.instance('form-builder', function(data) {
                 }
 
                 if (field._type === 'flSelect') {
+                  // remove all invalid options
                   _.remove(values, function(val) {
-                    return val === null || val === undefined || val.trim() === '';
+                    return !(_.isObject(val) || _.isNumber(val) || (_.isString(val) && val.trim()));
                   });
                 }
 
