@@ -248,22 +248,38 @@ Fliplet.FormBuilder = (function() {
         return '';
       };
 
-      component.methods._addCustomName = function() {
-        this._showNameField = !this._showNameField;
+      if (!component.mounted) {
+        component.mounted = function() {
+          this._showNameField = this.name !== this.label;
+          this.initTooltip();
+        };
+      }
+
+      component.methods._disableAutomatch = function() {
+        this._showNameField = true;
         this.initTooltip();
       };
 
-      if (!component.methods.addCustomName) {
-        component.methods.addCustomName = component.methods._addCustomName;
+      if (!component.methods.disableAutomatch) {
+        component.methods.disableAutomatch = component.methods._disableAutomatch;
       }
 
-      component.methods._compareFieldName = function() {
+      component.methods._enableAutomatch = function() {
+        this._showNameField = false;
         this.name = this.label;
         this.initTooltip();
       };
 
-      if (!component.methods.compareFieldName) {
-        component.methods.compareFieldName = component.methods._compareFieldName;
+      if (!component.methods.enableAutomatch) {
+        component.methods.enableAutomatch = component.methods._enableAutomatch;
+      }
+
+      component.methods._matchFields = function() {
+        this.name = this._showNameField ? this.name : this.label;
+      };
+
+      if (!component.methods.matchFields) {
+        component.methods.matchFields = component.methods._matchFields;
       }
 
       component.methods._initTooltip = function() {
