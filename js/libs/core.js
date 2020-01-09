@@ -114,7 +114,7 @@ Fliplet.FormBuilder = (function() {
 
         var vm = this;
 
-        const option = _.find(this.options, function (opt) {
+        var option = _.find(this.options, function (opt) {
           return opt.id == vm.value;
         });
 
