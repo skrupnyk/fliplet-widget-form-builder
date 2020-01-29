@@ -246,28 +246,35 @@ var app = new Vue({
     },
     createDataSource: function() {
       var $vm = this;
-      var name = prompt('Please type a name for your data source:');
 
-      if (name === null) {
-        this.settings.dataSourceId = '';
-        return;
-      }
+      Fliplet.Modal.prompt({
+        title: 'Please enter a data source name'
+      }).then(function(result) {
+        if (result === null) {
+          $vm.settings.dataSourceId = '';
+          return;
+        }
 
-      if (name === '') {
-        this.settings.dataSourceId = '';
-        Fliplet.Modal.alert({
-          message: 'You must enter a data source name'
+        var dataSourceName = result.trim();
+
+        if (!dataSourceName) {
+          Fliplet.Modal.alert({
+            message: 'You must enter a data source name'
+          }).then(function() {
+            $vm.settings.dataSourceId = '';
+            $vm.createDataSource();
+            return;
+          });
+        }
+
+        Fliplet.DataSources.create({
+          name: dataSourceName,
+          organizationId: Fliplet.Env.get('organizationId')
+        }).then(function(ds) {
+          $vm.dataSources.push(ds);
+          $vm.settings.dataSourceId = ds.id;
+          $vm.showDataSourceSettings = true;
         });
-        return;
-      }
-
-      Fliplet.DataSources.create({
-        name: name,
-        organizationId: Fliplet.Env.get('organizationId')
-      }).then(function(ds) {
-        $vm.dataSources.push(ds);
-        $vm.settings.dataSourceId = ds.id;
-        $vm.showDataSourceSettings = true;
       });
     },
     manageDataSource: function(dataSourceId) {
