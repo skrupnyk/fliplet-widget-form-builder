@@ -573,7 +573,7 @@ var app = new Vue({
         }
 
         return Fliplet.DataSources.update(dataSourceId, {
-          columns: newColumns,
+          columns: columns,
           hooks: ds.hooks
         });
       });
