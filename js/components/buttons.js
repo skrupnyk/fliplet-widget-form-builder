@@ -31,6 +31,10 @@ Fliplet.FormBuilder.field('buttons', {
     clearType: {
       type: String,
       default: 'reset'
+    },
+    type: {
+      type: String,
+      default: 'flButtons'
     }
   },
   mounted: function() {
