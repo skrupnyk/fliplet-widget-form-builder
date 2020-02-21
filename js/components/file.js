@@ -103,6 +103,9 @@ Fliplet.FormBuilder.field('file', {
 
       this.validateValue();
 
+      // this is used to trigger onChange event even if user deletes and than uploads same file
+      this.$refs.fileInput.value = null;
+
       $vm.value.splice(index, 1);
 
       $vm.value.forEach(function (file, index) {
