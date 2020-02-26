@@ -762,6 +762,9 @@ html[dir="rtl"] .radio.radio-icon input[type="radio"] + label > span.check {
 
 .form-group .mce-tinymce {
   border: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
 }
 
 .form-group .mce-tinymce > .mce-container-body.mce-stack-layout {
