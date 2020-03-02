@@ -42,7 +42,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
     onReset: function() {
       if (this.editor) {
         try {
-          return this.editor.setContent('');
+          this.editor.setContent('');
         } catch (e) {}
       }
 
@@ -103,6 +103,14 @@ Fliplet.FormBuilder.field('wysiwyg', {
           $vm.value = editor.getContent();
 
           $vm.updateValue();
+        });
+
+        editor.on('reset', function(e) {
+          // Stops tinymce events that are returning the old value
+          // Solution for this issue https://github.com/Fliplet/fliplet-studio/issues/5514
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
         });
       }
     });
