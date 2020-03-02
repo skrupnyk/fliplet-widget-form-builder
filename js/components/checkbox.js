@@ -58,7 +58,7 @@ Fliplet.FormBuilder.field('checkbox', {
   },
   created: function () {
     if (!Array.isArray(this.value)) {
-      this.value = [];
+      this.value = this.value.split(/\n/);
       this.updateValue(this.name, this.value);
     }
   }
