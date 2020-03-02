@@ -55,7 +55,7 @@ Fliplet.FormBuilder.field('image', {
   mounted: function () {
      this.drawImagesAfterInit();
   },
-  updated:function () {
+  updated: function () {
     this.drawImagesAfterInit();
   },
   destroyed: function() {
@@ -64,6 +64,9 @@ Fliplet.FormBuilder.field('image', {
   methods: {
     removeImage: function(index) {
       var $vm = this;
+
+      // this is used to trigger onChange event even if user deletes and than uploads same image
+      $vm.$refs.imageInput.value = null;
 
       $vm.value.splice(index, 1);
 
