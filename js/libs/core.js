@@ -233,6 +233,14 @@ Fliplet.FormBuilder = (function() {
       };
 
       component.computed._fieldLabelError = function() {
+        if (this.type === 'flButtons') {
+          if ((this.showSubmit && !this.submitValue) || (this.showClear && !this.clearValue)) {
+            return 'Please provide a Field Label';
+          }
+
+          return '';
+        }
+
         if (!this.label) {
           return 'Please provide a Field Label';
         }
