@@ -496,7 +496,17 @@ Fliplet.Widget.instance('form-builder', function(data) {
           return;
         }).then(function(result) {
           return formPromise.then(function (form) {
-            return Fliplet.Hooks.run('afterFormSubmit', { formData: formData, result: result }, form);
+            return Fliplet.Hooks.run('afterFormSubmit', { formData: formData, result: result }, form).then(function () {
+              if (entryId !== 'session') {
+                return;
+              }
+
+              // If the user just updated his/her profile
+              // let's update the cached session.
+              return Fliplet.Session.get().catch(function () {
+                // silent failure
+              });
+            });
           });
         }).then(function() {
           if (data.saveProgress) {
