@@ -10,7 +10,7 @@ Fliplet.FormBuilder.field('url', {
     var rules = {
       value: {
         // URL regex taken form https://www.regextester.com/94502
-        url: window.validators.helpers.regex('', /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/i)
+        url: window.validators.helpers.regex('', /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\*\+,;=.]+$/i)
       }
     };
 
