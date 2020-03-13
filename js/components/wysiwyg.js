@@ -166,7 +166,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
         editor.on('selectionchange init', function() {
           var element = editor.settings.inline ? editor.getElement() : editor.contentAreaContainer;
 
-          if (editor.getContent().trim() == '') {
+          if (editor.getContent().trim() === '') {
             element.classList.add('empty');
           } else {
             element.classList.remove('empty');
