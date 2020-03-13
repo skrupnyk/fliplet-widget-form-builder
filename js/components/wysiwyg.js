@@ -74,7 +74,32 @@ Fliplet.FormBuilder.field('wysiwyg', {
       var css = document.createElement('style');
       css.id = 'plugin-placeholder';
       css.type = 'text/css';
-      css.innerHTML = ' \
+
+      // If we got not Native Env we shuoldn't have padding-left
+      // Because on the web Env it would look poor
+      if (Fliplet.Env.is('native')) {
+        css.innerHTML = ' \
+        .plugin-placeholder:before { \
+          top: "5px"; \
+          display: none; \
+          position: absolute; \
+          padding-left: 7px; \
+          content: attr(placeholder); \
+          -webkit-margin-before: 1em; \
+          -webkit-margin-after: 1em; \
+          -webkit-margin-start: 0px; \
+          -webkit-margin-end: 0px; \
+          color: #888; \
+        } \
+        .mce-panel.plugin-placeholder:before{ \
+          margin-left: 8px; \
+        } \
+        .plugin-placeholder iframe { z-index: -1; } \
+        .plugin-placeholder.empty:before{ \
+          display: block; \
+        }';
+      } else {
+        css.innerHTML = ' \
         .plugin-placeholder:before { \
           top: "5px"; \
           display: none; \
@@ -93,6 +118,8 @@ Fliplet.FormBuilder.field('wysiwyg', {
         .plugin-placeholder.empty:before{ \
           display: block; \
         }';
+      }
+
       head.appendChild(css);
     }
   },
@@ -161,7 +188,6 @@ Fliplet.FormBuilder.field('wysiwyg', {
           return false;
         });
 
-        
         // When selectionchange or init happened check if placeholder should show or hide
         editor.on('selectionchange init', function() {
           var element = editor.settings.inline ? editor.getElement() : editor.contentAreaContainer;
