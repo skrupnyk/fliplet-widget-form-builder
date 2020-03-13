@@ -47,9 +47,56 @@ Fliplet.FormBuilder.field('wysiwyg', {
       }
 
       this.value = '';
+    },
+    addPlaceHolder: function() {
+      var editor = this.editor;
+      var element = editor.settings.inline ? editor.getElement() : editor.contentAreaContainer;
+
+      // set placeholder attribute on the element if its set from settings
+      element.classList.add('plugin-placeholder');
+
+      if (element.getAttribute('placeholder') === null) {
+        element.setAttribute('placeholder', editor.settings.placeholder || editor.getElement().getAttribute('placeholder'));
+      }
+
+      // add the styles to head for the placegolder
+      if (document.getElementById('plugin-placeholder') === null) {
+        this.addPlaceholderStyles();
+      }
+
+      // add extra listener since click on the :before element doesnt focus the editor
+      element.addEventListener('click', function() {
+        editor.execCommand('mceFocus', false, element);
+      });
+    },
+    addPlaceholderStyles: function() {
+      var head = document.head || document.getElementsByTagName('head')[0];
+      var css = document.createElement('style');
+      css.id = 'plugin-placeholder';
+      css.type = 'text/css';
+      css.innerHTML = ' \
+        .plugin-placeholder:before { \
+          top: "5px"; \
+          display: none; \
+          position: absolute; \
+          content: attr(placeholder); \
+          -webkit-margin-before: 1em; \
+          -webkit-margin-after: 1em; \
+          -webkit-margin-start: 0px; \
+          -webkit-margin-end: 0px; \
+          color: #888; \
+        } \
+        .mce-panel.plugin-placeholder:before{ \
+          margin-left: 8px; \
+        } \
+        .plugin-placeholder iframe { z-index: -1; } \
+        .plugin-placeholder.empty:before{ \
+          display: block; \
+        }';
+      head.appendChild(css);
     }
   },
-  mounted: function () {
+  mounted: function() {
     var $vm = this;
     var lineHeight = 40;
 
@@ -63,8 +110,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
       },
       plugins: [
         'advlist autolink lists link directionality',
-        'autoresize fullscreen code paste',
-        'placeholder'
+        'autoresize fullscreen code paste'
       ].join(' '),
       toolbar: [
         'bold italic underline',
@@ -85,6 +131,8 @@ Fliplet.FormBuilder.field('wysiwyg', {
         $vm.editor = editor;
 
         editor.on('init', function () {
+          $vm.addPlaceHolder();
+
           // initialise value if it was set prior to initialisation
           if ($vm.value) {
             editor.setContent($vm.value, { format : 'raw' });
@@ -111,6 +159,18 @@ Fliplet.FormBuilder.field('wysiwyg', {
           e.preventDefault();
           e.stopPropagation();
           return false;
+        });
+
+        
+        // When selectionchange or init happened check if placeholder should show or hide
+        editor.on('selectionchange init', function() {
+          var element = editor.settings.inline ? editor.getElement() : editor.contentAreaContainer;
+
+          if (editor.getContent().trim() == '') {
+            element.classList.add('empty');
+          } else {
+            element.classList.remove('empty');
+          }
         });
       }
     });
