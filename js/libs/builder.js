@@ -298,6 +298,9 @@ var app = new Vue({
       if (initial) {
         // Untick "Set template" checkbox when creating a form from Template
         $vm.settings.template = false;
+
+        // Clear the default description
+        $vm.settings.description = '';
       }
 
       if (this.settings.onSubmit.indexOf('templatedEmailAdd') > -1) {
@@ -308,10 +311,6 @@ var app = new Vue({
       }
       if (this.settings.onSubmit.indexOf('generateEmail') > -1) {
         this.settings.generateEmailTemplate = this.generateEmailTemplate || this.defaultEmailSettingsForCompose;
-      }
-
-      if (!initial) {
-        $vm.settings.description = $vm.editor.getContent();
       }
 
       $vm.settings.name = $vm.settings.displayName;
