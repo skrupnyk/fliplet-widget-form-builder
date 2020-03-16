@@ -83,6 +83,9 @@ Fliplet.FormBuilder.field('password', {
     updatePasswordConfirmation: function () {
       this.$v.passwordConfirmation.$touch();
       this.highlightError();
+    },
+    onPasswordConfirmationInput: function ($event) {
+      this.$emit('_input', this.name, $event.target.value, true);
     }
   }
 });

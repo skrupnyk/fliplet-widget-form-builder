@@ -294,12 +294,17 @@ Fliplet.Widget.instance('form-builder', function(data) {
           });
         }
       },
-      onInput: function (fieldName, value) {
+      onInput: function (fieldName, value, fromPasswordConfirmation) {
         var $vm = this;
 
         this.fields.some(function(field) {
           if (field.name === fieldName) {
-            field.value = value;
+            if (field._type === 'flPassword' && fromPasswordConfirmation) {
+              field.passwordConfirmation = value;
+            } else {
+              field.value = value;
+            }
+            
             $vm.triggerChange(fieldName, value);
             return true;
           }
