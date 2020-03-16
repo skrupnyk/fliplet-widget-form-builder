@@ -250,7 +250,7 @@ textarea.form-control {
   text-align: center;
   background-color: transparent;
   border: none;
-  z-index: 10;
+  z-index: 4;
 }
 
 .input-group-addon:first-child {
