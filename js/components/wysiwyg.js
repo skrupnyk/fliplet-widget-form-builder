@@ -50,7 +50,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
     },
     placeholderLabel: function() {
       var placeholder_text = this.editor.getElement().getAttribute("placeholder") || this.editor.settings.placeholder;
-      var placeholder_attrs = this.editor.settings.placeholder_attrs || {style: {position: 'absolute', top:'5px', left:0, color: '#888', padding: '1%', width:'98%', overflow: 'hidden', 'white-space': 'pre-wrap'} };
+      var placeholder_attrs = this.editor.settings.placeholder_attrs || {style: {position: 'absolute', top:'5px', left:0, color: '#888', padding: '1%', width:'98%', overflow: 'hidden', 'white-space': 'pre-wrap', 'font-weight': 'normal'} };
       var contentAreaContainer = this.editor.getContentAreaContainer();
 
       tinymce.DOM.setStyle(contentAreaContainer, 'position', 'relative');
