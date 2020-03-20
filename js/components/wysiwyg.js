@@ -50,13 +50,28 @@ Fliplet.FormBuilder.field('wysiwyg', {
     },
     placeholderLabel: function() {
       var placeholder_text = this.editor.getElement().getAttribute("placeholder") || this.editor.settings.placeholder;
-      var placeholder_attrs = this.editor.settings.placeholder_attrs || {style: {position: 'absolute', top:'5px', left:0, color: '#888', padding: '1%', width:'98%', overflow: 'hidden', 'white-space': 'pre-wrap', 'font-weight': 'normal'} };
       var contentAreaContainer = this.editor.getContentAreaContainer();
+      var defaultStyles = {
+        style: {
+          position: 'absolute',
+          top: '17px',
+          left: '8px',
+          color: '#888',
+          lineHeight: '19px',
+          padding: tinyMCE.DOM.getStyle(contentAreaContainer, 'padding', true),
+          width:'98%',
+          overflow: 'hidden',
+          'white-space': 'pre-wrap',
+          'font-weight': 'normal',
+          'font-size': '16px'
+        }
+      };
+      var placeholder_attrs = this.editor.settings.placeholder_attrs || defaultStyles;
 
       tinymce.DOM.setStyle(contentAreaContainer, 'position', 'relative');
 
       // Create label element in the TinyMCE editor
-      this.labelElement = tinymce.DOM.add( contentAreaContainer, this.editor.settings.placeholder_tag || "label", placeholder_attrs, placeholder_text );
+      this.labelElement = tinymce.DOM.add( contentAreaContainer, this.editor.settings.placeholder_tag || "p", placeholder_attrs, placeholder_text );
     },
     placeholderLabelHide: function() {
       tinymce.DOM.setStyle( this.labelElement, 'display', 'none' );
