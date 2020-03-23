@@ -39,7 +39,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
     }
   },
   methods: {
-    onReset: function() {
+    onReset: function () {
       if (this.editor) {
         try {
           this.editor.setContent('');
@@ -48,8 +48,8 @@ Fliplet.FormBuilder.field('wysiwyg', {
 
       this.value = '';
     },
-    placeholderLabel: function() {
-      var placeholder_text = this.editor.getElement().getAttribute("placeholder") || this.editor.settings.placeholder;
+    placeholderLabel: function () {
+      var placeholderText = this.editor.getElement().getAttribute("placeholder") || this.editor.settings.placeholder;
       var contentAreaContainer = this.editor.getContentAreaContainer();
       var defaultStyles = {
         style: {
@@ -66,48 +66,48 @@ Fliplet.FormBuilder.field('wysiwyg', {
           'font-size': '16px'
         }
       };
-      var placeholder_attrs = this.editor.settings.placeholder_attrs || defaultStyles;
+      var placeholderAttrs = this.editor.settings.placeholderAttrs || defaultStyles;
 
       tinymce.DOM.setStyle(contentAreaContainer, 'position', 'relative');
 
       // Create label element in the TinyMCE editor
-      this.labelElement = tinymce.DOM.add( contentAreaContainer, this.editor.settings.placeholder_tag || "p", placeholder_attrs, placeholder_text );
+      this.labelElement = tinymce.DOM.add(contentAreaContainer, this.editor.settings.placeholderTag || "p", placeholderAttrs, placeholderText);
     },
-    placeholderLabelHide: function() {
-      tinymce.DOM.setStyle( this.labelElement, 'display', 'none' );
+    hidePlaceholderLabel: function () {
+      tinymce.DOM.setStyle(this.labelElement, 'display', 'none');
     },
-    placeholderLabelShow: function() {
-      tinymce.DOM.setStyle( this.labelElement, 'display', '' );
+    showPlaceholderLabel: function () {
+      tinymce.DOM.setStyle(this.labelElement, 'display', '');
     },
-    placeholderOnFocus: function() {
+    onPlaceholderFocus: function () {
       if (!this.editor.settings.readonly) {
-        this.placeholderLabelHide();
+        this.hidePlaceholderLabel();
       }
 
       this.editor.execCommand('mceFocus', false);
     },
-    placeholderOnBlur: function() {
+    onPlaceholderBlur: function () {
       if (!this.editor.getContent()) {
-        this.placeholderLabelShow();
+        this.showPlaceholderLabel();
       } else {
-        this.placeholderLabelHide();
+        this.hidePlaceholderLabel();
       }
     },
-    addPlaceHolder: function() {
+    addPlaceholder: function () {
       // Init placeholder
       this.placeholderLabel();
-      this.placeholderOnBlur();
+      this.onPlaceholderBlur();
 
       // Add placeholder listeners
-      tinymce.DOM.bind(this.labelElement, 'click', this.placeholderOnFocus);
-      this.editor.on('focus', this.placeholderOnFocus);
-      this.editor.on('blur', this.placeholderOnBlur);
-      this.editor.on('change', this.placeholderOnBlur);
-      this.editor.on('setContent', this.placeholderOnBlur);
-      this.editor.on('keydown', this.placeholderLabelHide);
+      tinymce.DOM.bind(this.labelElement, 'click', this.onPlaceholderFocus);
+      this.editor.on('focus', this.onPlaceholderFocus);
+      this.editor.on('blur', this.onPlaceholderBlur);
+      this.editor.on('change', this.onPlaceholderBlur);
+      this.editor.on('setContent', this.onPlaceholderBlur);
+      this.editor.on('keydown', this.hidePlaceholderLabel);
     }
   },
-  mounted: function() {
+  mounted: function () {
     var $vm = this;
     var lineHeight = 40;
 
@@ -142,7 +142,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
         $vm.editor = editor;
 
         editor.on('init', function () {
-          $vm.addPlaceHolder();
+          $vm.addPlaceholder();
 
           // initialise value if it was set prior to initialisation
           if ($vm.value) {
@@ -158,36 +158,25 @@ Fliplet.FormBuilder.field('wysiwyg', {
           }
         });
 
-        editor.on('change', function(e) {
+        editor.on('change', function (e) {
           $vm.value = editor.getContent();
 
           $vm.updateValue();
         });
 
-        editor.on('reset', function(e) {
+        editor.on('reset', function (e) {
           // Stops tinymce events that are returning the old value
           // Solution for this issue https://github.com/Fliplet/fliplet-studio/issues/5514
           e.preventDefault();
           e.stopPropagation();
           return false;
         });
-
-        // When selectionchange or init happened check if placeholder should show or hide
-        editor.on('selectionchange init', function() {
-          var element = editor.settings.inline ? editor.getElement() : editor.contentAreaContainer;
-
-          if (editor.getContent().trim() === '') {
-            element.classList.add('empty');
-          } else {
-            element.classList.remove('empty');
-          }
-        });
       }
     });
 
     Fliplet.FormBuilder.on('reset', this.onReset);
   },
-  destroyed: function() {
+  destroyed: function () {
     if (this.editor) {
       this.editor.destroy();
       this.editor = null;
