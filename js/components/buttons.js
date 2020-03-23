@@ -30,7 +30,7 @@ Fliplet.FormBuilder.field('buttons', {
     },
     clearType: {
       type: String,
-      default: 'reset'
+      default: 'button'
     },
     type: {
       type: String,
