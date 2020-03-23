@@ -20,7 +20,6 @@
       "moment"
     ],
     "assets": [
-      "vendor/tinymce-placeholder.min.js",
       "vendor/vuelidate.min.js",
       "vendor/validators.min.js",
       "vendor/sortable.js",
@@ -95,7 +94,6 @@
       "fliplet-session"
     ],
     "assets": [
-      "vendor/tinymce-placeholder.min.js",
       "vendor/vuelidate.min.js",
       "vendor/validators.min.js",
       "vendor/load-image.all.min.js",
