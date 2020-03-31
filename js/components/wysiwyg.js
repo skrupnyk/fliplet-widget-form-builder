@@ -164,11 +164,14 @@ Fliplet.FormBuilder.field('wysiwyg', {
       }
     };
 
-    Fliplet.Hooks.run('beforeRichFieldInitialize', {
-      field: this,
-      config: config
-    }).then(function () {
-      tinymce.init(config);
+    // Allow custom code to register hooks before this runs
+    Fliplet().then(function () {
+      Fliplet.Hooks.run('beforeRichFieldInitialize', {
+        field: this,
+        config: config
+      }).then(function () {
+        tinymce.init(config);
+      });
     });
 
     Fliplet.FormBuilder.on('reset', this.onReset);
