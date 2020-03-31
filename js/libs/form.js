@@ -261,8 +261,17 @@ Fliplet.Widget.instance('form-builder', function(data) {
         var $vm = this;
 
         this.fields.forEach(function(field, index) {
-          var value = data.fields[index].value;
+          var value;
 
+          if (field._type === 'flCheckbox') {
+            value = data.fields[index].defaultValue || data.fields[index].value;
+            if (!Array.isArray(value)) {
+              value = value.split(/\n/);
+            }
+          } else {
+            value = data.fields[index].value;
+          }
+          
           // Clone value if it's an array to ensure the original object does not mutate
           if (Array.isArray(value)) {
             value = value.slice(0);
