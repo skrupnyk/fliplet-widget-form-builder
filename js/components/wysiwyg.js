@@ -109,7 +109,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
     var $vm = this;
     var lineHeight = 40;
 
-    var data = {
+    var config = {
       target: this.$refs.textarea,
       theme: 'modern',
       mobile: {
@@ -166,9 +166,9 @@ Fliplet.FormBuilder.field('wysiwyg', {
 
     Fliplet.Hooks.run('beforeRichFieldInitialize', {
       field: this,
-      data: data
+      config: config
     }).then(function () {
-      tinymce.init(data);
+      tinymce.init(config);
     });
 
     Fliplet.FormBuilder.on('reset', this.onReset);
