@@ -393,10 +393,14 @@ Fliplet.Widget.instance('form-builder', function(data) {
 
         $vm.triggerBlurEventOnInputs();
 
-        Fliplet.Analytics.trackEvent({
+        var trackEventOp = Fliplet.Analytics.trackEvent({
           category: 'form',
           action: 'submit'
         });
+
+        if (!(trackEventOp instanceof Promise)) {
+          trackEventOp = Promise.resolve();
+        }
 
         // form validation
         $vm.isFormValid = true;
@@ -552,7 +556,9 @@ Fliplet.Widget.instance('form-builder', function(data) {
 
           if (data.linkAction && data.redirect) {
             return operation.then(function () {
-              Fliplet.Navigate.to(data.linkAction);
+              return trackEventOp.then(function () {
+                Fliplet.Navigate.to(data.linkAction);
+              });
             }).catch(function (err) {
               Fliplet.Modal.alert({
                 message: Fliplet.parseError(err)
