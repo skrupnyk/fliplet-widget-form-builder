@@ -103,6 +103,19 @@ Fliplet.FormBuilder.field('wysiwyg', {
       this.editor.on('change', this.onPlaceholderBlur);
       this.editor.on('setContent', this.onPlaceholderBlur);
       this.editor.on('keydown', this.hidePlaceholderLabel);
+    },
+    addBulletedListShortcuts: function () {
+      var $vm = this;
+
+      // For Windows
+      this.editor.addShortcut('ctrl+shift+8', 'UnorderedList', function() {
+        $vm.editor.execCommand('InsertUnorderedList');
+      });
+
+      // For MacOS
+      this.editor.addShortcut('command+[', 'UnorderedList', function() {
+        $vm.editor.execCommand('InsertUnorderedList');
+      });
     }
   },
   mounted: function () {
@@ -141,6 +154,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
 
         editor.on('init', function () {
           $vm.addPlaceholder();
+          $vm.addBulletedListShortcuts();
 
           // initialise value if it was set prior to initialisation
           if ($vm.value) {
