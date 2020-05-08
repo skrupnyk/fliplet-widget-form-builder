@@ -9,8 +9,8 @@ Fliplet.FormBuilder.field('url', {
   validations: function () {
     var rules = {
       value: {
-        // URL regex taken form https://www.regextester.com/94502
-        url: window.validators.helpers.regex('', /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\*\+,;=.]+$/i)
+        // URL regex taken form https://www.regextester.com/94502 and added % sign
+        url: window.validators.helpers.regex('', /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@%!\$&'\*\+,;=.]+$/i)
       }
     };
 
