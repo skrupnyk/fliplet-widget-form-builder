@@ -3,6 +3,8 @@ Fliplet.FormBuilder = (function() {
   var components = {};
   var eventHub = new Vue();
 
+  var DATE_FORMAT = 'YYYY-MM-DD';
+
   Vue.use(window.vuelidate.default);
 
   var templates = Fliplet.Widget.Templates;
@@ -260,6 +262,7 @@ Fliplet.FormBuilder = (function() {
         component.mounted = function() {
           this._showNameField = this.name !== this.label;
           this.initTooltip();
+          this.initDatepicker();
         };
       }
 
@@ -301,6 +304,27 @@ Fliplet.FormBuilder = (function() {
           }
         });
       };
+
+      component.methods._initDatepicker = function () {
+        var $vm = this;
+
+        $vm.$nextTick(function () {
+          var $el = $(this.$el).find('input.date-picker').datepicker({
+            format: "yyyy-mm-dd",
+            todayHighlight: true,
+            autoclose: true
+          }).on('changeDate', function(e) {
+            var value = moment(e.date).format(DATE_FORMAT);
+            $vm.value = value;
+          });
+
+          $el.datepicker('setDate', this.value || new Date());
+        });
+      }
+
+      if (!component.methods.initDatepicker) {
+        component.methods.initDatepicker = component.methods._initDatepicker;
+      }
 
       if (!component.methods.initTooltip) {
         component.methods.initTooltip = component.methods._initTooltip;
