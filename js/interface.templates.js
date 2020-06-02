@@ -11,7 +11,7 @@ this["Fliplet"]["Widget"]["Templates"]["templates.configurations.checkbox"] = Ha
 },"useData":true});
 
 this["Fliplet"]["Widget"]["Templates"]["templates.configurations.date"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"form-group\">\n  <label>Default value</label>\n  <input class=\"form-control\" type=\"date\" v-model=\"value\" placeholder=\"Default value\" />\n</div>\n<div class=\"form-group\">\n  <label>Placeholder</label>\n  <input class=\"form-control\" type=\"text\" v-model.trim=\"placeholder\" placeholder=\"Placeholder text\" />\n</div>\n";
+    return "<div class=\"form-group\">\n  <label>Default value</label>\n  <div class=\"input-group custom-date\">\n    <div class=\"input-group-addon\">\n      <i class=\"fa fa-calendar\"></i>\n    </div>\n    <input class=\"form-control date-picker\" type=\"text\" v-model=\"value\" placeholder=\"Default value\" />\n  </div>\n</div>\n<div class=\"form-group\">\n  <label>Placeholder</label>\n  <input class=\"form-control\" type=\"text\" v-model.trim=\"placeholder\" placeholder=\"Placeholder text\" />\n</div>\n";
 },"useData":true});
 
 this["Fliplet"]["Widget"]["Templates"]["templates.configurations.email"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
