@@ -219,6 +219,9 @@ var app = new Vue({
       Object.keys(fieldData).forEach(function(prop) {
         $vm.activeField[prop] = fieldData[prop];
       });
+
+      $vm.save();
+      Fliplet.Studio.emit('reload-widget-instance', widgetId);
       this.closeEdit();
     },
     changeTemplate: function() {
