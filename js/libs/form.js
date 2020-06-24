@@ -110,6 +110,16 @@ Fliplet.Widget.instance('form-builder', function(data) {
 
     fields.forEach(function (field) {
       field.enabled = true;
+
+      // Make sure these fields are not saved or populated from progress data
+      if (['flParagraph', 'flTitle'].indexOf(field._type) !== -1) {
+        field.saveProgress = false;
+        field.populateOnUpdate = false;
+
+        if (progress && typeof progress[field.name] !== 'undefined') {
+          delete progress[field.name];
+        }
+      }
     });
 
     if (fields.length && (data.saveProgress && typeof progress === 'object') || entry) {
@@ -187,7 +197,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
               });
 
               field.value = match ? fieldData : '';
-              break
+              break;
 
             default:
               field.value = fieldData;
