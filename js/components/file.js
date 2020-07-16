@@ -33,6 +33,9 @@ Fliplet.FormBuilder.field('file', {
     value: {
       type: Array,
       default: []
+    },
+    explanation: {
+      type: String
     }
   },
   computed: {

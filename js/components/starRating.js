@@ -2,6 +2,9 @@ Fliplet.FormBuilder.field('starRating', {
   name: 'Star rating',
   category: 'Advanced',
   props: {
+    explanation: {
+      type: String
+    },
     values: {
       type: Array,
       default: [

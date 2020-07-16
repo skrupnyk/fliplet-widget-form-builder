@@ -9,5 +9,6 @@
   :placeholder="placeholder"
   autocomplete="new-password"
 />
+<small v-if="explanation" class="help-block explanation">\{{ explanation }}</small>
 <p class="text-danger" v-if="$v.value.email === false && $v.value.$dirty">The input is not a valid email address.</p>
 <p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>

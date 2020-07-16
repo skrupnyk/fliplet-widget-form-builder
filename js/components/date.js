@@ -6,6 +6,9 @@ Fliplet.FormBuilder.field('date', {
   props: {
     placeholder: {
       type: String
+    },
+    explanation: {
+      type: String
     }
   },
   validations: function() {

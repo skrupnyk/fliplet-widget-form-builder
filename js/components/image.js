@@ -41,6 +41,9 @@ Fliplet.FormBuilder.field('image', {
     hasCorruptedImage: {
       type: Boolean,
       default: false
+    },
+    explanation: {
+      type: String
     }
   },
   data: {

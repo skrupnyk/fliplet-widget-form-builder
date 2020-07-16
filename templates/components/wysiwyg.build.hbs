@@ -12,4 +12,5 @@
   v-html="value"
   v-if="isInterface">
 </div>
+<small v-if="explanation" class="help-block explanation">\{{ explanation }}</small>
 <p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>

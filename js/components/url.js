@@ -4,6 +4,9 @@ Fliplet.FormBuilder.field('url', {
   props: {
     placeholder: {
       type: String
+    },
+    explanation: {
+      type: String
     }
   },
   validations: function () {

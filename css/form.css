@@ -118,6 +118,10 @@ form.placeholder button {
   pointer-events: none;
 }
 
+.help-block.explanation {
+  margin-bottom: 0;
+  font-size: 80%;
+}
 
 /* Buttons */
 

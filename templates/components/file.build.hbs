@@ -15,3 +15,5 @@
     <input type="file" ref="fileInput" :id="name" :name="name" :data-folder-id="mediaFolderId" class="input-file selectfile" :required="required" v-on:change="updateValue()" multiple>
   </label>
 </div>
+ <small v-if="explanation" class="help-block explanation">\{{ explanation }}</small>
+ 

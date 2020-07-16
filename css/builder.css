@@ -199,6 +199,11 @@ nav>.btn {
   display: block;
 }
 
+.help-block.explanation {
+  margin-bottom: 0;
+  font-size: 80%;
+}
+
 /* END OF TEMPLATES GALLERY */
 
 .component {

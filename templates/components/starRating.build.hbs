@@ -1,14 +1,14 @@
 <div class="inverse-direction">
   <template v-for="(option, index) in values">
     <input
-            class="rating-input"
-            :name="name"
-            type="radio"
-            :id="name + '-' + index"
-            v-model="value"
-            :value="option.id"
-            v-on:change="updateValue()"
-            v-on:input="onInput($event)"
+      class="rating-input"
+      :name="name"
+      type="radio"
+      :id="name + '-' + index"
+      v-model="value"
+      :value="option.id"
+      v-on:change="updateValue()"
+      v-on:input="onInput($event)"
     >
     <label class="rating-star" :for="name + '-' + index">
       <i class="fa fa-star-o"></i>
@@ -16,4 +16,5 @@
     </label>
   </template>
 </div>
+<small v-if="explanation" class="help-block explanation">\{{ explanation }}</small>
 <p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>

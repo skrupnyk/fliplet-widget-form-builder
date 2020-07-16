@@ -19,6 +19,9 @@ Fliplet.FormBuilder.field('select', {
     placeholder: {
       type: String,
       default: '-- Select one'
+    },
+    explanation: {
+      type: String
     }
   },
   mounted: function() {
