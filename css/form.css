@@ -290,6 +290,10 @@ textarea.form-control {
 
 /* CHECKBOXES */
 
+.checkbox.checkbox-icon:first-of-type {
+  margin-top: 0px;
+}
+
 .checkbox.checkbox-icon input[type="checkbox"] {
   z-index: -1;
   position: absolute;
@@ -370,6 +374,10 @@ html[dir="rtl"] .checkbox.checkbox-icon input[type="checkbox"] + label > span.ch
 
 
 /* RADIOS */
+
+.radio.radio-icon:first-of-type {
+  margin-top: 0px;
+}
 
 .radio.radio-icon input[type="radio"] {
   z-index: -1;
@@ -531,6 +539,9 @@ html[dir="rtl"] .radio.radio-icon input[type="radio"] + label > span.check {
 .fileUpload {
   position: relative;
   overflow: hidden;
+}
+
+.fileUpload-padding-top {
   padding-top: 10px;
 }
 

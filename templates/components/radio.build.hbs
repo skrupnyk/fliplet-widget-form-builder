@@ -2,12 +2,12 @@
     <template v-for="(option, index) in options">
       <div class="radio radio-icon">
         <input
-                type="radio"
-                :id="name + '-' + index"
-                :name="name"
-                v-model="value"
-                :value="option.id || option.label"
-                :readonly="readonly">
+          type="radio"
+          :id="name + '-' + index"
+          :name="name"
+          v-model="value"
+          :value="option.id || option.label"
+          :readonly="readonly">
         <label v-on:click="clickHandler(option)">
           <span class="check"><i class="fa fa-circle"></i></span> \{{ option.label || option.id }}
         </label>
