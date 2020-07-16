@@ -8,6 +8,10 @@ Fliplet.FormBuilder.field('textarea', {
     rows: {
       type: Number,
       default: 2
+    },
+    readonly: {
+      type: Boolean,
+      default: false
     }
   },
   validations: function() {

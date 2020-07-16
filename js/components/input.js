@@ -4,6 +4,10 @@ Fliplet.FormBuilder.field('input', {
   props: {
     placeholder: {
       type: String
+    },
+    readonly: {
+      type: Boolean,
+      default: false
     }
   },
   validations: function () {

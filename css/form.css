@@ -357,6 +357,11 @@ html[dir="rtl"] .checkbox.checkbox-icon input[type="checkbox"] + label > span.ch
   transition: all 0.25s ease;
 }
 
+.checkbox.checkbox-icon input[type="checkbox"][readonly] + label > span.check,
+.radio.radio-icon input[type="radio"][readonly] + label > span.check {
+  background-color: #eee;
+}
+
 .checkbox.checkbox-icon input[type="checkbox"]:checked + label span.check > i.fa {
   color: #FFF;
   -webkit-transform: scale(1);
@@ -506,15 +511,20 @@ html[dir="rtl"] .radio.radio-icon input[type="radio"] + label > span.check {
   pointer-events: none;
 }
 
-.select-proxy-display > .hidden-select[disabled]~.icon {
+.select-proxy-display > .hidden-select[disabled]~.icon,
+.select-proxy-display > .hidden-select[readonly]~.icon {
   background-color: #aaa;
 }
 
-.select-proxy-display > .hidden-select[disabled]~.select-value-proxy {
+.select-proxy-display > .hidden-select[disabled]~.select-value-proxy,
+.select-proxy-display > .hidden-select[readonly]~.select-value-proxy {
   background: #e4e9eb;
   pointer-events: none;
 }
 
+.select-proxy-display > .hidden-select[readonly] {
+  pointer-events: none;
+}
 
 /* FILE */
 

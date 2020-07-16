@@ -8,6 +8,10 @@ Fliplet.FormBuilder.field('wysiwyg', {
     rows: {
       type: Number,
       default: 5
+    },
+    readonly: {
+      type: Boolean,
+      default: false
     }
   },
   validations: function () {
@@ -125,6 +129,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
     var config = {
       target: this.$refs.textarea,
       theme: 'modern',
+      readonly: this.readonly,
       mobile: {
         theme: 'mobile',
         plugins: [ 'autosave', 'lists', 'autolink' ],
