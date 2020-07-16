@@ -251,6 +251,9 @@ textarea.form-control {
   background-color: transparent;
   border: none;
   z-index: 4;
+  -webkit-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 
 .input-group-addon:first-child {
