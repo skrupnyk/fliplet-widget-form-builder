@@ -41,7 +41,7 @@ Fliplet.FormBuilder.field('password', {
       type: Boolean,
       default: false
     },
-    explanation: {
+    description: {
       type: String
     }
   },

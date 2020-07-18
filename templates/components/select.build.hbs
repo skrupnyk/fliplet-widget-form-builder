@@ -1,3 +1,4 @@
+<small v-if="description" class="help-block description">\{{ description }}</small>
 <label :for="name" class="select-proxy-display">
   <select
     class="form-control hidden-select"
@@ -14,5 +15,4 @@
   <span class="icon fa fa-chevron-down"></span>
   <span class="select-value-proxy"><template v-if="value && value !== ''">\{{ _selectedLabel }}</template><template v-else>\{{ placeholder }}</template></span>
 </label>
-<small v-if="explanation" class="help-block explanation">\{{ explanation }}</small>
 <p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>

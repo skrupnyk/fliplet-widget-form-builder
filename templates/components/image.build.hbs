@@ -1,3 +1,4 @@
+<small v-if="description" class="help-block description">\{{ description }}</small>
 <div class="fileUpload" :class="{ 'fileUpload-padding-top': value.length }">
   <div class="row">
     <div v-for="(image, index) in value">
@@ -14,4 +15,3 @@
   </label>
   <p class="text-danger" v-if="hasCorruptedImage">The uploaded file is not a valid image. Please try again.</p>
 </div>
- <small v-if="explanation" class="help-block explanation">\{{ explanation }}</small>

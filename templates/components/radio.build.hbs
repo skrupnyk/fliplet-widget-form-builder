@@ -1,4 +1,5 @@
 <template>
+   <small v-if="description" class="help-block description">\{{ description }}</small>
   <template v-for="(option, index) in options">
     <div class="radio radio-icon">
       <input
@@ -12,6 +13,5 @@
       </label>
     </div>
   </template>
-  <small v-if="explanation" class="help-block explanation">\{{ explanation }}</small>
   <p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>
 </template>

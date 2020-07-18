@@ -1,4 +1,5 @@
 <template>
+  <small v-if="description" class="help-block description">\{{ description }}</small>
   <template v-for="(option, index) in options">
     <div class="checkbox checkbox-icon">
       <input
@@ -8,10 +9,11 @@
         v-model="value"
         :value="option.id || option.label">
       <label v-on:click="clickHandler(option)">
-        <span class="check"><i class="fa fa-check"></i></span> \{{ option.label || option.id }}
+        <span class="check"><i class="fa fa-check"></i></span>
+        <span class="option-item">\{{ option.label || option.id }}</span>
       </label>
     </div>
   </template>
-  <small v-if="explanation" class="help-block explanation">\{{ explanation }}</small>
+
   <p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>
 </template>

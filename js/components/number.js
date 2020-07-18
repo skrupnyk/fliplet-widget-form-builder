@@ -13,7 +13,7 @@ Fliplet.FormBuilder.field('number', {
       type: Number,
       default: 0
     },
-    explanation: {
+    description: {
       type: String
     }
   },

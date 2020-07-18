@@ -42,7 +42,7 @@ Fliplet.FormBuilder.field('image', {
       type: Boolean,
       default: false
     },
-    explanation: {
+    description: {
       type: String
     }
   },

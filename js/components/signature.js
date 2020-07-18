@@ -9,7 +9,7 @@ Fliplet.FormBuilder.field('signature', {
       type: Number,
       default: 150
     },
-    explanation: {
+    description: {
       type: String
     }
   },

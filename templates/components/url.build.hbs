@@ -1,3 +1,4 @@
+<small v-if="description" class="help-block description">\{{ description }}</small>
 <input
   type="text"
   class="form-control"
@@ -8,6 +9,5 @@
   :id="name"
   :placeholder="placeholder"
 />
-<small v-if="explanation" class="help-block explanation">\{{ explanation }}</small>
 <p class="text-danger" v-if="$v.value.url === false && $v.value.$dirty">The input is not a valid URL.</p>
 <p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>

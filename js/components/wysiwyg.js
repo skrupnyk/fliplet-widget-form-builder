@@ -9,7 +9,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
       type: Number,
       default: 5
     },
-    explanation: {
+    description: {
       type: String
     }
   },

@@ -1,4 +1,8 @@
 <div class="form-group">
+  <label>Description</label>
+  <input class="form-control" type="text" v-model.trim="description" placeholder="Description text" />
+</div>
+<div class="form-group">
   <label class="selectLabel">Select the folder where the files are stored.</label>
   <div class="btn btn-primary" id="select_folder" v-model="mediaFolderId" v-on:click="openFilePicker">
     <template v-if="mediaFolderId">Replace folder</template>
@@ -7,8 +11,4 @@
   <div v-if="mediaFolderId" class="selected-folder-holder">
     <i class="fa fa-folder"></i> Selected folder: <strong>\{{ mediaFolderData.name }}</strong> - <a href="#" v-on:click.prevent="openFileManager">See files</a>
   </div>
-</div>
-<div class="form-group">
-  <label>Explanation</label>
-  <input class="form-control" type="text" v-model.trim="explanation" placeholder="Explanation text" />
 </div>

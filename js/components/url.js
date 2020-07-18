@@ -5,7 +5,7 @@ Fliplet.FormBuilder.field('url', {
     placeholder: {
       type: String
     },
-    explanation: {
+    description: {
       type: String
     }
   },

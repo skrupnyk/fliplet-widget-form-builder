@@ -5,7 +5,7 @@ Fliplet.FormBuilder.field('email', {
     placeholder: {
       type: String
     },
-    explanation: {
+    description: {
       type: String
     }
   },

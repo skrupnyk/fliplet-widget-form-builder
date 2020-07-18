@@ -1,3 +1,4 @@
+<small v-if="description" class="help-block description">\{{ description }}</small>
 <div class="fileUpload file-input" :class="{ 'fileUpload-padding-top': value.length }">
   <div class="row">
     <div ref="canvasWrap" class="text-center" v-for="(file, index) in value">
@@ -15,5 +16,4 @@
     <input type="file" ref="fileInput" :id="name" :name="name" :data-folder-id="mediaFolderId" class="input-file selectfile" :required="required" v-on:change="updateValue()" multiple>
   </label>
 </div>
- <small v-if="explanation" class="help-block explanation">\{{ explanation }}</small>
  

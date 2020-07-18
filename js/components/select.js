@@ -20,7 +20,7 @@ Fliplet.FormBuilder.field('select', {
       type: String,
       default: '-- Select one'
     },
-    explanation: {
+    description: {
       type: String
     }
   },

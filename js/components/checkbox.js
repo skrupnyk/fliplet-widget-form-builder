@@ -10,7 +10,7 @@ Fliplet.FormBuilder.field('checkbox', {
       type: String,
       default: ''
     },
-    explanation: {
+    description: {
       type: String
     },
     options: {

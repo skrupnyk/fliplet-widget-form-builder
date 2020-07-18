@@ -9,7 +9,7 @@ Fliplet.FormBuilder.field('textarea', {
       type: Number,
       default: 2
     },
-    explanation: {
+    description: {
       type: String
     }
   },

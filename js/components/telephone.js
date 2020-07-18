@@ -5,7 +5,7 @@ Fliplet.FormBuilder.field('telephone', {
     placeholder: {
       type: String
     },
-    explanation: {
+    description: {
       type: String
     }
   },

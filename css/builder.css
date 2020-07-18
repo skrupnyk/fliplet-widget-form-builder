@@ -199,8 +199,7 @@ nav>.btn {
   display: block;
 }
 
-.help-block.explanation {
-  margin-bottom: 0;
+.help-block.description {
   font-size: 80%;
 }
 

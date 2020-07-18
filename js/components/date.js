@@ -7,7 +7,7 @@ Fliplet.FormBuilder.field('date', {
     placeholder: {
       type: String
     },
-    explanation: {
+    description: {
       type: String
     }
   },

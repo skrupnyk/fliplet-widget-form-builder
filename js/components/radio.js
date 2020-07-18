@@ -2,7 +2,7 @@ Fliplet.FormBuilder.field('radio', {
   name: 'Radios (single-select)',
   category: 'Multiple options',
   props: {
-    explanation: {
+    description: {
       type: String
     },
     options: {
