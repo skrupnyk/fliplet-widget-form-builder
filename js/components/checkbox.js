@@ -20,6 +20,10 @@ Fliplet.FormBuilder.field('checkbox', {
           label: 'Option 2'
         }
       ]
+    },
+    readonly: {
+      type: Boolean,
+      default: false
     }
   },
   validations: function() {
@@ -48,6 +52,10 @@ Fliplet.FormBuilder.field('checkbox', {
       this.$emit('_input', this.name, ordered);
     },
     clickHandler: function (option) {
+      if (this.readonly) {
+        return;
+      }
+
       var val = option.id || option.label;
       var index = this.value.indexOf(val);
 

@@ -12,6 +12,10 @@ Fliplet.FormBuilder.field('radio', {
           label: 'Option 2'
         }
       ]
+    },
+    readonly: {
+      type: Boolean,
+      default: false
     }
   },
   validations: function() {
@@ -26,6 +30,10 @@ Fliplet.FormBuilder.field('radio', {
   },
   methods: {
     clickHandler: function (option) {
+      if (this.readonly) {
+        return;
+      }
+
       this.value = option.id || option.label;
       this.updateValue();
     }
