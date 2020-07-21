@@ -7,7 +7,6 @@
   :name="name"
   :id="name"
   :placeholder="placeholder"
-  :readonly="readonly"
 />
 <p class="text-danger" v-if="$v.value.maxLength === false && $v.value.$dirty">This field only accept up to 15 digits.</p>
 <p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>

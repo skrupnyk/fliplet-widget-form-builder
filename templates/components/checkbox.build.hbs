@@ -6,8 +6,7 @@
         :id="name + '-' + index"
         :name="name"
         v-model="value"
-        :value="option.id || option.label"
-        :readonly="readonly">
+        :value="option.id || option.label">
       <label v-on:click="clickHandler(option)">
         <span class="check"><i class="fa fa-check"></i></span> \{{ option.label || option.id }}
       </label>

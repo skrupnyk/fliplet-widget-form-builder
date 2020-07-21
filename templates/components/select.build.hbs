@@ -5,8 +5,7 @@
           :id="name"
           v-model="value"
           v-on:change="updateValue()"
-          v-on:input="onInput($event)"
-          :readonly="readonly">
+          v-on:input="onInput($event)">
     <option v-if="placeholder" value="">\{{ placeholder }}</option>
     <option v-for="option in options" :value="(_.isNumber(option.id) || _.isString(option.id)) ? option.id : option.label" :disabled="option.disabled">
       \{{ option.label || option.id }}

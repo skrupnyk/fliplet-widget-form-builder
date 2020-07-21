@@ -7,6 +7,5 @@
   :id="name"
   :placeholder="placeholder"
   :rows="rows"
-  :readonly="readonly"
 ></textarea>
 <p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>
