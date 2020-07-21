@@ -1,4 +1,4 @@
-<small v-if="description" class="help-block description">\{{ description }}</small>
+<div v-if="description" class="help-block description">\{{ description }}</div>
 <div class="field-signature">
   <canvas :id="name" ref="canvas"></canvas>
   <a href="#" v-on:click.prevent="clean()"><i class="fa fa-times"></i> Clear</a>
