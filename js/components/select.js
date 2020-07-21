@@ -19,10 +19,6 @@ Fliplet.FormBuilder.field('select', {
     placeholder: {
       type: String,
       default: '-- Select one'
-    },
-    readonly: {
-      type: Boolean,
-      default: false
     }
   },
   mounted: function() {

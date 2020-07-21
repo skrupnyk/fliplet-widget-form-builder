@@ -4,10 +4,6 @@ Fliplet.FormBuilder.field('url', {
   props: {
     placeholder: {
       type: String
-    },
-    readonly: {
-      type: Boolean,
-      default: false
     }
   },
   validations: function () {

@@ -12,10 +12,6 @@ Fliplet.FormBuilder.field('number', {
     decimals: {
       type: Number,
       default: 0
-    },
-    readonly: {
-      type: Boolean,
-      default: false
     }
   },
   validations: function () {

@@ -6,10 +6,6 @@ Fliplet.FormBuilder.field('date', {
   props: {
     placeholder: {
       type: String
-    },
-    readonly: {
-      type: Boolean,
-      default: false
     }
   },
   validations: function() {
@@ -41,10 +37,6 @@ Fliplet.FormBuilder.field('date', {
     var $vm = this;
 
     if (Fliplet.Env.get('platform') === 'web') {
-      if (this.readonly) {
-        return;
-      }
-
       var $el = $(this.$el).find('input.date-picker').datepicker({
         format: "yyyy-mm-dd",
         todayHighlight: true,
