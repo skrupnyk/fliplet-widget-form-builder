@@ -33,6 +33,10 @@ Fliplet.FormBuilder.field('file', {
     value: {
       type: Array,
       default: []
+    },
+    isPossibleToHide: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

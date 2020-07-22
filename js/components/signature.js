@@ -8,6 +8,10 @@ Fliplet.FormBuilder.field('signature', {
     height: {
       type: Number,
       default: 150
+    },
+    isPossibleToHide: {
+      type: Boolean,
+      default: false
     }
   },
   data: {

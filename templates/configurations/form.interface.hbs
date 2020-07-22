@@ -35,7 +35,7 @@
         </div>
       </div>
 
-      <div class="form-group cleafix">
+      <div v-if="!isHidden" class="form-group cleafix">
         <div class="col-xs-12">
           <label class="control-label">Is this field required?</label>
         </div>
@@ -54,6 +54,23 @@
           </div>
         </div>
       </div>
+
+      <div v-if="isPossibleToHide" class="form-group-cleafix">
+        <div v-if="isHidden" class="alert alert-info">
+          <p>Hidden fields cannot be set as required. Please disable field hiding before marking the field as required.</p>
+        </div>
+        <div v-if="!required" class="checkbox checkbox-icon form-hide-checkbox">
+          <input type="checkbox" :name="name" v-model="isHidden" id="form-hide-checkbox">
+          <label for="form-hide-checkbox">
+            <span class="check"><i class="fa fa-check"></i></span>
+            <span class="hide-field">Hide this field from users.</span>
+          </label>
+        </div>
+        <div v-else class="alert alert-info">
+          <p>Required fields cannot be hidden. Please disable field requirement before hiding the field.</p>
+        </div>
+      </div>
+
     </div>
 
     {{#hasOptions}}

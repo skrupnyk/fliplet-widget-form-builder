@@ -123,7 +123,9 @@ Fliplet.FormBuilder = (function() {
         return option ? (option.label || option.id) : this.value;
       }
 
-      component.template = templates['templates.components.field']({
+      var fieldContext = $('html').hasClass('context-build') ? 'field' : 'interface';
+
+      component.template = templates['templates.components.' + fieldContext]({
         template: template()
       });
 
@@ -151,6 +153,14 @@ Fliplet.FormBuilder = (function() {
         required: {
           type: Boolean,
           default: false
+        },
+        isHidden: {
+          type: Boolean,
+          default: false
+        },
+        isPossibleToHide: {
+          type: Boolean,
+          default: true
         }
       }, component.props);
 

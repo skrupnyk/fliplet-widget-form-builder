@@ -41,6 +41,10 @@ Fliplet.FormBuilder.field('image', {
     hasCorruptedImage: {
       type: Boolean,
       default: false
+    },
+    isPossibleToHide: {
+      type: Boolean,
+      default: false
     }
   },
   data: {

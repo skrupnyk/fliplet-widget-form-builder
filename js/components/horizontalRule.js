@@ -7,6 +7,10 @@ Fliplet.FormBuilder.field('horizontalRule', {
     showLabel: {
       type: Boolean,
       default: false
+    },
+    isPossibleToHide: {
+      type: Boolean,
+      default: false
     }
   }
 });

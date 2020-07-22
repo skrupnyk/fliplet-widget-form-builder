@@ -374,6 +374,19 @@ nav>.btn {
   overflow: auto;
 }
 
+.form-hide-checkbox {
+  margin: 15px 0 !important;
+}
+
+.checkbox.checkbox-icon.form-hide-checkbox input[type="checkbox"] {
+  z-index: 1;
+  cursor: pointer;
+}
+
+.reduced-opacity {
+  opacity: 0.5;
+}
+
 
 /* FILE FIELD */
 
