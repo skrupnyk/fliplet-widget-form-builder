@@ -8,7 +8,7 @@ Fliplet.FormBuilder.field('horizontalRule', {
       type: Boolean,
       default: false
     },
-    isPossibleToHide: {
+    canHide: {
       type: Boolean,
       default: false
     }

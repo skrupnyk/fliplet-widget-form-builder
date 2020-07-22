@@ -158,7 +158,7 @@ Fliplet.FormBuilder = (function() {
           type: Boolean,
           default: false
         },
-        isPossibleToHide: {
+        canHide: {
           type: Boolean,
           default: true
         }

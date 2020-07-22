@@ -12,7 +12,7 @@ Fliplet.FormBuilder.field('title', {
       type: String,
       default: 'Title'
     },
-    isPossibleToHide: {
+    canHide: {
       type: Boolean,
       default: false
     }

@@ -42,7 +42,7 @@ Fliplet.FormBuilder.field('image', {
       type: Boolean,
       default: false
     },
-    isPossibleToHide: {
+    canHide: {
       type: Boolean,
       default: false
     }
