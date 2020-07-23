@@ -42,6 +42,10 @@ Fliplet.FormBuilder.field('image', {
       type: Boolean,
       default: false
     },
+    canHide: {
+      type: Boolean,
+      default: false
+    },
     description: {
       type: String
     }

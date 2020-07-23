@@ -11,6 +11,10 @@ Fliplet.FormBuilder.field('paragraph', {
     value: {
       type: String,
       default: 'Paragraph'
+    },
+    canHide: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

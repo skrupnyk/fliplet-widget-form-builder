@@ -11,6 +11,10 @@ Fliplet.FormBuilder.field('title', {
     value: {
       type: String,
       default: 'Title'
+    },
+    canHide: {
+      type: Boolean,
+      default: false
     }
   }
 });
