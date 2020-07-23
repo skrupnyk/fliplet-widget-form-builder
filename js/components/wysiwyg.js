@@ -8,6 +8,9 @@ Fliplet.FormBuilder.field('wysiwyg', {
     rows: {
       type: Number,
       default: 5
+    },
+    description: {
+      type: String
     }
   },
   validations: function () {

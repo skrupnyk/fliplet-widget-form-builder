@@ -40,6 +40,9 @@ Fliplet.FormBuilder.field('password', {
     submitWhenFalsy: {
       type: Boolean,
       default: false
+    },
+    description: {
+      type: String
     }
   },
   validations: function () {
