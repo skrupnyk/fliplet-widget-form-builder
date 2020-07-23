@@ -37,6 +37,9 @@ Fliplet.FormBuilder.field('file', {
     canHide: {
       type: Boolean,
       default: false
+    },
+    description: {
+      type: String
     }
   },
   computed: {

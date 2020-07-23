@@ -12,6 +12,9 @@ Fliplet.FormBuilder.field('signature', {
     canHide: {
       type: Boolean,
       default: false
+    },
+    description: {
+      type: String
     }
   },
   data: {

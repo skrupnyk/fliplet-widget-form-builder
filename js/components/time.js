@@ -4,6 +4,9 @@ Fliplet.FormBuilder.field('time', {
   props: {
     placeholder: {
       type: String
+    },
+    description: {
+      type: String
     }
   },
   validations: function() {
