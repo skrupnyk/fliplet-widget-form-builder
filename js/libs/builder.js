@@ -86,6 +86,7 @@ function generateFormDefaults(data) {
     onSubmit: [],
     template: false,
     saveProgress: true,
+    autobindProfileEditing: false,
     resultHtml: Fliplet.Widget.Templates['templates.configurations.form-result'](),
     createdBy: {
       id: Fliplet.User.get('id'),
@@ -140,7 +141,6 @@ var app = new Vue({
       emailTemplateAdd: formSettings.emailTemplateAdd || undefined,
       emailTemplateEdit: formSettings.emailTemplateEdit || undefined,
       generateEmailTemplate: formSettings.generateEmailTemplate || undefined,
-      conflictWarning: formSettings.dataStore.indexOf('dataSource') > -1 && formSettings.autobindProfileEditing ? true : false,
       showDataSourceSettings: !!formSettings.dataSourceId,
       organizationName: '',
       isPreviewing: formSettings.previewingTemplate !== '',
@@ -832,10 +832,6 @@ var app = new Vue({
     'settings.dataStore': function(value) {
       this.showExtraAdd = value.indexOf('dataSource') > -1;
       this.showExtraEdit = value.indexOf('editDataSource') > -1;
-      this.conflictWarning = value.indexOf('dataSource') > -1 && this.settings.autobindProfileEditing;
-    },
-    'settings.autobindProfileEditing': function(value) {
-      this.conflictWarning = this.settings.dataStore.indexOf('dataSource') > -1 && value;
     },
     'settings.onSubmit': function(array) {
       var $vm = this;
