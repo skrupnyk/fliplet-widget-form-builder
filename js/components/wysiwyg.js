@@ -107,18 +107,19 @@ Fliplet.FormBuilder.field('wysiwyg', {
       this.editor.on('setContent', this.onPlaceholderBlur);
       this.editor.on('keydown', this.hidePlaceholderLabel);
     },
-    addBulletedListShortcuts: function () {
+    addBulletedListShortcutsWindows: function () {
       var $vm = this;
 
       // For Windows
       this.editor.addShortcut('ctrl+shift+8', 'UnorderedList', function() {
         $vm.editor.execCommand('InsertUnorderedList');
       });
-
-      // For MacOS
-      this.editor.addShortcut('command+[', 'UnorderedList', function() {
-        $vm.editor.execCommand('InsertUnorderedList');
-      });
+    },
+    addBulletedListShortcutsMac: function(event) {
+      if (event.metaKey && event.code === 'BracketLeft') {
+        event.preventDefault();
+        this.editor.execCommand('InsertUnorderedList');
+      }
     }
   },
   mounted: function () {
@@ -157,7 +158,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
 
         editor.on('init', function () {
           $vm.addPlaceholder();
-          $vm.addBulletedListShortcuts();
+          $vm.addBulletedListShortcutsWindows();
 
           // initialise value if it was set prior to initialisation
           if ($vm.value) {
@@ -172,6 +173,8 @@ Fliplet.FormBuilder.field('wysiwyg', {
             $(editor.iframeElement).replaceWith($el);
           }
         });
+
+        editor.on('keydown', $vm.addBulletedListShortcutsMac);
 
         editor.on('change', function (e) {
           $vm.value = editor.getContent();
