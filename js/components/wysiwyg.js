@@ -82,7 +82,11 @@ Fliplet.FormBuilder.field('wysiwyg', {
     },
     onPlaceholderFocus: function () {
       var outlineContainer = document.querySelector('.mce-container-body.mce-stack-layout');
-      outlineContainer.classList.add('focus-outline-active');
+
+      if (outlineContainer) {
+        outlineContainer.classList.add('focus-outline-active');
+      }
+      
       
       if (!this.editor.settings.readonly) {
         this.hidePlaceholderLabel();
@@ -92,8 +96,11 @@ Fliplet.FormBuilder.field('wysiwyg', {
     },
     onPlaceholderBlur: function () {
       var outlineContainer = document.querySelector('.mce-container-body.mce-stack-layout');
-      outlineContainer.classList.remove('focus-outline-active');
 
+      if (outlineContainer) {
+        outlineContainer.classList.remove('focus-outline-active');
+      }
+      
       if (!this.editor.getContent()) {
         this.showPlaceholderLabel();
       } else {
