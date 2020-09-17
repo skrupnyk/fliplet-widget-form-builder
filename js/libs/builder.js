@@ -144,7 +144,8 @@ var app = new Vue({
       showDataSourceSettings: !!formSettings.dataSourceId,
       organizationName: '',
       isPreviewing: formSettings.previewingTemplate !== '',
-      editor: undefined
+      editor: undefined,
+      accessRulesTypes: ['insert']
     };
   },
   methods: {
@@ -246,54 +247,6 @@ var app = new Vue({
       if (this.isAddingFields) {
         Fliplet.Studio.emit('widget-mode', 'wide');
       }
-    },
-    createDataSource: function() {
-      var $vm = this;
-
-      Fliplet.Modal.prompt({
-        title: 'Please enter a data source name'
-      }).then(function(result) {
-        if (result === null) {
-          $vm.settings.dataSourceId = '';
-          return;
-        }
-
-        var dataSourceName = result.trim();
-
-        if (!dataSourceName) {
-          Fliplet.Modal.alert({
-            message: 'You must enter a data source name'
-          }).then(function() {
-            $vm.settings.dataSourceId = '';
-            $vm.createDataSource();
-            return;
-          });
-        }
-
-        Fliplet.DataSources.create({
-          name: dataSourceName,
-          organizationId: Fliplet.Env.get('organizationId')
-        }).then(function(ds) {
-          $vm.dataSources.push(ds);
-          $vm.settings.dataSourceId = ds.id;
-          $vm.showDataSourceSettings = true;
-        });
-      });
-    },
-    manageDataSource: function(dataSourceId) {
-      Fliplet.Studio.emit('overlay', {
-        name: 'widget',
-        options: {
-          size: 'large',
-          package: 'com.fliplet.data-sources',
-          title: 'Edit Data Sources',
-          classes: 'data-source-overlay',
-          data: {
-            context: 'overlay',
-            dataSourceId: dataSourceId
-          }
-        }
-      });
     },
     save: function(initial) {
       var $vm = this;
@@ -634,16 +587,6 @@ var app = new Vue({
         $vm.triggerSave();
       });
     },
-    loadDataSources: function () {
-      var $vm = this;
-      return Fliplet.DataSources.get({
-        type: null
-      }, {
-        cache: false
-      }).then(function(results) {
-        $vm.dataSources = results;
-      });
-    },
     updateFormSettings: function(templateId, preview) {
       var formTemplate = _.find(this.templates, function(template) {
         return template.id === templateId;
@@ -685,6 +628,47 @@ var app = new Vue({
       }
 
       return string;
+    },
+    initDataSourceProvider: function() {
+      var $vm = this;
+      var dataSourceData = {
+        dataSourceTitle: 'Form builder data source',
+        dataSourceId: $vm.settings.dataSourceId,
+        appId: Fliplet.Env.get('appId'),
+        default: {
+          name: 'Form builder data for ' + Fliplet.Env.get('appName'),
+          definition: {
+            'guid': 'Column 1'
+          },
+          entries: [],
+          columns: []
+        },
+        accessRules: [
+          {
+            allow: 'all',
+            enabled: true,
+            type: $vm.accessRulesTypes
+          }
+        ]
+      };
+
+      window.dataSourceProvider =  Fliplet.Widget.open('com.fliplet.data-source-provider', {
+        selector: '#data-source-provider',
+        data: dataSourceData,
+        onEvent: function(event, dataSource) {
+          if (event === 'dataSourceSelect') {
+            $vm.settings.dataSourceId = dataSource.id;
+          }
+        }
+      });
+
+      window.dataSourceProvider.then(function(dataSource) {
+        $vm.settings.dataSourceId = dataSource.data.id;
+
+        window.dataSourceProvider = null;
+
+        $vm.triggerSave();
+      });
     },
     initLinkProvider: function() {
       var $vm = this;
@@ -802,10 +786,6 @@ var app = new Vue({
         this.showExtraEdit = false;
         this.settings.dataStore = [];
       }
-
-      if (value === 'new') {
-        this.createDataSource();
-      }
     },
     'permissionToChange': function(newVal) {
       Fliplet.Widget.toggleSaveButton(newVal);
@@ -832,6 +812,14 @@ var app = new Vue({
     'settings.dataStore': function(value) {
       this.showExtraAdd = value.indexOf('dataSource') > -1;
       this.showExtraEdit = value.indexOf('editDataSource') > -1;
+      this.accessRulesTypes = this.showExtraEdit
+        ? ['insert', 'update']
+        : ['insert'];
+
+      if (window.dataSourceProvider) {
+        window.dataSourceProvider.close();
+        window.dataSourceProvider = null;
+      }
     },
     'settings.onSubmit': function(array) {
       var $vm = this;
@@ -921,51 +909,43 @@ var app = new Vue({
 
     Fliplet.FormBuilder.on('field-settings-changed', this.onFieldSettingChanged);
 
-    $vm.loadDataSources().then(function () {
-      Fliplet.FormBuilder.templates().then(function(templates) {
-        $vm.templates = templates.system.concat(templates.organization);
-        $vm.systemTemplates = templates.system;
-        $vm.organizationTemplates = templates.organization;
+    Fliplet.FormBuilder.templates().then(function(templates) {
+      $vm.templates = templates.system.concat(templates.organization);
+      $vm.systemTemplates = templates.system;
+      $vm.organizationTemplates = templates.organization;
 
-        $(selector).removeClass('is-loading');
+      $(selector).removeClass('is-loading');
 
-        $($vm.$refs.templateDescription).tinymce({
-          plugins: [
-            'lists advlist image charmap hr code',
-            'searchreplace wordcount insertdatetime table textcolor colorpicker'
-          ],
-          toolbar: [
-            'formatselect |',
-            'bold italic underline strikethrough |',
-            'forecolor backcolor |',
-            'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |',
-            'blockquote subscript superscript | table insertdatetime charmap hr |',
-            'removeformat | code'
-          ].join(' '),
-          menubar: false,
-          statusbar: false,
-          min_height: 300,
-          setup: function (ed) {
-            $vm.editor = ed
-            $vm.editor.on('keyup paste', function() {
-              $vm.settings.description = $vm.editor.getContent();
-            });
-          }
-        });
-
-        if ($vm.chooseTemplate && $vm.$refs.templateGallery) {
-          setTimeout(function() {
-            $($vm.$refs.templateGallery).find('[data-toggle="tooltip"]').tooltip({
-              container: 'body'
-            });
-          }, 500);
+      $($vm.$refs.templateDescription).tinymce({
+        plugins: [
+          'lists advlist image charmap hr code',
+          'searchreplace wordcount insertdatetime table textcolor colorpicker'
+        ],
+        toolbar: [
+          'formatselect |',
+          'bold italic underline strikethrough |',
+          'forecolor backcolor |',
+          'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |',
+          'blockquote subscript superscript | table insertdatetime charmap hr |',
+          'removeformat | code'
+        ].join(' '),
+        menubar: false,
+        statusbar: false,
+        min_height: 300,
+        setup: function (ed) {
+          $vm.editor = ed
+          $vm.editor.on('keyup paste', function() {
+            $vm.settings.description = $vm.editor.getContent();
+          });
         }
       });
-    });
 
-    Fliplet.Studio.onMessage(function(event) {
-      if (event.data && event.data.event === 'overlay-close' && event.data.data && event.data.data.dataSourceId) {
-        $vm.loadDataSources();
+      if ($vm.chooseTemplate && $vm.$refs.templateGallery) {
+        setTimeout(function() {
+          $($vm.$refs.templateGallery).find('[data-toggle="tooltip"]').tooltip({
+            container: 'body'
+          });
+        }, 500);
       }
     });
   },
@@ -1013,11 +993,19 @@ var app = new Vue({
       $vm.initLinkProvider();
     }
 
+    if (!window.dataSourceProvider && $vm.section === 'settings') {
+      $vm.initDataSourceProvider();
+    }
+
     Fliplet.Organizations.get().then(function (organizations) {
       $vm.organizationName = organizations.length && organizations[0].name;
     });
 
     Fliplet.Widget.onSaveRequest(function() {
+      if (window.dataSourceProvider) {
+        window.dataSourceProvider.forwardSaveRequest();
+      }
+
       if (window.emailTemplateAddProvider) {
         return window.emailTemplateAddProvider.forwardSaveRequest();
       }
@@ -1068,6 +1056,10 @@ var app = new Vue({
 
     if (!window.linkProvider) {
       $vm.initLinkProvider();
+    }
+
+    if (!window.dataSourceProvider && $vm.section === 'settings') {
+      $vm.initDataSourceProvider();
     }
   }
 });
