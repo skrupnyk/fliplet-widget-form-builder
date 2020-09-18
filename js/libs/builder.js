@@ -632,14 +632,11 @@ var app = new Vue({
     initDataSourceProvider: function() {
       var $vm = this;
       var dataSourceData = {
-        dataSourceTitle: 'Form builder data source',
+        dataSourceTitle: 'Form data source',
         dataSourceId: $vm.settings.dataSourceId,
         appId: Fliplet.Env.get('appId'),
         default: {
-          name: 'Form builder data for ' + Fliplet.Env.get('appName'),
-          definition: {
-            'guid': 'Column 1'
-          },
+          name: 'Form data for ' + $vm.settings.displayName,
           entries: [],
           columns: []
         },
