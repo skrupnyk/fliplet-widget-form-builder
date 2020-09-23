@@ -120,22 +120,7 @@
               <label for="formName" class="control-label">Form name</label>
               <input id="formName" type="text" v-model="settings.displayName" class="form-control" />
             </div>
-            <div class="form-group">
-              <label class="control-label">Select a data source to store the form submissions</label>
-              <label for="select-datasource" class="select-proxy-display">
-                <select class="form-control hidden-select" id="select-datasource" v-model="settings.dataSourceId">
-                  <option value="">-- Select a data source</option>
-                  <option disabled>------</option>
-                  <option value="new">Create a new data source</option>
-                  <option disabled>------</option>
-                  <option v-for="dataSource in dataSources" v-bind:value="dataSource.id">
-                    \{{ dataSource.name }}
-                  </option>
-                </select>
-                <span class="icon fa fa-chevron-down"></span>
-                <span class="select-value-proxy">-- Select a data source</span>
-              </label>
-              <small v-if="showDataSourceSettings"><a href="#" v-on:click.prevent="manageDataSource(settings.dataSourceId)">Edit data source</a></small>
+            <div class="form-group"  id="data-source-provider">
             </div>
             <div class="form-group">
               <div class="control-label">
