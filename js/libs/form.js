@@ -131,11 +131,14 @@ Fliplet.Widget.instance('form-builder', function(data) {
             return; // do not update the field value
           }
 
+          var showCurrentDateTime = field.autofill === 'always';
+
           switch (field._type) {
             case 'flDate':
               var regexDateFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
               var regexISOFormat = /(\d{4})-(\d{2})-(\d{2})T(\d{2})\:(\d{2})\:(\d{2})[+-](\d{2})\:(\d{2})/;
-              if (regexDateFormat.exec(fieldData) || regexISOFormat.exec(fieldData)) {
+
+              if ((regexDateFormat.exec(fieldData) || regexISOFormat.exec(fieldData)) && !showCurrentDateTime) {
                 field.value = moment(fieldData).format('YYYY-MM-DD');
               } else {
                 field.value = moment().get().format('YYYY-MM-DD');
@@ -161,7 +164,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
             case 'flTime':
               var regexp = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/;
 
-              if (regexp.exec(fieldData)) {
+              if (regexp.exec(fieldData) && !showCurrentDateTime) {
                 field.value = fieldData;
               } else {
                 field.value = moment().get().format('HH:mm');
