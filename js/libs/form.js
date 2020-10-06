@@ -138,7 +138,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
               var regexDateFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
               var regexISOFormat = /(\d{4})-(\d{2})-(\d{2})T(\d{2})\:(\d{2})\:(\d{2})[+-](\d{2})\:(\d{2})/;
 
-              if (regexDateFormat.exec(fieldData) && !showCurrentDateTime || regexISOFormat.exec(fieldData) && !showCurrentDateTime) {
+              if ((regexDateFormat.exec(fieldData) || regexISOFormat.exec(fieldData)) && !showCurrentDateTime) {
                 field.value = moment(fieldData).format('YYYY-MM-DD');
               } else {
                 field.value = moment().get().format('YYYY-MM-DD');
