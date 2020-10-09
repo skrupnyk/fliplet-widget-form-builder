@@ -200,11 +200,12 @@ Fliplet.FormBuilder.field('image', {
 
           var scaledImage = loadImage.scale(img, options);
           var imgBase64Url = scaledImage.toDataURL(mimeType, $vm.jpegQuality);
+          var flipletBase64Url = imgBase64Url + ';filename:' + file.name;
 
-          $vm.value.push(imgBase64Url);
+          $vm.value.push(flipletBase64Url);
 
           if (addThumbnail) {
-            addThumbnailToCanvas(imgBase64Url, $vm.value.length - 1, $vm);
+            addThumbnailToCanvas(flipletBase64Url, $vm.value.length - 1, $vm);
           }
 
           $vm.$emit('_input', $vm.name, $vm.value);
