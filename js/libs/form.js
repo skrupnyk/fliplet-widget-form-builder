@@ -38,7 +38,7 @@ function addThumbnailToCanvas(imageURI, indexCanvas, self, isFileCanvas) {
 
   if (!imageURI.match(/^http/)) {
     imageURI = (imageURI.indexOf('base64') > -1)
-      ? imageURI
+      ? imageURI.split(';filename:')[0]
       :'data:image/jpeg;base64,' + imageURI;
   }
 
