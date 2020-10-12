@@ -509,8 +509,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
           $vm.fields.forEach(function(field) {
             if (field.mediaFolderId) {
               formData._flSchema[field.name] = {
-                mediaFolderId: field.mediaFolderId,
-                name: field.name + ' ' + moment().format('YYYY-MM-DD HH:mm') + '.png'
+                mediaFolderId: field.mediaFolderId
               };
             }
           });
