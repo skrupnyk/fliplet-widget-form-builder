@@ -110,7 +110,7 @@ Fliplet.FormBuilder.field('signature', {
       }
 
       // Get signature as base 64 string
-      data[this.name] = this.pad.toDataURL('image/png') + ';filename:' + this.name + ' ' + moment().format('YYYY-MM-DD HH:mm');
+      data[this.name] = this.pad.toDataURL('image/png') + ';filename:' + this.name + ' ' + moment().format('YYYY-MM-DD HH:mm') + '.png';
     }
   }
 });
