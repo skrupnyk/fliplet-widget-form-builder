@@ -23,6 +23,11 @@ Fliplet.FormBuilder.field('date', {
       default: true
     }
   },
+  data() {
+    return {
+      datePicker: null
+    }
+  },
   validations: function() {
     var rules = {
       value: {}
@@ -38,30 +43,19 @@ Fliplet.FormBuilder.field('date', {
       return Fliplet.Env.get('platform') === 'web'
     }
   },
-  methods: {
-    updateValue: function(value) {
-      if (value) {
-        this.value = value;
-      }
-
-      this.highlightError();
-      this.$emit('_input', this.name, this.value);
-    }
-  },
   mounted: function() {
     var $vm = this;
 
     if (Fliplet.Env.get('platform') === 'web') {
-      var $el = $(this.$el).find('input.date-picker').datepicker({
+      this.datePicker = $(this.$el).find('input.date-picker').datepicker({
         format: "yyyy-mm-dd",
         todayHighlight: true,
         autoclose: true
       }).on('changeDate', function(e) {
-        var value = moment(e.date).format(DATE_FORMAT);
-        $vm.updateValue(value);
+        $vm.value = moment(e.date).format(DATE_FORMAT);
       });
 
-      $el.datepicker('setDate', this.value || new Date());
+      this.datePicker.datepicker('setDate', this.value || new Date());
     }
 
     if (!this.value || this.autofill === 'always') {
@@ -70,5 +64,15 @@ Fliplet.FormBuilder.field('date', {
       this.empty = false;
     }
     $vm.$v.$reset();
+  },
+  watch: {
+    value: function(val) {
+      if (Fliplet.Env.get('platform') === 'web') {
+        this.datePicker.datepicker('setDate', val);
+      }
+
+      this.highlightError();
+      this.$emit('_input', this.name, val);
+    }
   }
 });
