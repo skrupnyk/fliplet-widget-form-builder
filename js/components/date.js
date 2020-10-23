@@ -23,7 +23,7 @@ Fliplet.FormBuilder.field('date', {
       default: true
     }
   },
-  data() {
+  data: function() {
     return {
       datePicker: null
     }
