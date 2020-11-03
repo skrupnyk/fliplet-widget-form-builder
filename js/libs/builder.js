@@ -788,6 +788,19 @@ var app = new Vue({
         })
       });
       return $html.html();
+    },
+    loadTemplates: function() {
+      if (data.fields) {
+        return Promise.resolve(); // do not load templates when editing a form as such UI is not shown
+      }
+
+      var $vm = this;
+
+      return Fliplet.FormBuilder.templates().then(function(templates) {
+        $vm.templates = templates.system.concat(templates.organization);
+        $vm.systemTemplates = templates.system;
+        $vm.organizationTemplates = templates.organization;
+      });
     }
   },
   watch: {
@@ -922,11 +935,7 @@ var app = new Vue({
     Fliplet.FormBuilder.on('field-settings-changed', this.onFieldSettingChanged);
 
     $vm.loadDataSources().then(function () {
-      Fliplet.FormBuilder.templates().then(function(templates) {
-        $vm.templates = templates.system.concat(templates.organization);
-        $vm.systemTemplates = templates.system;
-        $vm.organizationTemplates = templates.organization;
-
+      this.loadTemplates().then(function () {
         $(selector).removeClass('is-loading');
 
         $($vm.$refs.templateDescription).tinymce({
