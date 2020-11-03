@@ -9,7 +9,7 @@ Fliplet.FormBuilder.field('input', {
       type: String
     }
   },
-  validations: function () {
+  validations: function() {
     var rules = {
       value: {}
     };

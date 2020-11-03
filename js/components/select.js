@@ -30,7 +30,7 @@ Fliplet.FormBuilder.field('select', {
     if ($vm.source === 'dataSources') {
       Fliplet.DataSources.get().then(function(dataSources) {
         $vm.options = dataSources;
-      })
+      });
     }
   },
   validations: function() {

@@ -1,3 +1,5 @@
+/* global Camera, addThumbnailToCanvas, loadImage */
+
 Fliplet.FormBuilder.field('image', {
   name: 'Image upload',
   category: 'Files',
@@ -59,10 +61,10 @@ Fliplet.FormBuilder.field('image', {
     Fliplet.FormBuilder.on('reset', this.onReset);
     Fliplet.Hooks.on('beforeFormSubmit', this.onBeforeSubmit);
   },
-  mounted: function () {
-     this.drawImagesAfterInit();
+  mounted: function() {
+    this.drawImagesAfterInit();
   },
-  updated: function () {
+  updated: function() {
     this.drawImagesAfterInit();
   },
   destroyed: function() {
@@ -77,7 +79,7 @@ Fliplet.FormBuilder.field('image', {
 
       $vm.value.splice(index, 1);
 
-      $vm.value.forEach(function (image, index) {
+      $vm.value.forEach(function(image, index) {
         addThumbnailToCanvas(image, index, $vm);
       });
 
@@ -87,7 +89,7 @@ Fliplet.FormBuilder.field('image', {
       this.value = [];
       this.$emit('_input', this.name, this.value);
     },
-    onBeforeSubmit: function (data) {
+    onBeforeSubmit: function() {
       $(this.$refs.imageInput).parents('.form-group').removeClass('has-error');
 
       if (!this.required) {
@@ -100,7 +102,7 @@ Fliplet.FormBuilder.field('image', {
         return Promise.reject('Please fill in required fields.');
       }
     },
-    validateValue: function () {
+    validateValue: function() {
       if (typeof this.value === 'string' && this.value) {
         this.value = [this.value];
       }
@@ -122,12 +124,12 @@ Fliplet.FormBuilder.field('image', {
         boundingRect = fileInput.getBoundingClientRect();
       }
 
-      return new Promise(function(resolve, reject) {
+      return new Promise(function(resolve) {
         $vm.boundingRect = fileInput.getBoundingClientRect();
 
-        var buttonLabels = ["Take Photo", "Choose Existing Photo", "Cancel"];
+        var buttonLabels = ['Take Photo', 'Choose Existing Photo', 'Cancel'];
         if (Modernizr.windows) {
-          buttonLabels = ["Take Photo", "Choose Existing Photo"];
+          buttonLabels = ['Take Photo', 'Choose Existing Photo'];
         }
 
         navigator.notification.confirm(
@@ -183,7 +185,7 @@ Fliplet.FormBuilder.field('image', {
 
       this.validateValue();
 
-      loadImage.parseMetaData(file, function (data) {
+      loadImage.parseMetaData(file, function(data) {
         var options = {
           canvas: true,
           maxWidth: $vm.customWidth,
@@ -191,10 +193,10 @@ Fliplet.FormBuilder.field('image', {
           orientation: data.exif ? data.exif.get('Orientation') : true
         };
 
-        loadImage(file, function (img) {
+        loadImage(file, function(img) {
           if (img.type === 'error') {
             $vm.hasCorruptedImage = true;
-             return;
+            return;
           }
           $vm.hasCorruptedImage = false;
 
@@ -262,7 +264,7 @@ Fliplet.FormBuilder.field('image', {
     drawImagesAfterInit: function() {
       var $vm = this;
 
-      $vm.value.forEach(function (image, index) {
+      $vm.value.forEach(function(image, index) {
         addThumbnailToCanvas(image, index,
           $vm);
       });

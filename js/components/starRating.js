@@ -26,7 +26,7 @@ Fliplet.FormBuilder.field('starRating', {
       ]
     }
   },
-  validations: function () {
+  validations: function() {
     var rules = {
       value: {}
     };
