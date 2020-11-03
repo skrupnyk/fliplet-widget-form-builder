@@ -20,6 +20,7 @@ Fliplet.FormBuilder.field('url', {
     if (this.required) {
       rules.value.required = window.validators.required;
     }
+
     return rules;
   }
 });

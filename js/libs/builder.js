@@ -7,6 +7,7 @@ var data = Fliplet.Widget.getData(widgetId) || {};
 if (data.fields) {
   data.fields = _.compact(data.fields);
 }
+
 if (Array.isArray(data.onSubmit) && data.onSubmit.length) {
   data.onSubmit.forEach(function(el, i) {
     if (el === 'templatedEmail') {
@@ -30,6 +31,7 @@ function changeSelectText() {
   setTimeout(function() {
     $('.hidden-select:not(.component .hidden-select)').each(function() {
       var selectedText = $(this).find('option:selected').text();
+
       if (selectedText !== '') {
         $(this).parents('.select-proxy-display').find('.select-value-proxy').html(selectedText);
       } else {
@@ -218,6 +220,7 @@ new Vue({
     },
     onFieldSettingChanged: function(fieldData) {
       var $vm = this;
+
       Object.keys(fieldData).forEach(function(prop) {
         $vm.activeField[prop] = fieldData[prop];
       });
@@ -262,9 +265,11 @@ new Vue({
       if (this.settings.onSubmit.indexOf('templatedEmailAdd') > -1) {
         this.settings.emailTemplateAdd = this.emailTemplateAdd || this.defaultEmailSettings;
       }
+
       if (this.settings.onSubmit.indexOf('templatedEmailEdit') > -1) {
         this.settings.emailTemplateEdit = this.emailTemplateEdit || this.defaultEmailSettings;
       }
+
       if (this.settings.onSubmit.indexOf('generateEmail') > -1) {
         this.settings.generateEmailTemplate = this.generateEmailTemplate || this.defaultEmailSettingsForCompose;
       }
@@ -281,6 +286,7 @@ new Vue({
     createDefaultBodyTemplate: function(fields) {
       // Creates default email template
       var defaultEmailTemplate = '<h1>' + this.settings.name + '</h1><p>A form submission has been received.</p>';
+
       defaultEmailTemplate += '<ul>';
 
       fields.forEach(function(field) {
@@ -501,6 +507,7 @@ new Vue({
         // remove existing hooks for the operations
         ds.hooks = _.reject(ds.hooks || [], function(hook) {
           var result = hook.widgetInstanceId == widgetId && hook.type == 'operations';
+
           if (result) {
             hooksDeleted = true;
           }
@@ -510,6 +517,7 @@ new Vue({
 
         if (fieldsToHash) {
           var payload = {};
+
           fieldsToHash.forEach(function(field) {
             payload[field] = ['hash'];
           });
@@ -592,6 +600,7 @@ new Vue({
       });
 
       var settings = formTemplate.settings;
+
       settings.templateId = formTemplate.id;
       settings.name = this.settings.name;
 
@@ -737,6 +746,7 @@ new Vue({
             // initialize value if it was set prior to initialization
             if ($vm.settings.resultHtml) {
               var updatedHtml = $vm.convertVueEventAttributes($vm.settings.resultHtml);
+
               editor.setContent(updatedHtml, {format: 'raw'});
             }
           });
@@ -811,6 +821,7 @@ new Vue({
     },
     'section': function(value) {
       var $vm = this;
+
       if (value === 'settings') {
         $vm.setupCodeEditor();
         changeSelectText();
@@ -845,6 +856,7 @@ new Vue({
         this.checkEmailTemplate();
       } else {
         this.toggleTemplatedEmailAdd = false;
+
         // Remove hook
         if ($vm.settings.dataSourceId && $vm.settings.dataSourceId !== '') {
           Fliplet.DataSources.getById($vm.settings.dataSourceId).then(function(dataSource) {
@@ -872,6 +884,7 @@ new Vue({
         this.checkEmailTemplate();
       } else {
         this.toggleTemplatedEmailEdit = false;
+
         // Remove hook
         if ($vm.settings.dataSourceId && $vm.settings.dataSourceId !== '') {
           Fliplet.DataSources.getById($vm.settings.dataSourceId).then(function(dataSource) {
@@ -963,6 +976,7 @@ new Vue({
     window.generateEmailProvider = null;
     window.linkProvider = null;
     var $vm = this;
+
     $vm.settings.name = $vm.settings.name || 'Untitled form';
 
     if (!$vm.showDataSourceSettings) {
@@ -973,6 +987,7 @@ new Vue({
       Fliplet.Studio.emit('widget-save-label-update', {
         text: ''
       });
+
       // Init tooltip
       if ($vm.$refs.templateGallery) {
         $($vm.$refs.templateGallery).find('[data-toggle="tooltip"]').tooltip();

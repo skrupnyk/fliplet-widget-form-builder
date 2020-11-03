@@ -41,6 +41,7 @@ Fliplet.FormBuilder.field('select', {
     if (this.required) {
       rules.value.required = window.validators.required;
     }
+
     return rules;
   }
 });

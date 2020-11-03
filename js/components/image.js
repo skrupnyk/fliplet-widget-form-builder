@@ -128,6 +128,7 @@ Fliplet.FormBuilder.field('image', {
         $vm.boundingRect = fileInput.getBoundingClientRect();
 
         var buttonLabels = ['Take Photo', 'Choose Existing Photo', 'Cancel'];
+
         if (Modernizr.windows) {
           buttonLabels = ['Take Photo', 'Choose Existing Photo'];
         }
@@ -136,6 +137,7 @@ Fliplet.FormBuilder.field('image', {
           'How do you want to choose your image?',
           function onSelectedImageMethod(button) {
             document.body.focus();
+
             switch (button) {
               case 1:
                 $vm.cameraSource = Camera.PictureSourceType.CAMERA;
@@ -224,6 +226,7 @@ Fliplet.FormBuilder.field('image', {
       }
 
       var getPicture;
+
       event.preventDefault();
 
       if (this.forcedClick) {

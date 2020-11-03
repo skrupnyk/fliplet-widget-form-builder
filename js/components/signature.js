@@ -42,6 +42,7 @@ Fliplet.FormBuilder.field('signature', {
     if (this.required) {
       rules.value.required = window.validators.required;
     }
+
     return rules;
   },
   computed: {
@@ -53,6 +54,7 @@ Fliplet.FormBuilder.field('signature', {
     var $vm = this;
 
     var canvas = this.$refs.canvas;
+
     canvas.style.width = '100%';
     canvas.style.height = parseInt(this.height, 10) + 'px';
     canvas.style.userSelect = 'none';

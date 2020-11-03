@@ -36,6 +36,7 @@ Fliplet.FormBuilder.field('date', {
     if (this.required) {
       rules.value.required = window.validators.required;
     }
+
     return rules;
   },
   computed: {
@@ -63,6 +64,7 @@ Fliplet.FormBuilder.field('date', {
       $vm.updateValue(moment().format('YYYY-MM-DD'));
       this.empty = false;
     }
+
     $vm.$v.$reset();
   },
   watch: {

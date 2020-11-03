@@ -83,6 +83,7 @@ Fliplet.FormBuilder.field('number', {
 
           if (Math.floor(value) !== value) {
             var valueParts = value.toString().split('.');
+
             currentNumbersAfterPoint = valueParts[1] ? valueParts[1].length : 0;
           }
 

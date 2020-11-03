@@ -29,6 +29,7 @@ Fliplet.FormBuilder.field('time', {
     if (this.required) {
       rules.value.required = window.validators.required;
     }
+
     return rules;
   },
   methods: {
@@ -54,6 +55,7 @@ Fliplet.FormBuilder.field('time', {
   },
   mounted: function() {
     var $vm = this;
+
     if (!this.value || this.autofill === 'always') {
       var now = new Date();
       var hours = now.getHours();
@@ -70,6 +72,7 @@ Fliplet.FormBuilder.field('time', {
       this.updateValue(hours + ':' + minutes);
       this.empty = false;
     }
+
     $vm.$v.$reset();
   }
 });

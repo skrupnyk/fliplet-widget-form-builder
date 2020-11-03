@@ -21,6 +21,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
     if (this.required) {
       rules.value.required = window.validators.required;
     }
+
     return rules;
   },
   computed: {
@@ -32,6 +33,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
     value: function(val) {
       // This happens when the value is updated programmatically via the FormBuilder field().val() method
       val = _.isNumber(val) ? _.toString(val) : val;
+
       if (this.editor && val !== this.editor.getContent()) {
         return this.editor.setContent(val || '', { format: 'raw' });
       }
@@ -184,6 +186,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
             // iFrames don't work with the form builder's Sortable feature
             // Instead, the iFrame is swapped with a <div></div> of the same dimensions
             var $el = $($vm.$refs.ghost);
+
             $el.width(editor.iframeElement.style.width).height(editor.iframeElement.style.height);
             $(editor.iframeElement).replaceWith($el);
           }
