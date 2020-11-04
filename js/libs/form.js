@@ -210,8 +210,14 @@ Fliplet.Widget.instance('form-builder', function(data) {
               }
               break;
 
-            case 'flRadio':
             case 'flStarRating':
+              field.options = _.times(5, function(i) {
+                return {
+                  id: '' + (i+1)
+                };
+              });
+
+            case 'flRadio':
               // Work only if passed value is a string
               // Altered check to support old version of the form builder and if a user provides data as ID not a Label it will work correctly
               var match = _.find(field.options, function (option) {
