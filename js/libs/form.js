@@ -146,6 +146,28 @@ Fliplet.Widget.instance('form-builder', function(data) {
               // Don't change the data types for Image and File fields
               break;
 
+            case 'flEmail':
+            case 'flInput':
+            case 'flNumber':
+            case 'flTelephone':
+            case 'flUrl':
+              if (Array.isArray(fieldData)) {
+                fieldData = _.join(_.compact(fieldData), ', ');
+              }
+              break;
+
+            case 'flTextarea':
+            case 'flWysiwyg':
+              if (Array.isArray(fieldData)) {
+                fieldData = _.join(_.compact(fieldData), '\n');
+              }
+              break;
+
+            case 'flDate':
+            case 'flRadio':
+            case 'flSelect':
+            case 'flStarRating':
+            case 'flTime':
             default:
               if (Array.isArray(fieldData)) {
                 fieldData = fieldData[0];
