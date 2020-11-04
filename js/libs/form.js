@@ -133,6 +133,16 @@ Fliplet.Widget.instance('form-builder', function(data) {
 
           var showCurrentDateTime = field.autofill === 'always';
 
+          if (field._type === 'flCheckbox') {
+            if (!Array.isArray(fieldData)) {
+              fieldData = _.compact([fieldData]);
+            }
+          } else {
+            if (Array.isArray(fieldData)) {
+              fieldData = fieldData[0];
+            }
+          }
+
           switch (field._type) {
             case 'flDate':
               var regexDateFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
@@ -172,7 +182,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
               break;
 
             case 'flCheckbox':
-              if (Array.isArray(fieldData) && fieldData.length > 0) {
+              if (fieldData.length > 0) {
                 var inOptions = [];
 
                 fieldData.forEach(function (element) {
