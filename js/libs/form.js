@@ -133,6 +133,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
 
           var showCurrentDateTime = field.autofill === 'always';
 
+          // Typecast field data to ensure data type is suitable for each field
           switch (field._type) {
             case 'flCheckbox':
               if (!Array.isArray(fieldData)) {
