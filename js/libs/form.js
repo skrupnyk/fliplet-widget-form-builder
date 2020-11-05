@@ -853,9 +853,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
                   field.value = value;
                   debouncedUpdate();
 
-                  // To set correct date in the date picker
-                  // We want to trigger change on date field every time.
-                  if (hasChanged || !field._type === 'flDate') {
+                  if (hasChanged) {
                     $form.triggerChange(field.name, field.value);
                   }
                 });
