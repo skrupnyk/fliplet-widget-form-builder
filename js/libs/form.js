@@ -131,6 +131,27 @@ Fliplet.Widget.instance('form-builder', function(data) {
             return; // do not update the field value
           }
 
+          var showCurrentDateTime = field.autofill === 'always';
+
+          // Typecast field data to ensure data type is suitable for each field
+          switch (field._type) {
+            case 'flCheckbox':
+              if (!Array.isArray(fieldData)) {
+                fieldData = _.compact([fieldData]);
+              }
+              break;
+
+            case 'flImage':
+            case 'flFile':
+              // Don't change the data types for Image and File fields
+              break;
+
+            default:
+              if (Array.isArray(fieldData)) {
+                fieldData = fieldData[0];
+              }
+          }
+
           switch (field._type) {
             case 'flDate':
               var regexDateFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
@@ -169,7 +190,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
               break;
 
             case 'flCheckbox':
-              if (Array.isArray(fieldData) && fieldData.length > 0) {
+              if (fieldData.length > 0) {
                 var inOptions = [];
 
                 fieldData.forEach(function (element) {
@@ -188,8 +209,14 @@ Fliplet.Widget.instance('form-builder', function(data) {
               }
               break;
 
-            case 'flRadio':
             case 'flStarRating':
+              field.options = _.times(5, function(i) {
+                return {
+                  id: '' + (i+1)
+                };
+              });
+
+            case 'flRadio':
               // Work only if passed value is a string
               // Altered check to support old version of the form builder and if a user provides data as ID not a Label it will work correctly
               var match = _.find(field.options, function (option) {
