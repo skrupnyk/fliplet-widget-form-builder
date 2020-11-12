@@ -935,7 +935,7 @@ var app = new Vue({
     Fliplet.FormBuilder.on('field-settings-changed', this.onFieldSettingChanged);
 
     $vm.loadDataSources().then(function () {
-      this.loadTemplates().then(function () {
+      $vm.loadTemplates().then(function () {
         $(selector).removeClass('is-loading');
 
         $($vm.$refs.templateDescription).tinymce({
