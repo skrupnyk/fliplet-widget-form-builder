@@ -1016,11 +1016,11 @@ Fliplet.FormBuilder.get = function (name) {
 Fliplet.FormBuilder.getAll = function (name) {
   return Promise.all(formBuilderInstances).then(function(forms) {
     if (typeof name === 'undefined') {
-      return forms
+      return forms;
     }
 
-    return forms.filter(function(vueForm) {
-      return vueForm.name === name;
+    return forms.filter(function(form) {
+      return form.name === name;
     });
   });
 };
