@@ -40,6 +40,8 @@ function addThumbnailToCanvas(imageURI, indexCanvas, self, isFileCanvas) {
     imageURI = (imageURI.indexOf('base64') > -1)
       ? imageURI
       :'data:image/jpeg;base64,' + imageURI;
+  } else {
+    imageURI = Fliplet.Media.authenticate(imageURI);
   }
 
   $vm.$nextTick(function () {
@@ -174,9 +176,6 @@ Fliplet.Widget.instance('form-builder', function(data) {
                 field.value.push(img);
               }
 
-              field.value = field.value.map(function (url) {
-                return Fliplet.Media.authenticate(url);
-              });
               break;
 
             case 'flTime':
