@@ -148,7 +148,12 @@ new Vue({
       organizationName: '',
       isPreviewing: formSettings.previewingTemplate !== '',
       editor: undefined,
-      accessRulesTypes: ['insert']
+      accessRules: [
+        {
+          allow: 'all',
+          type: ['select']
+        }
+      ]
     };
   },
   methods: {
@@ -652,13 +657,7 @@ new Vue({
           entries: [],
           columns: []
         },
-        accessRules: [
-          {
-            allow: 'all',
-            enabled: true,
-            type: $vm.accessRulesTypes
-          }
-        ]
+        accessRules: $vm.accessRules
       };
 
       window.dataSourceProvider =  Fliplet.Widget.open('com.fliplet.data-source-provider', {
@@ -711,6 +710,27 @@ new Vue({
         window.linkProvider = null;
         $vm.triggerSave();
       });
+    },
+    toggleAccessType: function(type, isTypeActive) {
+      var accessRuleIndex = -1;
+      var defaultRule = {
+        allow: 'all',
+        type: type.split()
+      };
+
+      this.accessRules.forEach(function(rule, index) {
+        var typeIndex = rule.type.indexOf(type);
+
+        if (typeIndex !== -1) {
+          accessRuleIndex = index;
+        }
+      });
+
+      if (isTypeActive && accessRuleIndex === -1) {
+        this.accessRules.push(defaultRule);
+      } else if (!isTypeActive && accessRuleIndex > -1) {
+        this.accessRules.splice(accessRuleIndex, 1);
+      }
     },
     setupCodeEditor: function() {
       var $vm = this;
@@ -837,13 +857,12 @@ new Vue({
     'settings.dataStore': function(value) {
       this.showExtraAdd = value.indexOf('dataSource') > -1;
       this.showExtraEdit = value.indexOf('editDataSource') > -1;
-      this.accessRulesTypes = this.showExtraEdit
-        ? ['insert', 'update']
-        : ['insert'];
+
+      this.toggleAccessType('insert', this.showExtraAdd);
+      this.toggleAccessType('update', this.showExtraEdit);
 
       if (window.dataSourceProvider) {
-        window.dataSourceProvider.close();
-        window.dataSourceProvider = null;
+        window.dataSourceProvider.emit('update-security-rules', { accessRules: this.accessRules });
       }
     },
     'settings.onSubmit': function(array) {
