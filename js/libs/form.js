@@ -148,6 +148,28 @@ Fliplet.Widget.instance('form-builder', function(data) {
               // Don't change the data types for Image and File fields
               break;
 
+            case 'flEmail':
+            case 'flInput':
+            case 'flNumber':
+            case 'flTelephone':
+            case 'flUrl':
+              if (Array.isArray(fieldData)) {
+                fieldData = _.join(_.compact(fieldData), ', ');
+              }
+              break;
+
+            case 'flTextarea':
+            case 'flWysiwyg':
+              if (Array.isArray(fieldData)) {
+                fieldData = _.join(_.compact(fieldData), '\n');
+              }
+              break;
+
+            case 'flDate':
+            case 'flRadio':
+            case 'flSelect':
+            case 'flStarRating':
+            case 'flTime':
             default:
               if (Array.isArray(fieldData)) {
                 fieldData = fieldData[0];
@@ -158,7 +180,8 @@ Fliplet.Widget.instance('form-builder', function(data) {
             case 'flDate':
               var regexDateFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
               var regexISOFormat = /(\d{4})-(\d{2})-(\d{2})T(\d{2})\:(\d{2})\:(\d{2})[+-](\d{2})\:(\d{2})/;
-              if (regexDateFormat.exec(fieldData) || regexISOFormat.exec(fieldData)) {
+
+              if ((regexDateFormat.exec(fieldData) || regexISOFormat.exec(fieldData)) && !showCurrentDateTime) {
                 field.value = moment(fieldData).format('YYYY-MM-DD');
               } else {
                 field.value = moment().get().format('YYYY-MM-DD');
@@ -181,7 +204,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
             case 'flTime':
               var regexp = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/;
 
-              if (regexp.exec(fieldData)) {
+              if (regexp.exec(fieldData) && !showCurrentDateTime) {
                 field.value = fieldData;
               } else {
                 field.value = moment().get().format('HH:mm');
@@ -989,6 +1012,14 @@ Fliplet.FormBuilder.get = function (name) {
   });
 };
 
-Fliplet.FormBuilder.getAll = function () {
-  return Promise.all(formBuilderInstances);
+Fliplet.FormBuilder.getAll = function (name) {
+  return Promise.all(formBuilderInstances).then(function(forms) {
+    if (typeof name === 'undefined') {
+      return forms;
+    }
+
+    return forms.filter(function(form) {
+      return form.name === name;
+    });
+  });
 };

@@ -962,3 +962,12 @@ form hr {
     bottom: unset !important;
   }
 }
+
+.fl-widget-provider {
+  width: 100%;
+  border: 0;
+}
+
+#data-source-provider {
+  margin-bottom: -10px;
+}

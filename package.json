@@ -1,0 +1,23 @@
+{
+  "name": "widget-form-builder",
+  "version": "1.0.0",
+  "description": "Documentation is available at https://developers.fliplet.com/API/components/form-builder.html",
+  "main": "index.js",
+  "scripts": {
+    "eslint:github-action": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fliplet/fliplet-widget-form-builder.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fliplet/fliplet-widget-form-builder/issues"
+  },
+  "homepage": "https://github.com/Fliplet/fliplet-widget-form-builder#readme",
+  "dependencies": {
+    "eslint": "^7.12.1",
+    "eslint-config-fliplet": "^1.0.5"
+  }
+}
