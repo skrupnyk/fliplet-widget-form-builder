@@ -35,13 +35,13 @@
         </div>
       </div>
 
-      <div v-if="!isHidden" class="form-group cleafix">
+      <div class="form-group cleafix">
         <div class="col-xs-12">
           <label class="control-label">Is this field required?</label>
         </div>
         <div class="col-xs-12">
           <div class="radio radio-icon">
-            <input type="radio" id="required-yes" name="required-option" v-bind:value="true" v-model="required">
+            <input type="radio" id="required-yes" name="required-option" v-bind:value="true" v-model="required" v-on:input="isHidden = false">
             <label for="required-yes">
               <span class="check"><i class="fa fa-circle"></i></span> <strong>Yes</strong> - Users will have to fill in the field
             </label>
@@ -55,22 +55,15 @@
         </div>
       </div>
 
-      <div v-if="canHide" class="form-group-cleafix">
-        <div v-if="isHidden" class="alert alert-info">
-          <p>Hidden fields cannot be set as required. Please disable field hiding before marking the field as required.</p>
-        </div>
-        <div v-if="!required" class="checkbox checkbox-icon form-hide-checkbox">
-          <input type="checkbox" :name="name" v-model="isHidden" id="form-hide-checkbox">
+      <div class="form-group-cleafix">
+        <div class="checkbox checkbox-icon form-hide-checkbox">
+          <input type="checkbox" :name="name" v-model="isHidden" id="form-hide-checkbox" v-on:input="required = false">
           <label for="form-hide-checkbox">
             <span class="check"><i class="fa fa-check"></i></span>
             <span class="hide-field">Hide this field from users.</span>
           </label>
         </div>
-        <div v-else class="alert alert-info">
-          <p>Required fields cannot be hidden. Please disable field requirement before hiding the field.</p>
-        </div>
       </div>
-
     </div>
 
     {{#hasOptions}}
@@ -83,6 +76,37 @@
         </div>
       </div>
     {{/hasOptions}}
+
+     <div v-if="_componentsWithDescription.includes(_componentName)" class="form-group cleafix">
+       <div class="col-xs-12">
+        <label>Description</label>
+        <input class="form-control" type="text" v-model.trim="description" placeholder="Description text" />
+      </div>
+    </div>
+
+    <div v-if="_componentsWithPersonalization.includes(_componentName)" class="form-group cleafix">
+      <div class="col-xs-12">
+        <label>Default value type</label>
+        <select class="form-control" :value="defaultValueSource" v-model="defaultValueSource">
+          <option value="default">Enter a value</option>
+          <option value="profile">User profile data</option>
+          <option value="appStorage">App storage variable</option>
+          <option value="query">Link query parameter</option>
+        </select>
+        <div class="col-xs-12 text-right">
+          <a href="#!" target="_blank">Learn more about these types</a>
+        </div>
+        <div v-if="defaultValueSource !== 'default'">
+          <label>Default key</label>
+          <div v-if="!defaultValueKey" class="text-danger">
+            This field is required*
+          </div>
+          <input v-bind:class="{ 'border-danger': !defaultValueKey }" v-if="defaultValueSource === 'profile'"class="form-control" type="text" v-model.trim="defaultValueKey" placeholder="Enter user data field/column name" />
+          <input v-bind:class="{ 'border-danger': !defaultValueKey }" v-else-if="defaultValueSource === 'appStorage'"class="form-control" type="text" v-model.trim="defaultValueKey" placeholder="Enter storage key" />
+          <input v-bind:class="{ 'border-danger': !defaultValueKey }" v-else-if="defaultValueSource === 'query'"class="form-control" type="text" v-model.trim="defaultValueKey" placeholder=" Enter query name" />
+        </div>
+      </div>
+    </div>
 
     <div class="col-xs-12">
       {{{ template }}}
