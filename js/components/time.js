@@ -78,5 +78,12 @@ Fliplet.FormBuilder.field('time', {
     }
 
     $vm.$v.$reset();
+  },
+  watch: {
+    value: function(val) {
+      if (!val) {
+        this.updateValue(moment().format('HH:mm'));
+      }
+    }
   }
 });
