@@ -612,6 +612,8 @@ new Vue({
       this.updateFormSettings(templateId, false);
 
       $vm.save(true).then(function onSettingsSaved() {
+        $(selector).removeClass('is-loading');
+
         Fliplet.Studio.emit('reload-widget-instance', Fliplet.Widget.getDefaultId());
         $vm.triggerSave();
       });
@@ -831,6 +833,12 @@ new Vue({
         $vm.templates = templates.system.concat(templates.organization);
         $vm.systemTemplates = templates.system;
         $vm.organizationTemplates = templates.organization;
+
+        if (!$vm.organizationTemplates.length) {
+          var blankTemplateId = $vm.systemTemplates[0].id;
+
+          $vm.useTemplate(blankTemplateId);
+        }
       });
     }
   },
@@ -971,7 +979,9 @@ new Vue({
     Fliplet.FormBuilder.on('field-settings-changed', this.onFieldSettingChanged);
 
     this.loadTemplates().then(function() {
-      $(selector).removeClass('is-loading');
+      if ($vm.organizationTemplates.length || data.fields) {
+        $(selector).removeClass('is-loading');
+      }
 
       $($vm.$refs.templateDescription).tinymce({
         plugins: [
@@ -1002,6 +1012,7 @@ new Vue({
           $($vm.$refs.templateGallery).find('[data-toggle="tooltip"]').tooltip({
             container: 'body'
           });
+          $(selector).removeClass('is-loading');
         }, 500);
       }
     });
