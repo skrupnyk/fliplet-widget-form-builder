@@ -91,8 +91,7 @@
       "fliplet-media",
       "font-awesome",
       "moment",
-      { "name": "tinymce:5.7.0", "interact": false },
-      { "name": "tinymce", "interact": true },
+      { "name": "tinymce:5.7.0", "interact": false }
       "fliplet-session"
     ],
     "assets": [
