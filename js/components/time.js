@@ -21,6 +21,11 @@ Fliplet.FormBuilder.field('time', {
       default: true
     }
   },
+  data: function() {
+    return {
+      isInputFocused: false
+    };
+  },
   validations: function() {
     var rules = {
       value: {}
