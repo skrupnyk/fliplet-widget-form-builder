@@ -1,6 +1,6 @@
 // Paste as Plain Text plugin
 if (tinymce && tinymce.majorVersion === '5') {
-  tinymce.PluginManager.add('pasteplaintext', function(editor, url) {
+  tinymce.PluginManager.add('pasteplaintext', function(editor) {
     var openDialog = function() {
       return editor.windowManager.open({
         title: 'Paste as Plain Text',
