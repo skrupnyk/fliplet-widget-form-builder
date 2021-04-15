@@ -16,7 +16,6 @@
       "fliplet-datasources",
       "codemirror",
       "bootstrap",
-      "tinymce",
       "moment"
     ],
     "assets": [
@@ -91,7 +90,7 @@
       "fliplet-media",
       "font-awesome",
       "moment",
-      "tinymce",
+      { "name": "tinymce:5.7.0", "interact": false },
       "fliplet-session"
     ],
     "assets": [

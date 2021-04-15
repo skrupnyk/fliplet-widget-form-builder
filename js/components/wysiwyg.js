@@ -1,3 +1,63 @@
+// Paste as Plain Text plugin
+if (tinymce && tinymce.majorVersion === '5') {
+  tinymce.PluginManager.add('pasteplaintext', function(editor, url) {
+    var openDialog = function() {
+      return editor.windowManager.open({
+        title: 'Paste as Plain Text',
+        body: {
+          type: 'panel',
+          items: [
+            {
+              type: 'htmlpanel',
+              html: '<p>Please paste inside the following box using the keyboard (<strong style="font-weight:600">Cmd/Ctrl + V</strong>) and hit <strong style="font-weight:600">Paste</strong>.<br></p><style>.tox .tox-form__group--stretched { height: 240px; }</style>'
+            },
+            {
+              type: 'textarea',
+              name: 'text'
+            }
+          ]
+        },
+        buttons: [
+          {
+            type: 'cancel',
+            text: 'Cancel'
+          },
+          {
+            type: 'submit',
+            text: 'Paste',
+            primary: true
+          }
+        ],
+        onSubmit: function(api) {
+          var data = api.getData();
+
+          /* Insert content when the window form is submitted */
+          editor.insertContent(data.text.replace(/(?:\r\n|\r|\n)/g, '<br>'));
+          api.close();
+        }
+      });
+    };
+
+    /* Add a button that opens a window */
+    editor.ui.registry.addButton('pasteplaintext', {
+      icon: 'paste-text',
+      tooltip: 'Paste as Plain Text',
+      onAction: function() {
+        openDialog();
+      }
+    });
+
+    /* Return the metadata for the plugin */
+    return {
+      getMetadata: function() {
+        return  {
+          name: 'Paste as Plain Text'
+        };
+      }
+    };
+  });
+}
+
 Fliplet.FormBuilder.field('wysiwyg', {
   name: 'Rich text',
   category: 'Text inputs',
@@ -132,40 +192,57 @@ Fliplet.FormBuilder.field('wysiwyg', {
 
     var config = {
       target: this.$refs.textarea,
-      theme: 'modern',
       readonly: this.readonly,
-      mobile: {
-        theme: this.readonly
-          ? 'silver'
-          : 'mobile',
-        plugins: [ 'autosave', 'lists', 'autolink' ],
-        toolbar: [ 'bold', 'italic', 'underline', 'bullist', 'numlist', 'removeformat' ]
+      height: lineHeight * this.rows,
+      menubar: false,
+      formats: {
+        removeformat: [
+          // Remove block containers
+          {
+            selector: 'div,main,article,aside,header,footer',
+            remove: 'all',
+            split: false,
+            expand: false,
+            block_expand: true,
+            deep: true
+          },
+          // Remove inline containers
+          {
+            selector: 'b,strong,em,i,font,u,strike,sub,sup,dfn,code,samp,kbd,var,cite,mark,q,del,ins,span',
+            remove: 'all',
+            split: true,
+            expand: false,
+            deep: true
+          },
+          // Remove attributes
+          {
+            selector: '*',
+            attributes: ['style', 'class', 'id'],
+            split: false,
+            expand: false,
+            deep: true
+          }
+        ]
       },
       plugins: [
-        'advlist autolink lists link directionality',
-        'autoresize fullscreen code paste'
-      ].join(' '),
+        'advlist autolink lists link searchreplace print directionality',
+        'table paste pasteplaintext'
+      ],
+      statusbar: false,
       toolbar: this.readonly
         ? false
-        : [
-          'bold italic underline',
-          'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
-          'ltr rtl | link | removeformat code fullscreen'
-        ].join(' | '),
-      image_advtab: true,
-      menubar: false,
-      statusbar: false,
+        : ['bold italic underline | alignleft aligncenter alignright alignjustify',
+          'bullist numlist outdent indent | ltr rtl',
+          'link | pasteplaintext removeformat | formatselect'].join(' | '),
+      mobile: {
+        menubar: false,
+        toolbar_mode: 'sliding'
+      },
       // Prevent URLs from being altered
       // https://stackoverflow.com/questions/3796942
       relative_urls: false,
       remove_script_host: false,
       convert_urls: true,
-      inline: false,
-      resize: false,
-      autoresize_bottom_margin: 0,
-      autoresize_max_height: lineHeight * this.rows,
-      autoresize_min_height: lineHeight * this.rows,
-      autofocus: false,
       branding: false,
       setup: function(editor) {
         $vm.editor = editor;
