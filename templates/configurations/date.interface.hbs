@@ -10,9 +10,9 @@
       </label>
     </div>
     <div class="radio radio-icon">
-      <input type="radio" id="specify" name="specify" value='specify' v-model="autofill">
-      <label for="specify">
-        <span class="check"><i class="fa fa-circle"></i></span>Set a default value
+      <input type="radio" id="date" name="date" value='date' v-model="autofill">
+      <label for="date">
+        <span class="check"><i class="fa fa-circle"></i></span>Autofill with a specific date if it's empty
       </label>
     </div>
     <div class="radio radio-icon">
@@ -30,7 +30,7 @@
   </div>
 </div>
 
-<div class="form-group clearfix" v-if="autofill === 'specify'">
+<div class="form-group clearfix" v-if="autofill === 'date'">
   <div>
     <div class="hidden"> <!-- Remove "hidden" here to see how this could work for choosing different default value types -->
       <label>Default value type</label>
