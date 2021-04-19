@@ -226,14 +226,14 @@ Fliplet.FormBuilder.field('wysiwyg', {
       },
       plugins: [
         'advlist autolink lists link searchreplace print directionality',
-        'table paste pasteplaintext'
+        'table paste pasteplaintext code'
       ],
       statusbar: false,
       toolbar: this.readonly
         ? false
         : ['bold italic underline | alignleft aligncenter alignright alignjustify',
           'bullist numlist outdent indent | ltr rtl',
-          'link | pasteplaintext removeformat | formatselect'].join(' | '),
+          'link | pasteplaintext removeformat | code | formatselect'].join(' | '),
       mobile: {
         menubar: false,
         toolbar_mode: 'sliding'
@@ -242,7 +242,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
       // https://stackoverflow.com/questions/3796942
       relative_urls: false,
       remove_script_host: false,
-      convert_urls: true,
+      convert_urls: false,
       branding: false,
       setup: function(editor) {
         $vm.editor = editor;
