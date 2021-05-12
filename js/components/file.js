@@ -47,13 +47,18 @@ Fliplet.FormBuilder.field('file', {
   computed: {
     selectedFileName: function() {
       return _.map(this.value, 'name').join(', ');
+    },
+    isValueUrlLink: function() {
+      return _.some(this.value, function(value) {
+        return typeof value === 'string' && Fliplet.Media.isRemoteUrl(value);
+      });
     }
   },
   created: function() {
     Fliplet.FormBuilder.on('reset', this.onReset);
   },
   updated: function() {
-    if (this.readonly) {
+    if (this.readonly || this.isValueUrlLink) {
       var $vm = this;
       var isFileDataLoaded = false;
       var fileIDs = _.map(this.value, function(fileURL) {
@@ -74,7 +79,13 @@ Fliplet.FormBuilder.field('file', {
         files: fileIDs,
         fields: ['name', 'url', 'metadata', 'createdAt']
       }).then(function(files) {
-        $vm.value = files;
+        var newFiles = _.map(files, function(file) {
+          file.size = file.metadata.size;
+
+          return file;
+        });
+
+        $vm.value = _.sortBy(newFiles, ['name']);
       }).catch(function() {});
     }
   },
