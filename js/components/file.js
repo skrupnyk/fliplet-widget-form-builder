@@ -54,6 +54,17 @@ Fliplet.FormBuilder.field('file', {
       });
     }
   },
+  validations: function() {
+    var rules = {
+      value: {}
+    };
+
+    if (this.required) {
+      rules.value.required = window.validators.required;
+    }
+
+    return rules;
+  },
   created: function() {
     Fliplet.FormBuilder.on('reset', this.onReset);
   },
