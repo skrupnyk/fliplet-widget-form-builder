@@ -134,13 +134,6 @@ Fliplet.FormBuilder.field('wysiwyg', {
       target: this.$refs.textarea,
       theme: 'modern',
       readonly: this.readonly,
-      mobile: {
-        theme: this.readonly
-          ? 'silver'
-          : 'mobile',
-        plugins: [ 'autosave', 'lists', 'autolink' ],
-        toolbar: [ 'bold', 'italic', 'underline', 'bullist', 'numlist', 'removeformat' ]
-      },
       plugins: [
         'advlist autolink lists link directionality',
         'autoresize fullscreen code paste'
@@ -214,6 +207,14 @@ Fliplet.FormBuilder.field('wysiwyg', {
         });
       }
     };
+
+    if (!this.readonly) {
+      config.mobile = {
+        theme: 'mobile',
+        plugins: [ 'autosave', 'lists', 'autolink' ],
+        toolbar: [ 'bold', 'italic', 'underline', 'bullist', 'numlist', 'removeformat' ]
+      };
+    }
 
     // Allow custom code to register hooks before this runs
     Fliplet().then(function() {
