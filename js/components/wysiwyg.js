@@ -11,6 +11,9 @@ Fliplet.FormBuilder.field('wysiwyg', {
     },
     description: {
       type: String
+    },
+    tinymceId: {
+      type: Number
     }
   },
   validations: function() {
@@ -129,6 +132,8 @@ Fliplet.FormBuilder.field('wysiwyg', {
   mounted: function() {
     var $vm = this;
     var lineHeight = 40;
+
+    this.tinymceId = this.name + parseInt($(this.$refs.textarea).parents('[data-form-builder-id]').data('formBuilderId'), 10);
 
     var config = {
       target: this.$refs.textarea,
