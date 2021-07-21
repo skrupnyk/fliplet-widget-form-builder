@@ -170,10 +170,6 @@ Fliplet.FormBuilder = (function() {
         }
       };
 
-      component.methods.onInput = _.debounce(function($event) {
-        this.$emit('_input', this.name, $event.target.value);
-      }, 200);
-
       component.methods.browserSupport = function(browserType) {
         switch (browserType) {
           case 'IE11':
@@ -184,6 +180,10 @@ Fliplet.FormBuilder = (function() {
             return false;
         }
       };
+
+      component.methods.onInput = _.debounce(function($event) {
+        this.$emit('_input', this.name, $event.target.value);
+      }, 200);
 
       // Define method to trigger the form reset from a children
       if (!component.methods.resetForm) {
@@ -332,16 +332,6 @@ Fliplet.FormBuilder = (function() {
           return;
         }
 
-        if (['flDate', 'flTime'].indexOf(this._componentName) !== -1 && this.isApplySpecificDateField && !this.value) {
-          this.invalidDate = true;
-          this.invalidTime = true;
-
-          return;
-        }
-
-        this.invalidDate = false;
-        this.invalidTime = false;
-
         var $vm = this;
         var data = {};
 
@@ -367,14 +357,14 @@ Fliplet.FormBuilder = (function() {
         default: componentName
       };
 
-      component.props._componentsWithPersonalization = {
-        type: Array,
-        default: ['flInput', 'flCheckbox', 'flRadio', 'flEmail', 'flNumber', 'flTelephone', 'flUrl', 'flTextarea', 'flWysiwyg', 'flSelect']
-      };
-
       component.props._componentsWithDescription = {
         type: Array,
         default: ['flInput', 'flCheckbox', 'flRadio', 'flEmail', 'flNumber', 'flTelephone', 'flUrl', 'flTextarea', 'flWysiwyg', 'flSelect', 'flDate', 'flTime', 'flStarRating', 'flSignature', 'flImage', 'flFile']
+      };
+
+      component.props._componentsWithPersonalization = {
+        type: Array,
+        default: ['flInput', 'flCheckbox', 'flRadio', 'flEmail', 'flNumber', 'flTelephone', 'flUrl', 'flTextarea', 'flWysiwyg', 'flSelect', 'flDate', 'flTime']
       };
 
       component.props._readOnlyComponents = {
@@ -435,17 +425,6 @@ Fliplet.FormBuilder = (function() {
         }
 
         return '';
-      };
-
-      component.methods.browserSupport = function(browserType) {
-        switch (browserType) {
-          case 'IE11':
-            return navigator.userAgent.indexOf('Trident/') !== -1;
-          case 'Safari':
-            return navigator.userAgent.indexOf('Safari') !== -1;
-          default:
-            return false;
-        }
       };
 
       if (!component.mounted) {
