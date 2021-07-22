@@ -12,7 +12,7 @@ Fliplet.FormBuilder.field('date', {
     },
     autofill: {
       type: String,
-      default: 'default'
+      default: 'always'
     },
     defaultSource: {
       type: String,
@@ -43,6 +43,9 @@ Fliplet.FormBuilder.field('date', {
   computed: {
     isWeb: function() {
       return Fliplet.Env.get('platform') === 'web';
+    },
+    isApplyCurrentDateField: function() {
+      return this.autofill === 'always' || this.autofill === 'default';
     }
   },
   mounted: function() {
@@ -54,10 +57,16 @@ Fliplet.FormBuilder.field('date', {
         todayHighlight: true,
         autoclose: true
       }).on('changeDate', function(e) {
-        $vm.value = moment(e.date).format(DATE_FORMAT);
+        if (e.date) {
+          $vm.value = moment(e.date).format(DATE_FORMAT);
+        }
+
+        $vm.updateValue();
       });
 
-      this.datePicker.datepicker('setDate', this.value || new Date());
+      if (this.autofill !== 'empty') {
+        this.datePicker.datepicker('setDate', new Date(this.value) || new Date());
+      }
     }
 
     if (this.defaultValueSource !== 'default') {
@@ -66,8 +75,15 @@ Fliplet.FormBuilder.field('date', {
 
     if (!this.value || this.autofill === 'always') {
       // HTML5 date field wants YYYY-MM-DD format
-      this.value = moment().format('YYYY-MM-DD');
+      this.value = moment().format(DATE_FORMAT);
       this.empty = false;
+    }
+
+    if (this.autofill === 'empty') {
+      this.value = '';
+      this.datePicker.datepicker('setDate', '');
+
+      return;
     }
 
     this.$emit('_input', this.name, this.value);
@@ -75,8 +91,8 @@ Fliplet.FormBuilder.field('date', {
   },
   watch: {
     value: function(val) {
-      if (Fliplet.Env.get('platform') === 'web') {
-        this.datePicker.datepicker('setDate', val);
+      if (!val && this.autofill !== 'empty') {
+        this.updateValue(moment().format(DATE_FORMAT));
       }
 
       this.highlightError();

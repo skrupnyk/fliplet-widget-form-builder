@@ -10,7 +10,7 @@ Fliplet.FormBuilder.field('time', {
     },
     autofill: {
       type: String,
-      default: 'default'
+      default: 'always'
     },
     defaultSource: {
       type: String,
@@ -60,6 +60,11 @@ Fliplet.FormBuilder.field('time', {
       $vm.$v.$reset();
     }
   },
+  computed: {
+    isApplyCurrentDateField: function() {
+      return this.autofill === 'always' || this.autofill === 'default';
+    }
+  },
   beforeUpdate: function() {
     /**
      * if the passed time is in the HH:mm A format,
@@ -78,6 +83,12 @@ Fliplet.FormBuilder.field('time', {
 
     if (this.defaultValueSource !== 'default') {
       this.setValueFromDefaultSettings({ source: this.defaultValueSource, key: this.defaultValueKey });
+    }
+
+    if (this.autofill === 'empty') {
+      this.value = '';
+
+      return;
     }
 
     if (!this.value || this.autofill === 'always') {
