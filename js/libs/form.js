@@ -292,7 +292,10 @@ Fliplet.Widget.instance('form-builder', function(data) {
         isOffline: false,
         isOfflineMessage: '',
         isEditMode: data.dataStore && data.dataStore.indexOf('editDataSource') > -1,
-        blockScreen: false
+        blockScreen: false,
+        labels: {
+          requiredFields: T('form.requiredFields')
+        }
       };
     },
     computed: {
@@ -488,7 +491,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
          * @returns {void} shows a toast message to users
          */
         function showValidationMessage(errorMessage) {
-          errorMessage = errorMessage || 'Please complete all required fields.';
+          errorMessage = errorMessage || T('form.errors.requiredFieldsMissing');
           Fliplet.UI.Toast(errorMessage);
         }
 
