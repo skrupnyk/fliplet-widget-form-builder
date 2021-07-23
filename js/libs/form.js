@@ -276,6 +276,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
   var changeListeners = {};
 
   var $form = new Vue({
+    i18n: Fliplet.Locale.plugins.vue(),
     el: $(selector)[0],
     data: function() {
       return {
@@ -292,10 +293,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
         isOffline: false,
         isOfflineMessage: '',
         isEditMode: data.dataStore && data.dataStore.indexOf('editDataSource') > -1,
-        blockScreen: false,
-        labels: {
-          requiredFields: T('form.requiredFields')
-        }
+        blockScreen: false
       };
     },
     computed: {
