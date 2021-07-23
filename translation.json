@@ -1,6 +1,6 @@
 {
   "form": {
-    "requiredFields":"Required Fields",
+    "requiredFields": "Required Fields",
     "errors": {
       "requiredFieldsMissing": "Please complete all required fields"
     }
