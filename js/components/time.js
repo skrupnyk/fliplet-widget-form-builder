@@ -10,7 +10,7 @@ Fliplet.FormBuilder.field('time', {
     },
     autofill: {
       type: String,
-      default: 'always'
+      default: 'default'
     },
     defaultSource: {
       type: String,
@@ -107,12 +107,9 @@ Fliplet.FormBuilder.field('time', {
       this.updateValue(hours + ':' + minutes);
       this.empty = false;
     }
-  },
-  watch: {
-    value: function(val) {
-      if (!val) {
-        this.updateValue(moment().format('HH:mm'));
-      }
+
+    if (!this.value) {
+      this.updateValue(moment().format('HH:mm'));
     }
   }
 });

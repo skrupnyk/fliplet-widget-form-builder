@@ -25,7 +25,7 @@
 
     <input
       ref="timepicker"
-      type="time"
+      type="text"
       v-model.lazy="value"
       v-on:change="updateValue()"
       v-on:input="onInput($event)"
@@ -38,6 +38,20 @@
       tabindex="0"
     />
   </div>
+  <div v-else class="input-group native-time" :class="{ 'input-focused': isInputFocused }">
+      <input
+        type="time"
+        v-model.lazy="value"
+        v-on:change="updateValue()"
+        v-on:focus="isInputFocused = true"
+        v-on:blur="isInputFocused = false"
+        :name="name"
+        :id="name"
+        :placeholder="placeholder"
+        class="form-control focus-outline"
+        tabindex="0"
+      />
+    </div>
 </template>
 
 <p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>
