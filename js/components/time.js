@@ -92,19 +92,7 @@ Fliplet.FormBuilder.field('time', {
     }
 
     if (!this.value || this.autofill === 'always') {
-      var now = new Date();
-      var hours = now.getHours();
-      var minutes = now.getMinutes();
-
-      if (hours < 10) {
-        hours = '0' + hours;
-      }
-
-      if (minutes < 10) {
-        minutes = '0' + minutes;
-      }
-
-      this.updateValue(hours + ':' + minutes);
+      this.updateValue(moment().format('HH:mm'));
       this.empty = false;
     }
 
