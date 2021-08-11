@@ -95,9 +95,5 @@ Fliplet.FormBuilder.field('time', {
       this.updateValue(moment().format('HH:mm'));
       this.empty = false;
     }
-
-    if (!this.value) {
-      this.updateValue(moment().format('HH:mm'));
-    }
   }
 });
