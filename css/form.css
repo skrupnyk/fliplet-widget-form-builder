@@ -1110,6 +1110,29 @@ input[type="time"]::-webkit-clear-button {
   margin-top: 3px;
 }
 
+input[type="date"],
+input[type="time"] {
+  -webkit-appearance: none;
+  padding: 0 40px;
+  line-height: 1.42857143;
+}
+
+input[type="time"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  -webkit-appearance: none;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 42px;
+  line-height: 42px;
+  vertical-align: middle;
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+
 /* Centered increase decrease buttons in the time piker for chrome windows OS */
 
 .windows input[type="time"]::-webkit-inner-spin-button,
