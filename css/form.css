@@ -1101,12 +1101,12 @@ form hr {
 
 /* Centered increase decrease buttons in the time piker for chrome mac OS */
 
-input[type='time']::-webkit-inner-spin-button,
-input[type='time']::-webkit-outer-spin-button {
+input[type="time"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-outer-spin-button {
   margin: 1px 0 0 3px;
 }
 
-input[type='time']::-webkit-clear-button {
+input[type="time"]::-webkit-clear-button {
   margin-top: 3px;
 }
 
