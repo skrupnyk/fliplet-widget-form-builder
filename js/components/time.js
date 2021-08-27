@@ -31,6 +31,10 @@ Fliplet.FormBuilder.field('time', {
       value: {}
     };
 
+    if (this.required) {
+      rules.value.required = window.validators.required;
+    }
+
     return rules;
   },
   methods: {
