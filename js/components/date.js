@@ -34,10 +34,6 @@ Fliplet.FormBuilder.field('date', {
       value: {}
     };
 
-    if (this.required) {
-      rules.value.required = window.validators.required;
-    }
-
     return rules;
   },
   computed: {
