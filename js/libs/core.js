@@ -161,12 +161,7 @@ Fliplet.FormBuilder = (function() {
 
         if ($vm.$v && $vm.$v.value) {
           $vm.$v.$touch();
-
-          if ($vm.$v.value.$error) {
-            $($vm.$el).addClass('has-error');
-          } else {
-            $($vm.$el).removeClass('has-error');
-          }
+          $($vm.$el).toggleClass('has-error', $vm.$v.value.$error && !!$vm.$attrs.enabled);
         }
       };
 
