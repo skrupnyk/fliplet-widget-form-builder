@@ -56,8 +56,6 @@ Fliplet.FormBuilder.field('time', {
         });
 
       this.timepicker.timeEntry('setTime', $vm.value);
-
-      $vm.$v.$reset();
     }
   },
   computed: {
@@ -94,6 +92,15 @@ Fliplet.FormBuilder.field('time', {
     if (!this.value || this.autofill === 'always') {
       this.updateValue(moment().format('HH:mm'));
       this.empty = false;
+    }
+
+    this.$v.$reset();
+  },
+  watch: {
+    value: function(val) {
+      this.timepicker.timeEntry('setTime', val);
+      this.highlightError();
+      this.$emit('_input', this.name, val);
     }
   }
 });
