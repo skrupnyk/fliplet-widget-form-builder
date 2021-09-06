@@ -158,6 +158,11 @@
                     <span class="check"><i class="fa fa-check"></i></span> Add new submissions to a data source
                   </label>
                 </div>
+                <div v-if="settings.autobindProfileEditing">
+                  <p class="help-block">
+                    <small>If the form loads data from user’s profile, it can only be used to ypdate the user’s profile.</small>
+                  </p>
+                </div>
 
                 <div class="hidden-settings" v-bind:class="{ 'active': showExtraAdd, 'hidden': !showExtraAdd }">
                   <div class="form-group">
