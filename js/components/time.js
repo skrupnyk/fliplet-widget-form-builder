@@ -94,7 +94,7 @@ Fliplet.FormBuilder.field('time', {
         this.timepicker.timeEntry('setTime', val);
       }
 
-      if (this.$v.value.$invalid) {
+      if (Fliplet.Env.get('preview') && this.$v.value.$invalid) {
         this.highlightError();
       }
 

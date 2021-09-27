@@ -99,7 +99,7 @@ Fliplet.FormBuilder.field('date', {
         this.datePicker.datepicker('setDate', val);
       }
 
-      if (this.$v.value.$invalid) {
+      if (Fliplet.Env.get('preview') && this.$v.value.$invalid) {
         this.highlightError();
       }
 
