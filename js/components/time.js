@@ -23,7 +23,8 @@ Fliplet.FormBuilder.field('time', {
   },
   data: function() {
     return {
-      isInputFocused: false
+      isInputFocused: false,
+      isPreview: Fliplet.Env.get('preview')
     };
   },
   validations: function() {
@@ -94,7 +95,7 @@ Fliplet.FormBuilder.field('time', {
         this.timepicker.timeEntry('setTime', val);
       }
 
-      if (this.$v.value.$invalid) {
+      if (this.isPreview && this.$v.value.$invalid) {
         this.highlightError();
       }
 
