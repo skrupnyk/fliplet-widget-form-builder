@@ -129,7 +129,7 @@
             <div v-if="missingColumnsMessage && settings.dataSourceId" class="columns-notification alert alert-warning">
               <p><b>\{{ missingColumnsMessage }}</b></p>
               <p>\{{ missingColumns }}</p>
-              <button type="button" class="btn btn-primary btn-block btn-generate-columns" @click="generateColumns">Generate columns</button>
+              <button type="button" class="btn btn-primary btn-block btn-generate-columns" @click="generateColumns">\{{ newColumns.length > 1 ? 'Add columns to data source' : 'Add column to data source' }}</button>
             </div>
             <div class="form-group">
               <div class="control-label">
