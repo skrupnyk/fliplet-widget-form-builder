@@ -201,11 +201,11 @@ Fliplet.FormBuilder = (function() {
       };
 
       component.computed._showField = function() {
-        if (this.isHidden && this.readonly) {
-          return false;
-        }
-
         if (this.readonly) {
+          if (this.isHidden) {
+            return false;
+          }
+
           if (['flTime', 'flDate'].includes(this._componentName)) {
             return true;
           }
