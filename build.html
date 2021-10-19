@@ -30,7 +30,7 @@
       <div v-if="isSent">{{{ resultHtml }}}</div>
     </transition>
   </form>
-  <div v-else>
+  <div v-if="isSent">
     <form class="fl-form placeholder">
       <div class="form-html">
         <div class="form-group clearfix" _type="flTitle">
