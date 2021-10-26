@@ -16,21 +16,23 @@
         </div>
       </div>
     </template>
-    <div v-if="!isSent" class="form-html">
-      <div v-if="isOffline" class="text-danger" v-bind:class="{ 'cover-form' : blockScreen }" v-html="isOfflineMessage"></div>
-      <div v-if="hasRequiredFields" class="required-info-label">* Required fields</div>
-      <template v-for="field in fields">
-        <component :is="field._type" v-bind="field" v-on:_input="onInput" v-on:_error="onError" v-on:_reset="reset" v-if="field.enabled"></component>
-      </template>
-      <div class="callout callout-danger" v-if="error">
-        <p>\{{ error }}</p>
+    <template v-if="!isSent">
+      <div class="form-html">
+        <div v-if="isOffline" class="text-danger" v-bind:class="{ 'cover-form' : blockScreen }" v-html="isOfflineMessage"></div>
+        <div v-if="hasRequiredFields" class="required-info-label">* Required fields</div>
+        <template v-for="field in fields">
+          <component :is="field._type" v-bind="field" v-on:_input="onInput" v-on:_error="onError" v-on:_reset="reset" v-if="field.enabled"></component>
+        </template>
+        <div class="callout callout-danger" v-if="error">
+          <p>\{{ error }}</p>
+        </div>
       </div>
-    </div>
+    </template>
     <transition name="fade">
       <div v-if="isSent">{{{ resultHtml }}}</div>
     </transition>
   </form>
-  <div v-if="isSent">
+  <template v-else>
     <form class="fl-form placeholder">
       <div class="form-html">
         <div class="form-group clearfix" _type="flTitle">
@@ -65,5 +67,5 @@
         </div>
       </div>
     </form>
-  </div>
+  </template>
 </div>
