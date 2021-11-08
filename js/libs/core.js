@@ -364,7 +364,7 @@ Fliplet.FormBuilder = (function() {
 
       component.props._componentsWithDescription = {
         type: Array,
-        default: ['flInput', 'flCheckbox', 'flRadio', 'flEmail', 'flNumber', 'flTelephone', 'flUrl', 'flTextarea', 'flWysiwyg', 'flSelect', 'flDate', 'flTime', 'flStarRating', 'flSignature', 'flImage', 'flFile']
+        default: ['flInput', 'flCheckbox', 'flRadio', 'flEmail', 'flNumber', 'flTelephone', 'flUrl', 'flTextarea', 'flWysiwyg', 'flSelect', 'flDate', 'flTime', 'flStarRating', 'flSignature']
       };
 
       component.props._readOnlyComponents = {
