@@ -977,6 +977,10 @@ form hr {
     width: 100%;
     height: 130px;
   }
+
+  label.btn.btn-primary {
+    padding-right: 25px;
+  }
 }
 
 .form-group .mce-btn-group {
