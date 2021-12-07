@@ -978,8 +978,8 @@ form hr {
     height: 130px;
   }
 
-  label.btn.btn-primary {
-    padding-right: 25px;
+  label.btn.btn-primary > span {
+    margin-right: 25px;
   }
 }
 
