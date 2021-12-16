@@ -978,8 +978,15 @@ form hr {
     height: 130px;
   }
 
+  label.btn.btn-primary {
+    display: flex;
+    flex-direction: row;
+    justify-content: unset;
+    width: fit-content;
+  }
+
   label.btn.btn-primary > span {
-    margin-right: 25px;
+    padding-right: inherit;
   }
 }
 
