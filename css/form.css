@@ -27,11 +27,6 @@
   opacity: 0.2;
 }
 
-[data-form-builder-id].is-loading {
-  opacity: 0;
-  pointer-events: none;
-}
-
 form.placeholder {
   opacity: 0.5;
   cursor: pointer;
@@ -1037,6 +1032,10 @@ form hr {
 
 
 /* Loading */
+.loading-message {
+  display: block;
+  padding-top: 25%;
+}
 
 .sending-form {
   position: absolute;
