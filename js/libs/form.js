@@ -443,13 +443,18 @@ Fliplet.Widget.instance('form-builder', function(data) {
         var invalidFields = [];
 
         $vm.$children.forEach(function (inputField) {
-
           // checks if component have vuelidate validation object
           if (inputField.$v) {
             inputField.$v.$touch();
 
             if (inputField.$v.$invalid) {
-              $(inputField.$el).addClass('has-error');
+              if (inputField.$v.passwordConfirmation) {
+                inputField.isValid = !inputField.$v.value.$invalid;
+                inputField.isPasswordConfirmed = !inputField.$v.value.$invalid && !inputField.$v.passwordConfirmation.$invalid;
+              } else {
+                inputField.isValid = false
+              }
+              
               invalidFields.push(inputField);
               $vm.isFormValid = false;
             }
@@ -663,6 +668,11 @@ Fliplet.Widget.instance('form-builder', function(data) {
             }
 
             $vm.isSent = true;
+            $vm.fields.forEach(function(field) {
+              if (field._type === 'flPassword' && field.passwordConfirmation) {
+                field.passwordConfirmation = '';
+              }
+            });
             $vm.isSending = false;
             $vm.reset(false);
             /**
