@@ -656,8 +656,6 @@ new Vue({
       }
 
       $vm.save(true).then(function onSettingsSaved() {
-        $(selector).removeClass('is-loading');
-
         Fliplet.Studio.emit('reload-widget-instance', Fliplet.Widget.getDefaultId());
         $vm.triggerSave();
       });
@@ -872,7 +870,7 @@ new Vue({
       return $html.html();
     },
     loadTemplates: function() {
-      if (data.fields) {
+      if (data.fields && data.templateId) {
         return Promise.resolve(); // do not load templates when editing a form as such UI is not shown
       }
 
@@ -882,14 +880,16 @@ new Vue({
         $vm.templates = templates.system.concat(templates.organization);
         $vm.systemTemplates = templates.system;
         $vm.organizationTemplates = templates.organization;
+        $(selector).removeClass('is-loading');
 
         if (!$vm.organizationTemplates.length) {
           var blankTemplateId = $vm.systemTemplates[0].id;
 
+          $vm.settings.isPlaceholder = false;
           $vm.useTemplate(blankTemplateId);
         } else {
-          $vm.settings.isPlaceholder = true;
-          $vm.useTemplate();
+          Fliplet.Widget.save(_.assign(data, { isPlaceholder: true }));
+          Fliplet.Studio.emit('reload-widget-instance', Fliplet.Widget.getDefaultId());
         }
       });
     },
