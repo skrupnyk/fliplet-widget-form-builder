@@ -136,6 +136,12 @@ Fliplet.FormBuilder.field('password', {
     }
   },
   watch: {
+    value: function(newVal, oldVal) {
+      if (this.autogenerate && !newVal && oldVal) {
+        this.value = oldVal;
+        this.updateValue();
+      }
+    },
     '$v.passwordConfirmation.$invalid': function(value) {
       if (!value) {
         this.isPasswordConfirmed = true;
