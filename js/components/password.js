@@ -117,8 +117,8 @@ Fliplet.FormBuilder.field('password', {
     showPassword: function() {
       var $passwordInputs = $("input[autocomplete='new-password']");
 
-      $.each($passwordInputs, function(i, val) {
-        $(val).prop('type') === 'password' ? $(val).attr('type', 'text') : $(val).attr('type', 'password');
+      $.each($passwordInputs, function(i, el) {
+        $(el).prop('type') === 'password' ? $(el).attr('type', 'text') : $(el).attr('type', 'password');
       });
     },
     generateRandomPassword: function(length) {
