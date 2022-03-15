@@ -115,10 +115,11 @@ Fliplet.FormBuilder.field('password', {
   },
   methods: {
     showPassword: function() {
-      var $passwordInputs = $("input[autocomplete='new-password']");
+      var $passwordInputs = $('.input-password');
 
       $.each($passwordInputs, function(i, el) {
-        $(el).prop('type') === 'password' ? $(el).attr('type', 'text') : $(el).attr('type', 'password');
+        $(el).attr('type', $(el).prop('type') === 'password' ? 'text' : 'password');
+        $('.fa-eye').toggleClass('fa-eye-slash', $(el).prop('type') === 'text');
       });
     },
     generateRandomPassword: function(length) {
