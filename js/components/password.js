@@ -118,8 +118,10 @@ Fliplet.FormBuilder.field('password', {
       var $passwordInputs = $('.input-password');
 
       $.each($passwordInputs, function(i, el) {
-        $(el).attr('type', $(el).prop('type') === 'password' ? 'text' : 'password');
-        $('.fa-eye').toggleClass('fa-eye-slash', $(el).prop('type') === 'text');
+        var $passwordInput = $(el);
+
+        $passwordInput.attr('type', $passwordInput.prop('type') === 'password' ? 'text' : 'password');
+        $('.fa-eye').toggleClass('fa-eye-slash', $passwordInput.prop('type') === 'text');
       });
     },
     generateRandomPassword: function(length) {
