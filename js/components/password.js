@@ -60,6 +60,7 @@ Fliplet.FormBuilder.field('password', {
   data: function() {
     return {
       isFocused: false,
+      isShowPassword: false,
       passwordMinLength: 8,
       defaultClass: 'panel-default',
       invalidClass: 'panel-danger',
@@ -114,12 +115,6 @@ Fliplet.FormBuilder.field('password', {
     }
   },
   methods: {
-    showPassword: function() {
-      var $passwordInput = $('.input-password');
-
-      $passwordInput.attr('type', $passwordInput.prop('type') === 'password' ? 'text' : 'password');
-      $('.fa-eye').toggleClass('fa-eye-slash', $passwordInput.prop('type') === 'text');
-    },
     generateRandomPassword: function(length) {
       var alphabet = 'abcdefghijklmnopqrstuvwxyz!#$%&*-ABCDEFGHIJKLMNOP1234567890';
       var password = '';
@@ -150,6 +145,10 @@ Fliplet.FormBuilder.field('password', {
       if (this.autogenerate && !newVal && oldVal) {
         this.value = oldVal;
         this.updateValue();
+      }
+
+      if (!newVal) {
+        this.isShowPassword = false;
       }
     },
     '$v.passwordConfirmation.$invalid': function(value) {
