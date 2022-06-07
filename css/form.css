@@ -7,7 +7,7 @@
   opacity: 0.65;
 }
 
-.fa-eye, .fa-eye-slash {
+.fl-form .fa-eye, .fl-form .fa-eye-slash {
   position: absolute;
   top: 15px;
   right: 30px;
